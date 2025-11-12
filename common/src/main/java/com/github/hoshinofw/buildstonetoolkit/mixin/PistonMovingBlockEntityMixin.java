@@ -93,14 +93,14 @@ public abstract class PistonMovingBlockEntityMixin implements PistonMovingBlockE
 
     //Proxy tag persistence over reloading.
     @Inject(method = "saveAdditional", at = @At("TAIL"))
-    private void buildstonetoolkit$saveAdditional(CompoundTag tag, HolderLookup.Provider provider, CallbackInfo ci) {
+    private void buildstonetoolkit$saveAdditional(CompoundTag tag, CallbackInfo ci) {
         if (this.buildstonetoolkit$proxyTag != null) {
             tag.put("BuildstoneProxyTag", this.buildstonetoolkit$proxyTag.copy());
         }
     }
 
-    @Inject(method = "loadAdditional", at = @At("TAIL"))
-    private void buildstonetoolkit$loadAdditional(CompoundTag tag, HolderLookup.Provider provider, CallbackInfo ci) {
+    @Inject(method = "load", at = @At("TAIL"))
+    private void buildstonetoolkit$loadAdditional(CompoundTag tag, CallbackInfo ci) {
         if (tag.contains("BuildstoneProxyTag", CompoundTag.TAG_COMPOUND)) {
             this.buildstonetoolkit$proxyTag = tag.getCompound("BuildstoneProxyTag").copy();
         } else {
@@ -109,18 +109,6 @@ public abstract class PistonMovingBlockEntityMixin implements PistonMovingBlockE
     }
 
     //Tests
-    @Inject(method = "finalTick", at = @At("HEAD"))
-    private void finalTick(CallbackInfo ci) {
-        BuildstoneToolkit.LOGGER.info("finalTick called");
-    }
-
-    @Inject(method = "<init>*", at = @At("RETURN"))
-    private void testCtor(BlockPos blockPos, BlockState blockState, BlockState blockState2, Direction direction, boolean bl, boolean bl2, CallbackInfo ci) {
-        //BuildstoneToolkit.LOGGER.info("PistonMovingBlockEntity created at {}", blockPos);
-    }
-
-
-
-
-
+    //@Inject(method = "finalTick", at = @At("HEAD"))
+    //private void finalTick(CallbackInfo ci) {BuildstoneToolkit.LOGGER.info("finalTick called");}
 }

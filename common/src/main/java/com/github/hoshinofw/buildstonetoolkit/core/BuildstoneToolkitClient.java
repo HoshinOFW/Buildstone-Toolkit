@@ -14,7 +14,7 @@ public class BuildstoneToolkitClient{
         //Register modWand item property
         ItemPropertiesRegistry.register(
                 BuildstoneItems.MOD_WAND.get(),
-                ResourceLocation.fromNamespaceAndPath(BuildstoneToolkit.MOD_ID, "proxy_mode"),
+                new ResourceLocation(BuildstoneToolkit.MOD_ID, "proxy_mode"),
                 (stack, level, entity, seed) -> ModWand.getClientMode().ordinal()
         );
     }

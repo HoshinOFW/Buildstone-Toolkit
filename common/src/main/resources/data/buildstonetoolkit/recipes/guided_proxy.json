@@ -1,0 +1,18 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "key": {
+    "I": { "item": "minecraft:iron_ingot" },
+    "P": { "item": "buildstonetoolkit:piston_proxy" },
+    "C": { "item": "minecraft:cobblestone" },
+    "R": { "item": "minecraft:redstone" }
+  },
+  "pattern": [
+    "CCC",
+    "IPI",
+    "CRC"
+  ],
+  "result": {
+    "item": "buildstonetoolkit:guided_proxy",
+    "count": 2
+  }
+}

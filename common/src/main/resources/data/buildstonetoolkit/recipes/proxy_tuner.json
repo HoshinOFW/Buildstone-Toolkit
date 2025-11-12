@@ -1,0 +1,19 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "key": {
+    "Y": { "item": "minecraft:ender_eye" },
+    "I": { "item": "minecraft:iron_ingot" },
+    "R": { "item": "minecraft:redstone" },
+    "S": { "item": "minecraft:stick" },
+    "E": { "item": "minecraft:echo_shard"}
+  },
+  "pattern": [
+    " IY",
+    " RE",
+    "S  "
+  ],
+  "result": {
+    "item": "buildstonetoolkit:proxy_tuner",
+    "count": 1
+  }
+}

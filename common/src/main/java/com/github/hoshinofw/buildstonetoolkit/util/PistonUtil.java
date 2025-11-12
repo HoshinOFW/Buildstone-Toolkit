@@ -29,7 +29,7 @@ public class PistonUtil {
                     CompoundTag savedTag = Util.getProxyTag(mbe);
                     if (blockEntity != null && savedTag != null) {
                         CompoundTag newNBT = entityBlock.computeNewNBTWithPreservedTargetAbsPos(level, finalPos, newState, savedTag, moveDirection);
-                        blockEntity.loadCustomOnly(newNBT, level.registryAccess());
+                        blockEntity.load(newNBT);
                         blockEntity.setChanged();
                     }
                 } else {
@@ -44,7 +44,7 @@ public class PistonUtil {
                     BlockEntity blockEntity = level.getBlockEntity(finalPos);
                     CompoundTag savedTag = ((PistonMovingBlockEntityMixinInterface) mbe).buildstonetoolkit$getProxyTag();
                     if (blockEntity != null && savedTag != null) {
-                        blockEntity.loadCustomOnly(savedTag, level.registryAccess());
+                        blockEntity.load(savedTag);
                         blockEntity.setChanged();
                     }
                 }

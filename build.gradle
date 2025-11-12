@@ -11,8 +11,8 @@ architectury {
 allprojects {
     group = rootProject.maven_group
     version = rootProject.mod_version
-    description = rootProject.description
 }
+
 
 subprojects {
     apply plugin: 'dev.architectury.loom'
@@ -24,7 +24,10 @@ subprojects {
     }
 
     repositories {
-
+        mavenCentral()
+        mavenLocal()
+        maven { url = "https://jitpack.io" }
+        maven { url = "https://maven.terraformersmc.com/" } // Optional, but safe
     }
 
     loom {
@@ -39,12 +42,12 @@ subprojects {
     java {
         withSourcesJar()
 
-        sourceCompatibility = JavaVersion.VERSION_21
-        targetCompatibility = JavaVersion.VERSION_21
+        sourceCompatibility = JavaVersion.VERSION_17
+        targetCompatibility = JavaVersion.VERSION_17
     }
 
     tasks.withType(JavaCompile).configureEach {
-        it.options.release = 21
+        it.options.release = 17
     }
 
     publishing {
@@ -58,9 +61,6 @@ subprojects {
         // See https://docs.gradle.org/current/userguide/publishing_maven.html for information on how to set up publishing.
         repositories {
             // Add repositories to publish to here.
-            // Notice: This block does NOT have the same function as the block in the top level.
-            // The repositories here will be used for publishing your artifact, not for
-            // retrieving dependencies.
         }
     }
 }

@@ -25,22 +25,21 @@ public class PistonProxyBlockEntity extends SyncedBlockEntity {
         this.relativeTargetPos = value;
     }
 
-
     @Override
-    protected void saveAdditional(CompoundTag nbt, HolderLookup.Provider registries) {
-        super.saveAdditional(nbt, registries);
+    protected void saveAdditional(CompoundTag nbt) {
+        super.saveAdditional(nbt);
         nbt.putIntArray("relativeTargetPos", Util.blockPosToArray(relativeTargetPos));
     }
 
     @Override
-    public void loadAdditional(CompoundTag nbt, HolderLookup.Provider registries) {
-        super.loadAdditional(nbt, registries);
+    public void load(CompoundTag nbt) {
+        super.load(nbt);
         this.relativeTargetPos = Util.getTargetPosFromNBT(nbt);
     }
 
     @Override
-    public @NotNull CompoundTag getUpdateTag(HolderLookup.Provider provider) {
-        CompoundTag tag = super.getUpdateTag(provider);
+    public @NotNull CompoundTag getUpdateTag() {
+        CompoundTag tag = super.getUpdateTag();
         if (this.relativeTargetPos != null) {tag.putIntArray("relativeTargetPos", Util.blockPosToArray(this.relativeTargetPos));}
         return tag;
     }

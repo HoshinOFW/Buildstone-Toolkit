@@ -2,6 +2,7 @@ package com.github.hoshinofw.buildstonetoolkit.common.particles.TargetBlockParti
 
 import com.github.hoshinofw.buildstonetoolkit.client.Sprites;
 import com.github.hoshinofw.buildstonetoolkit.common.level.items.ModWand;
+import com.github.hoshinofw.buildstonetoolkit.core.BuildstoneToolkit;
 import com.github.hoshinofw.buildstonetoolkit.util.client.BlockParticleTexture;
 import com.mojang.blaze3d.platform.GlStateManager;
 import com.mojang.blaze3d.systems.RenderSystem;
@@ -109,6 +110,7 @@ public class BlockParticle extends TextureSheetParticle {
 
     public BlockParticle setTextureIndex(BlockParticleTexture texture) {
         this.setSprite(sprites.get(texture.index(), 2));
+        BuildstoneToolkit.LOGGER.info("Sprite indexed: {}", sprites.get(texture.index(), 2));
         this.updateUVValues();
         return this;
     }
@@ -150,7 +152,7 @@ public class BlockParticle extends TextureSheetParticle {
 
     public static final ParticleRenderType NO_DEPTH = new ParticleRenderType() {
         @Override
-        public BufferBuilder begin(Tesselator tesselator, TextureManager textureManager) {
+        public void begin(BufferBuilder bufferBuilder, TextureManager textureManager) {
             RenderSystem.setShaderTexture(0, TextureAtlas.LOCATION_PARTICLES);
 
             RenderSystem.disableDepthTest();
@@ -164,7 +166,12 @@ public class BlockParticle extends TextureSheetParticle {
                     GlStateManager.DestFactor.ONE_MINUS_SRC_ALPHA
             );
 
-            return tesselator.begin(VertexFormat.Mode.QUADS, DefaultVertexFormat.PARTICLE);
+            bufferBuilder.begin(VertexFormat.Mode.QUADS, DefaultVertexFormat.PARTICLE);
+        }
+
+        @Override
+        public void end(Tesselator tesselator) {
+            tesselator.end();
         }
 
         @Override
@@ -225,10 +232,11 @@ public class BlockParticle extends TextureSheetParticle {
                         default -> { u = particle.minU; v = particle.maxV; } //Case 3
                     }
 
-                    consumer.addVertex((float) vec.x, (float) vec.y, (float) vec.z)
-                            .setUv(u, v)
-                            .setColor(particle.r, particle.g, particle.b, particle.alpha)
-                            .setLight(light);
+                    consumer.vertex((float) vec.x, (float) vec.y, (float) vec.z)
+                            .uv(u, v)
+                            .color(particle.r, particle.g, particle.b, particle.alpha)
+                            .uv2(light)
+                            .endVertex();
                 }
             }
         }

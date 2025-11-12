@@ -1,11 +1,12 @@
 package com.github.hoshinofw.buildstonetoolkit.common.particles.TargetBlockParticle;
 
 import com.github.hoshinofw.buildstonetoolkit.registries.BuildstoneParticles;
+import com.mojang.serialization.Codec;
 import com.mojang.serialization.MapCodec;
 import io.netty.buffer.ByteBuf;
 import net.minecraft.core.particles.ParticleOptions;
 import net.minecraft.core.particles.ParticleType;
-import net.minecraft.network.codec.StreamCodec;
+import net.minecraft.network.FriendlyByteBuf;
 import org.jetbrains.annotations.NotNull;
 
 public class BlockParticleOptions implements ParticleOptions {
@@ -14,10 +15,7 @@ public class BlockParticleOptions implements ParticleOptions {
 
     public static final BlockParticleOptions INSTANCE = new BlockParticleOptions();
 
-    public static final MapCodec<BlockParticleOptions> CODEC = MapCodec.unit(INSTANCE);
-
-    // Read and write information to the network buffer.
-    public static final StreamCodec<ByteBuf, BlockParticleOptions> STREAM_CODEC = StreamCodec.unit(INSTANCE);
+    public static final Codec<BlockParticleOptions> CODEC = Codec.unit(INSTANCE);
 
     // Does not need any parameters, but may define any fields necessary for the particle to work.
     public BlockParticleOptions() {}
@@ -25,5 +23,14 @@ public class BlockParticleOptions implements ParticleOptions {
     @Override
     public @NotNull ParticleType<?> getType() {
         return BuildstoneParticles.BLOCK.get();
+    }
+
+    @Override
+    public void writeToNetwork(FriendlyByteBuf friendlyByteBuf) { //IMPLEMENT
+    }
+
+    @Override
+    public @NotNull String writeToString() {
+        return "ParticleOptions: BlockParticleOptions";
     }
 }
