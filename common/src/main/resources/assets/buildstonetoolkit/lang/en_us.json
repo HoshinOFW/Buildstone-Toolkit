@@ -1,0 +1,16 @@
+{
+  "block.buildstonetoolkit.guided_proxy": "Guided Proxy",
+  "block.buildstonetoolkit.piston_proxy": "Piston Proxy",
+  "item.buildstonetoolkit.proxy_tuner": "Proxy Tuner",
+  "tooltip.buildstonetoolkit.hold_shift":  "§7Hold Shift to see details",
+  "tooltip.buildstonetoolkit.proxy_tuner.details": "Used to set all target positions in the mod",
+  "tooltip.buildstonetoolkit.guided_proxy.details": "Can link to any block in the placed axis",
+  "tooltip.buildstonetoolkit.piston_proxy.details": "Can link to any block",
+  "message.buildstonetoolkit.allay_distance_set": "Set allay search distance to: %f",
+  "message.buildstonetoolkit.link_success": "Linked proxy to: %s at %s",
+  "message.buildstonetoolkit.link_fail": "Failed link to: %s at %s, linked to valid position",
+  "message.buildstonetoolkit.allay_link_success": "Allay searching at %s",
+  "message.buildstonetoolkit.allay_link_remove": "Allay searching %s",
+  "message.buildstonetoolkit.allay_link_remove_2": "near itself",
+  "message.buildstonetoolkit.allay_tracking": "Tracking Allay"
+}
