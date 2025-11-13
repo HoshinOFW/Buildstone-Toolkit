@@ -11,12 +11,12 @@ public final class BuildstoneToolkit {
     public static final Logger LOGGER = LoggerFactory.getLogger(MOD_ID);
 
     public static void init() {
-        BuildstoneItems.register();
         BuildstoneBlocks.register();
         BuildstoneBlockEntities.register();
-        BuildstoneBlockItems.register();
-        BuildstoneCommonEvents.register();
+        BuildstoneItems.register();
         BuildstoneParticles.register();
+        //Events
+        BuildstoneCommonEvents.register();
 
         LOGGER.info("Finished registries");
     }
