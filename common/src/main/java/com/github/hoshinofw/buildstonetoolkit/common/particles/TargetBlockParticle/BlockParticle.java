@@ -110,7 +110,6 @@ public class BlockParticle extends TextureSheetParticle {
 
     public BlockParticle setTextureIndex(BlockParticleTexture texture) {
         this.setSprite(sprites.get(texture.index(), 2));
-        BuildstoneToolkit.LOGGER.info("Sprite indexed: {}", sprites.get(texture.index(), 2));
         this.updateUVValues();
         return this;
     }

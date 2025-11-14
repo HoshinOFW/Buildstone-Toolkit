@@ -17,10 +17,10 @@ public final class BuildstoneToolkitForge {
         IEventBus modbus = Objects.requireNonNull(FMLJavaModLoadingContext.get().getModEventBus());
         EventBuses.registerModEventBus(BuildstoneToolkit.MOD_ID, modbus);
 
-        modbus.register(BuildstoneForgeClientEvents .class);
-        modbus.addListener(BuildstoneToolkitForge::onClientSetup);
-
         BuildstoneToolkit.init();
+
+        modbus.register(BuildstoneForgeClientEvents.class);
+        modbus.addListener(BuildstoneToolkitForge::onClientSetup);
     }
 
 

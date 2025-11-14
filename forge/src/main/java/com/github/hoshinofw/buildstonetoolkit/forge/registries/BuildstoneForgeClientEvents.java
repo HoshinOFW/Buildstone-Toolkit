@@ -9,7 +9,7 @@ import net.minecraftforge.client.event.RegisterParticleProvidersEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 
-@Mod.EventBusSubscriber(modid = BuildstoneToolkit.MOD_ID, value = Dist.CLIENT)
+@Mod.EventBusSubscriber(modid = BuildstoneToolkit.MOD_ID, value = Dist.CLIENT, bus = Mod.EventBusSubscriber.Bus.FORGE)
 public class BuildstoneForgeClientEvents {
 
     @SubscribeEvent

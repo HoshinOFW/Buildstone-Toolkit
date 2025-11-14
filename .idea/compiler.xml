@@ -28,8 +28,8 @@
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel target="21">
-      <module name="BuildstoneToolkit.buildstonetoolkit.common.main~2" target="17" />
-      <module name="BuildstoneToolkit.buildstonetoolkit.common.test~2" target="17" />
+      <module name="BuildstoneToolkit.buildstonetoolkit.common.main~3" target="17" />
+      <module name="BuildstoneToolkit.buildstonetoolkit.common.test~3" target="17" />
       <module name="buildstonetoolkit.forge.test" target="17" />
     </bytecodeTargetLevel>
   </component>
