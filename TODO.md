@@ -16,6 +16,7 @@
 
 
 # TODO FOR NEXT RELEASE:
+    Create Compat for cooler and more expressive tooltips. Maybe even implement them in the base mod.
   
 
 # Planned features (Possibly made a different mod):
