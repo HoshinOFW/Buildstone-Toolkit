@@ -13,14 +13,13 @@ allprojects {
     version = rootProject.mod_version
 }
 
-
 subprojects {
     apply plugin: 'dev.architectury.loom'
     apply plugin: 'architectury-plugin'
     apply plugin: 'maven-publish'
 
     base {
-        archivesName = archives_name
+        archivesName = archivesName = "${rootProject.archives_name}-${project.name}-${project.minecraft_version}"
     }
 
     repositories {
@@ -37,6 +36,26 @@ subprojects {
     dependencies {
         minecraft "net.minecraft:minecraft:$rootProject.minecraft_version"
         mappings loom.officialMojangMappings()
+    }
+
+    processResources {
+        var replaceProperties = [
+                mod_id          : project.mod_id,
+                mod_version     : project.mod_version,
+                mod_name        : project.mod_name,
+                mod_author      : project.mod_author,
+                mod_description : project.mod_description,
+                mod_license     : project.mod_license,
+                minecraft_version: project.minecraft_version,
+                architectury_api_version: project.architectury_api_version,
+                fabric_loader_version: project.fabric_loader_version
+        ]
+
+        replaceProperties.put("file", [jarVersion: project.version])
+
+        filesMatching(['META-INF/mods.toml', 'fabric.mod.json']) {
+            expand(replaceProperties)
+        }
     }
 
     java {

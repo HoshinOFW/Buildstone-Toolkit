@@ -19,14 +19,10 @@ public final class BuildstoneToolkitForge {
 
         BuildstoneToolkit.init();
 
-        modbus.register(BuildstoneForgeClientEvents.class);
-        modbus.addListener(BuildstoneToolkitForge::onClientSetup);
+        modbus.addListener(this::onClientSetup);
+        modbus.addListener(BuildstoneForgeClientEvents::registerParticleProviders);
     }
-
-
-
-
-    private static void onClientSetup(FMLClientSetupEvent event) {
-    BuildstoneToolkitClient.init();
-}
+    public void onClientSetup(FMLClientSetupEvent event) {
+        BuildstoneToolkitClient.init();
+    }
 }
