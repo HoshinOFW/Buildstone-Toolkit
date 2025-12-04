@@ -4,26 +4,29 @@
 - Allay configurable searchOrigin, maxDistance, and general player tracking
 
 ## BUGS:
-    Synchronization works like dogshit with weak powered.
+    I think recipes for CBT are broken in 1.20.1. idk why tho.
     I discovered that the synchronization is fragile in more complex proxy applications. Tested the 3x3 door.
         The desync actually happens naturally even without manual setTargetAbsPos()
 ### Debt:
-- Create generalized methods for setting a selection that also spawns a particle if on the client 
-  - Possibly 2 methods: getter and a setter that both sets the necessary fields and spawn particles. 
 - Test everything in multiplayer
 - Switch FailableResult in parsePos and setLinkedRelPos to normal exception handling.
 - Transfer the POWER_LEVEL blockstate property to each inheriting class.
 
 
 # TODO FOR NEXT RELEASE:
-    Port to 1.20.1
+    Redstone Proxy
+        Write: Power it with redstone
+        Read: Use comparator (if the target block has special comparator interactions, it should output that)
+    Observer Proxy
+        Read only
+    New particle system
+        Particles properly track the selected proxy and the proxy's output/s.
+        
 
 # Planned features (Possibly made a different mod):
-### Future plans for particles:
-    I want proxy particles to track their respective positions, but this requires rewriting a crap ton of the base mod code.
-    Main issue is that proxy must be a BlockEntity in order to update a tracker that can then be used by the particle to move.
-    However, all the logic is on the Block objects atm and moving it is nontrivial
-- Glasses that you can put on an allay. Bigger glasses = bigger radius. Essentially a fun way to set maxDistance.
+- Glasses that you can put on an allay. Could be something else. Suggestions open.
+-     Bigger glasses = bigger radius. Essentially a fun way to set maxDistance.
+-     Allay general entity detection
 
 - Ponder optional dependency.
 
@@ -40,15 +43,16 @@
 
 - A way to turn any block into a fallingBlockEntity. (Works with feature above to then have some control over the falling block)
 
-- Buildstone dimension where piston proxies can still push stuff in the real dimension
+- Buildstone dimension where proxies can work into the real dimension.
 
 ### Dubious:
 - A way to push past the piston push limit in certain scenarios 
   - Could be as simple as changing an integer value in moveBlocks. 
   - The idea would be to make this dynamic in-game. No clue how to balance this.
-- A way to change the direction the piston proxy pushes with. 
-  - Maybe this can replace the use of the single axis piston proxy? It remaps all movement to the placed axis? 
-  - Maybe you can make the targeted block move multiple tiles at once?
+- Additional functionality for Guided Proxy:
+  - Can remap all movement to the selected axis.
+  - Can change the selected axis on runtime.
+  - Can sort of multiply the piston push.
 - A way to speed up the whole piston push process, but especially the MBE animation
 
 
