@@ -9,6 +9,7 @@
       <module name="buildstonetoolkit.forge.main" target="17" />
       <module name="buildstonetoolkit.forge.test" target="17" />
       <module name="forge.buildstonetoolkit.forge.test" target="17" />
+      <module name="modding.BuildstoneToolkit.forge.buildstonetoolkit.forge.test" target="17" />
     </bytecodeTargetLevel>
   </component>
 </project>

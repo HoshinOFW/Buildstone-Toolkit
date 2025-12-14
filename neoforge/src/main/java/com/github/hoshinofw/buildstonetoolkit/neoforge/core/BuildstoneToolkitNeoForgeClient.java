@@ -1,8 +1,8 @@
 package com.github.hoshinofw.buildstonetoolkit.neoforge.core;
 
 
-import com.github.hoshinofw.buildstonetoolkit.core.BuildstoneToolkit;
-import com.github.hoshinofw.buildstonetoolkit.core.BuildstoneToolkitClient;
+import com.github.hoshinofw.buildstonetoolkit.foundation.common.core.BuildstoneToolkit;
+import com.github.hoshinofw.buildstonetoolkit.foundation.common.core.BuildstoneToolkitClient;
 import com.github.hoshinofw.buildstonetoolkit.neoforge.registries.BuildstoneNeoForgeClientEvents;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.bus.api.IEventBus;

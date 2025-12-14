@@ -16,6 +16,10 @@
 
 
 # TODO FOR NEXT RELEASE:
+    Write the relevant mixin for RedstoneProxy functionality.
+    Test multiplayer proly
+
+
     Create Compat for cooler and more expressive tooltips. Maybe even implement them in the base mod.
   
 
@@ -26,12 +30,15 @@
     However, all the logic is on the Block objects atm and moving it is nontrivial
 - Glasses that you can put on an allay. Bigger glasses = bigger radius. Essentially a fun way to set maxDistance.
 
+- Wireless redstone (no blocks at target, is a proxy type)
+
 - Ponder optional dependency.
 
 - Make it possible for allays to detect other entities apart from just players. 
   - Spawn eggs could be used to set it.
 
 - Allays don't move and are silent if you give them a specific name.
+
 - A way to make integrating the allay into structure stuff easier.
 
 - An entity that relays all forces done to it to a different entity. 
