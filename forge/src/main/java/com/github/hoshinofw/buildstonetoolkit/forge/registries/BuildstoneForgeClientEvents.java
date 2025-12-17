@@ -17,7 +17,7 @@ public class BuildstoneForgeClientEvents {
                 (spriteSet) -> {
                     Sprites.BLOCK_PARTICLE_SPRITES = spriteSet;
                     BuildstoneToolkit.LOGGER.info("Registering sprites: {}", spriteSet);
-                    return new BlockParticle.Provider(spriteSet);
+                    return new CubeParticle.Provider(spriteSet);
                 }
         );
     }

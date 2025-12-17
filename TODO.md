@@ -13,11 +13,12 @@
   - Possibly 2 methods: getter and a setter that both sets the necessary fields and spawn particles. 
 - Test everything in multiplayer
 - Switch FailableResult in parsePos and setLinkedRelPos to normal exception handling.
-- Transfer the POWER_LEVEL blockstate property to each inheriting class.
-
 
 # TODO FOR NEXT RELEASE:
-    Port to 1.20.1
+    Test multiplayer proly
+
+    Create Compat for cooler and more expressive tooltips. Maybe even implement them in the base mod.
+  
 
 # Planned features (Possibly made a different mod):
 ### Future plans for particles:
@@ -26,12 +27,15 @@
     However, all the logic is on the Block objects atm and moving it is nontrivial
 - Glasses that you can put on an allay. Bigger glasses = bigger radius. Essentially a fun way to set maxDistance.
 
+- Wireless redstone (no blocks at target, is a proxy type)
+
 - Ponder optional dependency.
 
 - Make it possible for allays to detect other entities apart from just players. 
   - Spawn eggs could be used to set it.
 
 - Allays don't move and are silent if you give them a specific name.
+
 - A way to make integrating the allay into structure stuff easier.
 
 - An entity that relays all forces done to it to a different entity. 
