@@ -19,7 +19,7 @@ public class BuildstoneClientEvents {
 
     public static boolean debug = false;
 
-    private static int counter; //TODO Temporary debug
+    private static int counter;
     public static int servercounter;
 
     public static void register() {
@@ -27,7 +27,6 @@ public class BuildstoneClientEvents {
         TickEvent.SERVER_POST.register(BuildstoneClientEvents::onServerTick);
     }
 
-    //TODO TEMP SERVER TICK FOR DEBUGGING
     private static void onServerTick(MinecraftServer minecraftServer) {
         if (debug) {
             servercounter++;
@@ -50,7 +49,6 @@ public class BuildstoneClientEvents {
         Player player = client.player;
         boolean isHovered = player.getMainHandItem().is(BuildstoneItems.MOD_WAND.get());
 
-        //TODO Temporary debug:
         if (debug) {
             counter++;
             if (counter % 50 == 0 && isHovered) {
