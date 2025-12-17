@@ -18,6 +18,22 @@ public interface IdRegistry<T extends IdObject> {
         }
     }
 
+    default boolean hasEntry(T entry) {
+        if (entry.getId() > -1) {
+            return getMap().containsKey(entry.getId());
+        } else {
+            return false;
+        }
+    }
+
+    default boolean hasEntry(long id) {
+        if (id > -1) {
+            return getMap().containsKey(id);
+        } else {
+            return false;
+        }
+    }
+
     default int size() {
         return getMap().size();
     }
