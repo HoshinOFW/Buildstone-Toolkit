@@ -2,17 +2,14 @@
   "type": "minecraft:block",
   "pools": [
     {
-      "rolls": 1,
+      "rolls": 1.0,
       "entries": [
         {
           "type": "minecraft:item",
-          "name": "buildstonetoolkit:guided_proxy"
+          "name": "buildstonetoolkit:observer_proxy"
         }
       ],
       "conditions": [
-        {
-          "condition": "minecraft:survives_explosion"
-        },
         {
           "condition": "minecraft:match_tool",
           "predicate": {
@@ -22,4 +19,5 @@
       ]
     }
   ]
+
 }

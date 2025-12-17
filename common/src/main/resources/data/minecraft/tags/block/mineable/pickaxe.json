@@ -1,7 +1,8 @@
 {
   "replace": false,
   "values": [
-    "buildstonetoolkit:guided_proxy",
-    "buildstonetoolkit:piston_proxy"
+    "buildstonetoolkit:piston_proxy",
+    "buildstonetoolkit:redstone_proxy",
+    "buildstonetoolkit:observer_proxy"
   ]
 }

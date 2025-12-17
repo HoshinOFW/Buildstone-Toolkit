@@ -6,7 +6,7 @@
       "entries": [
         {
           "type": "minecraft:item",
-          "name": "buildstonetoolkit:guided_proxy"
+          "name": "buildstonetoolkit:observer_proxy"
         }
       ],
       "conditions": [
