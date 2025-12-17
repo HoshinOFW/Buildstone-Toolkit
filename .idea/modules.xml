@@ -4,7 +4,9 @@
     <modules>
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/common/BuildstoneToolkit - 1.21.1.buildstonetoolkit.common.iml" filepath="$PROJECT_DIR$/.idea/modules/common/BuildstoneToolkit - 1.21.1.buildstonetoolkit.common.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/common/BuildstoneToolkit - 1.21.1.buildstonetoolkit.common.main.iml" filepath="$PROJECT_DIR$/.idea/modules/common/BuildstoneToolkit - 1.21.1.buildstonetoolkit.common.main.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/common/BuildstoneToolkit - 1.21.1.buildstonetoolkit.common.main~2.iml" filepath="$PROJECT_DIR$/.idea/modules/common/BuildstoneToolkit - 1.21.1.buildstonetoolkit.common.main~2.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/common/BuildstoneToolkit - 1.21.1.buildstonetoolkit.common.test.iml" filepath="$PROJECT_DIR$/.idea/modules/common/BuildstoneToolkit - 1.21.1.buildstonetoolkit.common.test.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/common/BuildstoneToolkit - 1.21.1.buildstonetoolkit.common.test~2.iml" filepath="$PROJECT_DIR$/.idea/modules/common/BuildstoneToolkit - 1.21.1.buildstonetoolkit.common.test~2.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/fabric/BuildstoneToolkit - 1.21.1.fabric.buildstonetoolkit.fabric.main.iml" filepath="$PROJECT_DIR$/.idea/modules/fabric/BuildstoneToolkit - 1.21.1.fabric.buildstonetoolkit.fabric.main.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/fabric/BuildstoneToolkit - 1.21.1.fabric.buildstonetoolkit.fabric.test.iml" filepath="$PROJECT_DIR$/.idea/modules/fabric/BuildstoneToolkit - 1.21.1.fabric.buildstonetoolkit.fabric.test.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/common/BuildstoneToolkit.buildstonetoolkit.common.iml" filepath="$PROJECT_DIR$/.idea/modules/common/BuildstoneToolkit.buildstonetoolkit.common.iml" />
@@ -16,6 +18,8 @@
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/neoforge/com.github.hoshinofw.buildstonetoolkit.buildstonetoolkit.neoforge.test.iml" filepath="$PROJECT_DIR$/.idea/modules/neoforge/com.github.hoshinofw.buildstonetoolkit.buildstonetoolkit.neoforge.test.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/fabric/fabric.buildstonetoolkit.fabric.main.iml" filepath="$PROJECT_DIR$/.idea/modules/fabric/fabric.buildstonetoolkit.fabric.main.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/fabric/fabric.buildstonetoolkit.fabric.test.iml" filepath="$PROJECT_DIR$/.idea/modules/fabric/fabric.buildstonetoolkit.fabric.test.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/neoforge/neoforge.buildstonetoolkit.neoforge.main.iml" filepath="$PROJECT_DIR$/.idea/modules/neoforge/neoforge.buildstonetoolkit.neoforge.main.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/neoforge/neoforge.buildstonetoolkit.neoforge.test.iml" filepath="$PROJECT_DIR$/.idea/modules/neoforge/neoforge.buildstonetoolkit.neoforge.test.iml" />
     </modules>
   </component>
 </project>
