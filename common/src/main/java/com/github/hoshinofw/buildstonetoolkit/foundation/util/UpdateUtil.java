@@ -2,6 +2,7 @@ package com.github.hoshinofw.buildstonetoolkit.foundation.util;
 
 import com.github.hoshinofw.buildstonetoolkit.content.common.blocks.entity.RedstoneProxyBlockEntity;
 import com.github.hoshinofw.buildstonetoolkit.foundation.common.blocks.entity.UpdateListenerProxyBlockEntity;
+import com.github.hoshinofw.buildstonetoolkit.foundation.common.core.BuildstoneToolkit;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.Level;
 
@@ -12,6 +13,7 @@ public class UpdateUtil {
     private static boolean IN_PROXY_UPDATE = false;
 
     public static void doInstantTargetUpdatedLogic(BlockPos targetPos, Level level) {
+        //BuildstoneToolkit.LOGGER.info("doInstantTargetUpdatedLogic called");
         if (IN_PROXY_UPDATE) return;
 
         IN_PROXY_UPDATE = true;

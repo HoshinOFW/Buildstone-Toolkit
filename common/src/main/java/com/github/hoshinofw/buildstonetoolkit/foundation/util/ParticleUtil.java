@@ -30,7 +30,7 @@ public class ParticleUtil {
     public static BooleanSupplier createIdProxyParticleShouldPersist(@NotNull Player player, long proxyId) {
         return () -> ((player.getItemBySlot(EquipmentSlot.MAINHAND).is(BuildstoneItems.MOD_WAND.get())
                 || player.getItemBySlot(EquipmentSlot.OFFHAND).is(BuildstoneItems.MOD_WAND.get()))
-                && PlayerUtil.getSelectedProxyId(player) == proxyId) && ProxyIdStorage.getIdRegistry(player.level()).hasEntry(proxyId);
+                && PlayerUtil.getSelectedProxyId(player) == proxyId);
     }
 
     public static BlockPosSupplier createIdProxyParticlePosSupplier(@NotNull Player player, long proxyId) {

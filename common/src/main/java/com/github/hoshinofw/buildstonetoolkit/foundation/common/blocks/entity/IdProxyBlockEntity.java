@@ -1,5 +1,6 @@
 package com.github.hoshinofw.buildstonetoolkit.foundation.common.blocks.entity;
 
+import com.github.hoshinofw.buildstonetoolkit.foundation.common.core.BuildstoneToolkit;
 import com.github.hoshinofw.buildstonetoolkit.foundation.storage.ProxyIdStorage;
 import com.github.hoshinofw.buildstonetoolkit.foundation.util.NBTUtil;
 import com.github.hoshinofw.buildstonetoolkit.foundation.util.registries.IdObject;
@@ -30,10 +31,10 @@ public abstract class IdProxyBlockEntity<T extends IdProxyBlockEntity<T>> extend
             if (id < 0) {
                 this.id = ProxyIdStorage.getServerIdRegistry(serverLevel).registerNew(this);
                 this.notifyUpdate();
-                //BuildstoneToolkit.LOGGER.info("Registered NEW Id on the serverIdRegistry: {}, id: {}", ProxyIdStorage.getServerIdRegistry(serverLevel).getName(), this.id);
+                BuildstoneToolkit.LOGGER.info("Registered NEW Id on the serverIdRegistry: {}, id: {}", ProxyIdStorage.getServerIdRegistry(serverLevel).getName(), this.id);
             } else {
                 ProxyIdStorage.getServerIdRegistry(serverLevel).ensureEntry(this);
-                //BuildstoneToolkit.LOGGER.info("Registered EXISTING Id on the serverIdRegistry: {}, id: {}", ProxyIdStorage.getServerIdRegistry(serverLevel).getName(), this.id);
+                BuildstoneToolkit.LOGGER.info("Registered EXISTING Id on the serverIdRegistry: {}, id: {}", ProxyIdStorage.getServerIdRegistry(serverLevel).getName(), this.id);
             }
         }
     }
@@ -54,7 +55,7 @@ public abstract class IdProxyBlockEntity<T extends IdProxyBlockEntity<T>> extend
     protected void saveAdditional(CompoundTag nbt) {
         super.saveAdditional(nbt);
         NBTUtil.saveId(nbt, this);
-        //BuildstoneToolkit.LOGGER.info("saveAdditional called for nbt: {}", nbt);
+        BuildstoneToolkit.LOGGER.info("saveAdditional called for nbt: {}", nbt);
     }
 
     @Override
@@ -64,6 +65,6 @@ public abstract class IdProxyBlockEntity<T extends IdProxyBlockEntity<T>> extend
             getIdRegistry(this.getLevel()).ensureEntry(this);
         }
         super.load(nbt);
-        //BuildstoneToolkit.LOGGER.info("loadAdditional called and ensureEntry called on idRegistry: {} for id: {}", getIdRegistry(this.getLevel()).getName(), this.getId());
+        BuildstoneToolkit.LOGGER.info("loadAdditional called and ensureEntry called on idRegistry: {} for id: {}", getIdRegistry(this.getLevel()).getName(), this.getId());
     }
 }
