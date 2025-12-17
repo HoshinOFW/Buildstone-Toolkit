@@ -5,6 +5,7 @@ import com.mojang.serialization.MapCodec;
 import io.netty.buffer.ByteBuf;
 import net.minecraft.core.particles.ParticleOptions;
 import net.minecraft.core.particles.ParticleType;
+import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.network.codec.StreamCodec;
 import org.jetbrains.annotations.NotNull;
 
@@ -25,5 +26,14 @@ public class CubeParticleOptions implements ParticleOptions {
     @Override
     public @NotNull ParticleType<?> getType() {
         return BuildstoneParticles.BLOCK.get();
+    }
+
+    @Override
+    public void writeToNetwork(FriendlyByteBuf friendlyByteBuf) { //IMPLEMENT
+    }
+
+    @Override
+    public @NotNull String writeToString() {
+        return "ParticleOptions: BlockParticleOptions";
     }
 }

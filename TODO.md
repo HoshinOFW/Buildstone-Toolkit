@@ -4,6 +4,7 @@
 - Allay configurable searchOrigin, maxDistance, and general player tracking
 
 ## BUGS:
+    For some reason the setTargetAbsPos doesn't work consistently on both forge and fabric.
     Synchronization works like dogshit with weak powered.
     I discovered that the synchronization is fragile in more complex proxy applications. Tested the 3x3 door.
         The desync actually happens naturally even without manual setTargetAbsPos()

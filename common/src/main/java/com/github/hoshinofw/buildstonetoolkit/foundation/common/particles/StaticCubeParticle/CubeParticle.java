@@ -167,7 +167,7 @@ public class CubeParticle extends TextureSheetParticle {
 
     public static final ParticleRenderType NO_DEPTH = new ParticleRenderType() {
         @Override
-        public BufferBuilder begin(Tesselator tesselator, TextureManager textureManager) {
+        public void begin(BufferBuilder bufferBuilder, TextureManager textureManager) {
             RenderSystem.setShaderTexture(0, TextureAtlas.LOCATION_PARTICLES);
 
             RenderSystem.disableDepthTest();
@@ -181,7 +181,12 @@ public class CubeParticle extends TextureSheetParticle {
                     GlStateManager.DestFactor.ONE_MINUS_SRC_ALPHA
             );
 
-            return tesselator.begin(VertexFormat.Mode.QUADS, DefaultVertexFormat.PARTICLE);
+            bufferBuilder.begin(VertexFormat.Mode.QUADS, DefaultVertexFormat.PARTICLE);
+        }
+
+        @Override
+        public void end(Tesselator tesselator) {
+            tesselator.end();
         }
 
         @Override
@@ -242,10 +247,11 @@ public class CubeParticle extends TextureSheetParticle {
                         default -> { u = particle.minU; v = particle.maxV; } //Case 3
                     }
 
-                    consumer.addVertex((float) vec.x, (float) vec.y, (float) vec.z)
-                            .setUv(u, v)
-                            .setColor(particle.r, particle.g, particle.b, particle.alpha)
-                            .setLight(light);
+                    consumer.vertex((float) vec.x, (float) vec.y, (float) vec.z)
+                            .uv(u, v)
+                            .color(particle.r, particle.g, particle.b, particle.alpha)
+                            .uv2(light)
+                            .endVertex();
                 }
             }
         }

@@ -25,8 +25,7 @@ public class PistonBaseBlockMixin {
                     ordinal = 0,
                     shift = At.Shift.AFTER))
     private void buildstonetoolkit$afterSetBlockEntity(Level level, BlockPos blockPos, Direction direction, boolean extending,
-            CallbackInfoReturnable<Boolean> cir,
-            @Local(ordinal = 2) BlockPos currentFinalPos) {
+            CallbackInfoReturnable<Boolean> cir, @Local(ordinal = 2) BlockPos currentFinalPos) {
 
         // Inside the MBE creation loop.
         BlockPos originalPos = currentFinalPos.relative(Util.resolveDirection(direction, extending).getOpposite());
@@ -34,7 +33,7 @@ public class PistonBaseBlockMixin {
         CompoundTag nbt = null;
 
         if (originalBE != null) {
-            nbt = originalBE.saveWithoutMetadata(level.registryAccess());
+            nbt = originalBE.saveWithoutMetadata();
             //BuildstoneToolkit.LOGGER.info("Captured NBT for block at {}: {}", originalPos, nbt);
         }
 

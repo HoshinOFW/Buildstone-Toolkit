@@ -32,6 +32,7 @@ public abstract class PistonStructureResolverMixin {
     @Inject(method = "addBlockLine", at = @At(
                     value = "INVOKE",
                     target = "Lnet/minecraft/world/level/block/state/BlockState;isAir()Z",
+                    ordinal = 1,
                     shift = At.Shift.BEFORE ),
             cancellable = true)
 

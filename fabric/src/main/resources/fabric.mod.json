@@ -1,11 +1,11 @@
 {
   "schemaVersion": 1,
   "id": "buildstonetoolkit",
-  "version": "${version}",
-  "name": "Buildstone Toolkit",
-  "description": "A mod to bring new tools that enhance the aesthetic capabilities of vanilla redstone",
+  "version": "${mod_version}",
+  "name": "${mod_name}",
+  "description": "${mod_description}",
   "authors": [
-    "HoshinOFW"
+    "${mod_author}"
   ],
   "contact": {
     "homepage": "https://fabricmc.net/",
@@ -16,23 +16,20 @@
   "environment": "*",
   "entrypoints": {
     "main": [
-      "com.hoshin.buildstonetoolkit.fabric.core.BuildstoneToolkitFabric"
+      "com.github.hoshinofw.buildstonetoolkit.fabric.core.BuildstoneToolkitFabric"
     ],
     "client": [
-      "com.hoshin.buildstonetoolkit.fabric.core.BuildstoneToolkitFabricClient"
+      "com.github.hoshinofw.buildstonetoolkit.fabric.core.BuildstoneToolkitFabricClient"
     ]
   },
   "mixins": [
     "buildstonetoolkit.mixins.json"
   ],
   "depends": {
-    "fabricloader": ">=0.17.3",
-    "minecraft": "~1.21.1",
-    "java": ">=21",
-    "architectury": ">=13.0.8",
+    "fabricloader": ">=${fabric_loader_version}",
+    "minecraft": "~${minecraft_version}",
+    "java": ">=17",
+    "architectury": ">=${architectury_api_version}",
     "fabric-api": "*"
-  },
-  "suggests": {
-    "another-mod": "*"
   }
 }

@@ -1,15 +1,37 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="CompilerConfiguration">
+    <annotationProcessing>
+      <profile name="Gradle Imported" enabled="true">
+        <outputRelativeToContentRoot value="true" />
+        <option name="defaultObfuscationEnv" value="named:intermediary" />
+        <option name="inMapFileNamedIntermediary" value="C:\Users\plasm\.gradle\caches\fabric-loom\1.20.1\loom.mappings.1_20_1.layered+hash.40359-v2\mappings.tiny" />
+        <option name="outMapFileNamedIntermediary" value="C:\Users\plasm\Documents\Coding\modding\BuildstoneToolkit\fabric\build\loom-cache\mixin-map-loom.mappings.1_20_1.layered+hash.40359-v2.main.tiny" />
+        <option name="outRefMapFile" value="C:\Users\plasm\Documents\Coding\modding\BuildstoneToolkit\fabric\build\classes\java\main\buildstonetoolkit-fabric-1.20.1-fabric-refmap.json" />
+        <option name="quiet" value="true" />
+        <processorPath useClasspath="false">
+          <entry name="$USER_HOME$/.gradle/caches/modules-2/files-2.1/io.github.llamalad7/mixinextras-common/0.3.5/5de895137aa0478675b6ecf7602d9652b05dc37e/mixinextras-common-0.3.5.jar" />
+        </processorPath>
+        <module name="fabric.buildstonetoolkit.fabric.main" />
+      </profile>
+      <profile name="Gradle Imported" enabled="true">
+        <outputRelativeToContentRoot value="true" />
+        <option name="defaultObfuscationEnv" value="named:intermediary" />
+        <option name="inMapFileNamedIntermediary" value="C:\Users\plasm\.gradle\caches\fabric-loom\1.20.1\loom.mappings.1_20_1.layered+hash.40359-v2-forge-1.20.1-47.4.10\mappings-mixin-srg.tiny" />
+        <option name="outMapFileNamedIntermediary" value="C:\Users\plasm\Documents\Coding\modding\BuildstoneToolkit\forge\build\loom-cache\mixin-map-loom.mappings.1_20_1.layered+hash.40359-v2-forge-1.20.1-47.4.10.main.tiny" />
+        <option name="outRefMapFile" value="C:\Users\plasm\Documents\Coding\modding\BuildstoneToolkit\forge\build\classes\java\main\buildstonetoolkit-forge-1.20.1-forge-refmap.json" />
+        <option name="quiet" value="true" />
+        <processorPath useClasspath="false">
+          <entry name="$USER_HOME$/.gradle/caches/modules-2/files-2.1/io.github.llamalad7/mixinextras-common/0.3.5/5de895137aa0478675b6ecf7602d9652b05dc37e/mixinextras-common-0.3.5.jar" />
+        </processorPath>
+        <module name="buildstonetoolkit.forge.main" />
+      </profile>
+    </annotationProcessing>
     <bytecodeTargetLevel target="21">
       <module name="BuildstoneToolkit.buildstonetoolkit.common.main~3" target="17" />
       <module name="BuildstoneToolkit.buildstonetoolkit.common.test~3" target="17" />
-      <module name="buildstonetoolkit.forge" target="17" />
-      <module name="BuildstoneToolkit.forge.buildstonetoolkit.forge.test" target="17" />
-      <module name="buildstonetoolkit.forge.main" target="17" />
       <module name="buildstonetoolkit.forge.test" target="17" />
       <module name="forge.buildstonetoolkit.forge.test" target="17" />
-      <module name="modding.BuildstoneToolkit.forge.buildstonetoolkit.forge.test" target="17" />
     </bytecodeTargetLevel>
   </component>
 </project>

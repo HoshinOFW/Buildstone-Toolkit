@@ -7,14 +7,15 @@ import com.github.hoshinofw.buildstonetoolkit.foundation.common.registries.event
 import dev.architectury.registry.item.ItemPropertiesRegistry;
 import net.minecraft.resources.ResourceLocation;
 
+
 public class BuildstoneToolkitClient{
+
     public static void init() {
         BuildstoneClientEvents.register();
 
-        //Register modWand item property
         ItemPropertiesRegistry.register(
                 BuildstoneItems.MOD_WAND.get(),
-                ResourceLocation.fromNamespaceAndPath(BuildstoneToolkit.MOD_ID, "proxy_mode"),
+                new ResourceLocation(BuildstoneToolkit.MOD_ID, "proxy_mode"),
                 (stack, level, entity, seed) -> ModWand.getClientMode().ordinal()
         );
     }

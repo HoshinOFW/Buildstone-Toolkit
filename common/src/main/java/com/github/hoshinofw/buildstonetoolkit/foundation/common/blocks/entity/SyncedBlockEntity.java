@@ -24,8 +24,8 @@ public abstract class SyncedBlockEntity extends BlockEntity{
     }
 
     @Override
-    public CompoundTag getUpdateTag(@NotNull HolderLookup.Provider registries) {
-        return writeClient(new CompoundTag(), registries);
+    public CompoundTag getUpdateTag() {
+        return writeClient(new CompoundTag());
     }
 
     @Override
@@ -33,23 +33,23 @@ public abstract class SyncedBlockEntity extends BlockEntity{
         return ClientboundBlockEntityDataPacket.create(this);
     }
 
-    public void handleUpdateTag(CompoundTag tag, HolderLookup.Provider registries) {
-        readClient(tag, registries);
+    public void handleUpdateTag(CompoundTag tag) {
+        readClient(tag);
     }
 
-    public void onDataPacket(Connection net, ClientboundBlockEntityDataPacket pkt, HolderLookup.Provider registries) {
+    public void onDataPacket(Connection net, ClientboundBlockEntityDataPacket pkt) {
         CompoundTag tag = pkt.getTag();
-        readClient(tag, registries);
+        readClient(tag);
     }
 
     // Special handling for client update packets
-    public void readClient(CompoundTag tag, HolderLookup.Provider registries) {
-        loadAdditional(tag, registries);
+    public void readClient(CompoundTag tags) {
+        load(tags);
     }
 
     // Special handling for client update packets
-    public CompoundTag writeClient(CompoundTag tag, HolderLookup.Provider registries) {
-        saveAdditional(tag, registries);
+    public CompoundTag writeClient(CompoundTag tag) {
+        saveAdditional(tag);
         return tag;
     }
 
