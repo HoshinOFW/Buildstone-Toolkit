@@ -2,7 +2,7 @@ package com.github.hoshinofw.buildstonetoolkit.fabric.core;
 
 import net.fabricmc.api.ModInitializer;
 
-import com.github.hoshinofw.buildstonetoolkit.foundation.common.core.BuildstoneToolkit;
+import com.github.hoshinofw.buildstonetoolkit.core.BuildstoneToolkit;
 
 public final class BuildstoneToolkitFabric implements ModInitializer {
 

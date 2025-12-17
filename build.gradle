@@ -11,7 +11,6 @@ architectury {
 allprojects {
     group = rootProject.maven_group
     version = rootProject.mod_version
-    description = rootProject.description
 }
 
 subprojects {
@@ -20,7 +19,7 @@ subprojects {
     apply plugin: 'maven-publish'
 
     base {
-        archivesName = "$rootProject.archives_name-$project.name-$project.minecraft_version"
+        archivesName = archivesName = "${rootProject.archives_name}-${project.name}-${project.minecraft_version}"
     }
 
     repositories {
@@ -78,6 +77,7 @@ subprojects {
             }
         }
 
+        // See https://docs.gradle.org/current/userguide/publishing_maven.html for information on how to set up publishing.
         repositories {
             // Add repositories to publish to here.
         }

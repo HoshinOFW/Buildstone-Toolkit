@@ -1,0 +1,25 @@
+{
+  "parent": "block/block",
+  "textures": {
+    "particle": "buildstonetoolkit:block/guided_proxy_on",
+    "north": "buildstonetoolkit:block/guided_proxy_on",
+    "south": "buildstonetoolkit:block/guided_proxy_back",
+    "eastON": "buildstonetoolkit:block/guided_proxy_side_on_right",
+    "westON": "buildstonetoolkit:block/guided_proxy_side_on_left",
+    "up_and_down": "buildstonetoolkit:block/guided_proxy_top_and_bottom"
+  },
+  "elements": [
+    {
+      "from": [0, 0, 0],
+      "to": [16, 16, 16],
+      "faces": {
+        "north": { "texture": "#north" },
+        "south": { "texture": "#south" },
+        "east": { "texture": "#eastON" },
+        "west": { "texture": "#westON" },
+        "up": { "texture": "#up_and_down", "rotation":  270},
+        "down": { "texture": "#up_and_down", "rotation": 90}
+      }
+    }
+  ]
+}
