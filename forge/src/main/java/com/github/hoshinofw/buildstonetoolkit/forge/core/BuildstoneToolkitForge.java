@@ -1,7 +1,7 @@
 package com.github.hoshinofw.buildstonetoolkit.forge.core;
 
-import com.github.hoshinofw.buildstonetoolkit.core.BuildstoneToolkit;
-import com.github.hoshinofw.buildstonetoolkit.core.BuildstoneToolkitClient;
+import com.github.hoshinofw.buildstonetoolkit.foundation.common.core.BuildstoneToolkit;
+import com.github.hoshinofw.buildstonetoolkit.foundation.common.core.BuildstoneToolkitClient;
 import com.github.hoshinofw.buildstonetoolkit.forge.registries.BuildstoneForgeClientEvents;
 import dev.architectury.platform.forge.EventBuses;
 import net.minecraftforge.eventbus.api.IEventBus;

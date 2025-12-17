@@ -1,7 +1,7 @@
 package com.github.hoshinofw.buildstonetoolkit.fabric.core;
 
-import com.github.hoshinofw.buildstonetoolkit.core.BuildstoneToolkit;
-import com.github.hoshinofw.buildstonetoolkit.core.BuildstoneToolkitClient;
+import com.github.hoshinofw.buildstonetoolkit.foundation.common.core.BuildstoneToolkit;
+import com.github.hoshinofw.buildstonetoolkit.foundation.common.core.BuildstoneToolkitClient;
 import com.github.hoshinofw.buildstonetoolkit.fabric.registries.BuildstoneFabricClientParticles;
 import net.fabricmc.api.ClientModInitializer;
 

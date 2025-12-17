@@ -1,16 +1,19 @@
 {
   "required": true,
-  "package": "com.github.hoshinofw.buildstonetoolkit.mixin",
+  "package": "com.github.hoshinofw.buildstonetoolkit.foundation.mixin",
   "compatibilityLevel": "JAVA_17",
   "minVersion": "0.8",
   "mixins": [
-    "AllayMixin",
-    "BlockEntityAccessor",
-    "GoAndGiveItemsToTargetMixin",
-    "PistonBaseBlockMixin",
-    "PistonMovingBlockEntityMixin",
-    "PistonStructureResolverMixin",
-    "PlayerMixin"
+    "PlayerMixin",
+    "allay.AllayMixin",
+    "allay.GoAndGiveItemsToTargetMixin",
+    "pistonproxy.BlockEntityAccessor",
+    "pistonproxy.PistonBaseBlockMixin",
+    "pistonproxy.PistonMovingBlockEntityMixin",
+    "pistonproxy.PistonStructureResolverMixin",
+    "redstoneproxy.LevelMixin",
+    "redstoneproxy.ServerLevelMixin",
+    "redstoneproxy.SignalGetterMixin"
   ],
   "injectors": {
     "defaultRequire": 1
