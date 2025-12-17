@@ -1,7 +1,7 @@
 package com.hoshin.buildstonetoolkit.fabric.registries;
 
 import com.github.hoshinofw.buildstonetoolkit.foundation.client.Sprites;
-import com.github.hoshinofw.buildstonetoolkit.content.common.particles.TargetBlockParticle.BlockParticle;
+import com.github.hoshinofw.buildstonetoolkit.foundation.common.particles.StaticCubeParticle.CubeParticle;
 import com.github.hoshinofw.buildstonetoolkit.foundation.common.registries.BuildstoneParticles;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
@@ -16,7 +16,7 @@ public class BuildstoneFabricClientParticles {
         registry.register(BuildstoneParticles.BLOCK.get(),
                 spriteSet -> {
                     Sprites.BLOCK_PARTICLE_SPRITES = spriteSet;
-                    return new BlockParticle.Provider(spriteSet);
+                    return new CubeParticle.Provider(spriteSet);
                 });
     }
 

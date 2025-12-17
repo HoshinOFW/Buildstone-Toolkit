@@ -1,27 +1,32 @@
 package com.github.hoshinofw.buildstonetoolkit.content.common.blocks;
 
-import com.github.hoshinofw.buildstonetoolkit.foundation.common.blocks.IdProxyBlock;
 import com.github.hoshinofw.buildstonetoolkit.content.common.blocks.entity.RedstoneProxyBlockEntity;
-import com.github.hoshinofw.buildstonetoolkit.foundation.common.core.BuildstoneToolkit;
-import com.github.hoshinofw.buildstonetoolkit.foundation.common.registries.BuildstoneBlockEntities;
-import com.github.hoshinofw.buildstonetoolkit.foundation.util.Util;
+import com.github.hoshinofw.buildstonetoolkit.foundation.common.blocks.UpdateListenerProxyBlock;
+import com.github.hoshinofw.buildstonetoolkit.foundation.common.blocks.entity.UpdateListenerProxyBlockEntity;
+import com.github.hoshinofw.buildstonetoolkit.foundation.common.registries.BuildstoneBlocks;
+import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.core.BlockPos;
-import net.minecraft.core.Direction;
+import net.minecraft.network.chat.Component;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.IntegerProperty;
-import net.minecraft.world.level.redstone.NeighborUpdater;
 import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 
-import java.util.*;
+import java.util.List;
 
-public class RedstoneProxyBlock extends IdProxyBlock<RedstoneProxyBlockEntity> {
+public class RedstoneProxyBlock extends UpdateListenerProxyBlock {
 
     private static final IntegerProperty REDSTONE_LEVEL = IntegerProperty.create("power_level", 0, 15);
+
+    public static RedstoneProxyBlock getBlock() {
+        return BuildstoneBlocks.REDSTONE_PROXY.get();
+    }
 
     public RedstoneProxyBlock(Properties properties) {
         super(properties);
@@ -29,14 +34,13 @@ public class RedstoneProxyBlock extends IdProxyBlock<RedstoneProxyBlockEntity> {
                 .setValue(REDSTONE_LEVEL, 0));
     }
 
-    @Nullable
-    public RedstoneProxyBlockEntity getBlockEntity(Level level, BlockPos proxyPos) {
-        return getBlockEntity(level, proxyPos, RedstoneProxyBlockEntity.class);
-    }
-
     @Override
-    public boolean isPowered(BlockState state) {
-        return state.getValue(REDSTONE_LEVEL) != 0;
+    public void appendHoverText(ItemStack itemStack, Item.TooltipContext tooltipContext, List<Component> list, TooltipFlag tooltipFlag) {
+        if (Screen.hasShiftDown()) {
+            list.add(Component.translatable("tooltip.buildstonetoolkit.redstone_proxy.details"));
+        } else {
+            list.add(Component.translatable("tooltip.buildstonetoolkit.hold_shift"));
+        }
     }
 
     public static int getSignal(BlockState state) {
@@ -67,60 +71,16 @@ public class RedstoneProxyBlock extends IdProxyBlock<RedstoneProxyBlockEntity> {
         BlockPos targetPos = getLinkedAbsPos(level, proxyPos);
         BlockState targetState = level.getBlockState(targetPos);
         Block targetBlock = targetState.getBlock();
-        //BuildstoneToolkit.LOGGER.info("targetPos: {} targetState: {} targetBlock: {}", targetPos, targetState, targetState.getBlock());
+        //BuildstoneToolkit.LOGGER.info("RedstoneProxyBlock#neighborChanged called, targetPos: {} targetState: {} targetBlock: {}", targetPos, targetState, targetState.getBlock());
+        if (targetPos.asLong() == proxyPos.asLong()) return;
         level.neighborChanged(targetState, targetPos, targetBlock, proxyPos, false);
         level.updateNeighborsAt(targetPos, targetBlock);
     }
 
-    public void targetUpdated(RedstoneProxyBlockEntity be) {
-        if (be.getLevel() != null) {
-            be.getLevel().updateNeighborsAt(be.getBlockPos(), this);
-        }
-    }
-
     @Override
-    public @Nullable BlockPos getLinkedAbsPos(@NotNull Level level, BlockPos pos) {
-        Optional<RedstoneProxyBlockEntity> optionalBe = level.getBlockEntity(pos, BuildstoneBlockEntities.REDSTONE_PROXY.get());
-        if (optionalBe.isPresent()) {
-            RedstoneProxyBlockEntity be = optionalBe.get();
-            return be.getLinkedAbsPos();
-        }
-        return null;
-    }
-
-    @Override
-    public @Nullable BlockPos getLinkedRelPos(@NotNull Level level, BlockPos pos) {
-        Optional<RedstoneProxyBlockEntity> optionalBe = level.getBlockEntity(pos, BuildstoneBlockEntities.REDSTONE_PROXY.get());
-        if (optionalBe.isPresent()) {
-            RedstoneProxyBlockEntity be = optionalBe.get();
-            return be.getLinkedRelPos();
-        }
-        return null;
-    }
-
-    @Override
-    public Util.FailableResult<BlockPos> parsePos(@NotNull Level level, BlockPos proxyPos, BlockPos inputPos) {
-        return new Util.FailableResult<>(inputPos, true);
-    }
-
-    @Override
-    public boolean setLinkedRelPos(@NotNull Level level, BlockPos pos, BlockPos newRelativeTargetPos) {
-        RedstoneProxyBlockEntity be = getBlockEntity(level, pos);
-        if (be != null) {
-            be.setLinkedRelPos(newRelativeTargetPos);
-            return true;
-        }
-        return false;
-    }
-
-    @Override
-    public boolean setLinkedAbsPos(Level level, BlockPos pos, BlockPos newTargetPos) {
-        RedstoneProxyBlockEntity be = getBlockEntity(level, pos);
-        if (be != null) {
-            be.setLinkedAbsPos(newTargetPos);
-            return true;
-        }
-        return false;
+    public void targetUpdated(UpdateListenerProxyBlockEntity be, @NotNull Level level) {
+        //BuildstoneToolkit.LOGGER.info("RedstoneProxyBlock#targetUpdated called");
+        level.updateNeighborsAt(be.getBlockPos(), this);
     }
 
     @Override
@@ -131,6 +91,7 @@ public class RedstoneProxyBlock extends IdProxyBlock<RedstoneProxyBlockEntity> {
     @Override
     protected int getAnalogOutputSignal(BlockState blockState, Level level, BlockPos blockPos) {
         BlockPos targetPos = this.getLinkedAbsPos(level, blockPos);
+        if (targetPos.asLong() == blockPos.asLong()) return 0;
         BlockState targetState = level.getBlockState(targetPos);
         if (targetState.hasAnalogOutputSignal()) {
             return targetState.getAnalogOutputSignal(level, targetPos);

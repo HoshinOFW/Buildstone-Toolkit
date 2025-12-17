@@ -3,8 +3,8 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/common/BuildstoneToolkit.buildstonetoolkit.common.iml" filepath="$PROJECT_DIR$/.idea/modules/common/BuildstoneToolkit.buildstonetoolkit.common.iml" />
-      <module fileurl="file://$PROJECT_DIR$/.idea/modules/common/BuildstoneToolkit.buildstonetoolkit.common.main~1.iml" filepath="$PROJECT_DIR$/.idea/modules/common/BuildstoneToolkit.buildstonetoolkit.common.main~1.iml" />
-      <module fileurl="file://$PROJECT_DIR$/.idea/modules/common/BuildstoneToolkit.buildstonetoolkit.common.test~1.iml" filepath="$PROJECT_DIR$/.idea/modules/common/BuildstoneToolkit.buildstonetoolkit.common.test~1.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/common/BuildstoneToolkit.buildstonetoolkit.common.main.iml" filepath="$PROJECT_DIR$/.idea/modules/common/BuildstoneToolkit.buildstonetoolkit.common.main.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/common/BuildstoneToolkit.buildstonetoolkit.common.test.iml" filepath="$PROJECT_DIR$/.idea/modules/common/BuildstoneToolkit.buildstonetoolkit.common.test.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/neoforge/buildstonetoolkit.neoforge.main.iml" filepath="$PROJECT_DIR$/.idea/modules/neoforge/buildstonetoolkit.neoforge.main.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/neoforge/buildstonetoolkit.neoforge.test.iml" filepath="$PROJECT_DIR$/.idea/modules/neoforge/buildstonetoolkit.neoforge.test.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/fabric/fabric.buildstonetoolkit.fabric.main.iml" filepath="$PROJECT_DIR$/.idea/modules/fabric/fabric.buildstonetoolkit.fabric.main.iml" />

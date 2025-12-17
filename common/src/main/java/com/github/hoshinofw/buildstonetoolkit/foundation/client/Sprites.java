@@ -4,6 +4,5 @@ import net.minecraft.client.particle.SpriteSet;
 
 public class Sprites {
 
-
     public static SpriteSet BLOCK_PARTICLE_SPRITES;
 }

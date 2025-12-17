@@ -2,9 +2,11 @@ package com.github.hoshinofw.buildstonetoolkit.foundation.util.registries;
 
 import com.github.hoshinofw.buildstonetoolkit.foundation.common.blocks.entity.IdProxyBlockEntity;
 import com.github.hoshinofw.buildstonetoolkit.foundation.util.Util;
-import it.unimi.dsi.fastutil.longs.*;
+import it.unimi.dsi.fastutil.longs.Long2LongOpenHashMap;
+import it.unimi.dsi.fastutil.longs.Long2ObjectOpenHashMap;
+import it.unimi.dsi.fastutil.longs.LongOpenHashSet;
+import it.unimi.dsi.fastutil.longs.LongSet;
 import net.minecraft.core.BlockPos;
-import org.jetbrains.annotations.Nullable;
 
 import java.util.Collection;
 import java.util.HashSet;
@@ -13,21 +15,28 @@ import java.util.Set;
 /**
  Registry object to aid in efficient global proxy lookups
  */
-public class ProxyRegistry<T extends IdProxyBlockEntity<T>> {
-    private final Class<T> expectedClass;
+public class ProxyRegistry<T extends IdProxyBlockEntity<?>> {
+    private final Class<T> proxyBlockEntityClass;
 
-    private final Long2LongOpenHashMap IdToPosMap = new Long2LongOpenHashMap();
-    private final Long2ObjectOpenHashMap<LongSet> PosToIdMap = new Long2ObjectOpenHashMap<>();
+    private final Long2ObjectOpenHashMap<LongOpenHashSet> PosToIdMap;
+    private final Long2LongOpenHashMap IdToPosMap;
 
     private final IdRegistry<IdProxyBlockEntity<?>> idRegistry;
 
-    public ProxyRegistry(IdRegistry<IdProxyBlockEntity<?>> idRegistry, Class<T> expectedClass) {
+    public ProxyRegistry(IdRegistry<IdProxyBlockEntity<?>> idRegistry, Class<T> proxyBlockEntityClass) {
+        PosToIdMap = new Long2ObjectOpenHashMap<>();
+        IdToPosMap = new Long2LongOpenHashMap();
         this.idRegistry = idRegistry;
-        this.expectedClass = expectedClass;
+        this.proxyBlockEntityClass = proxyBlockEntityClass;
+    }
+
+    public void clear() {
+        this.PosToIdMap.clear();
+        this.idRegistry.clear();
     }
 
     public int size() {
-        return IdToPosMap.size();
+        return idRegistry.getAllEntries(proxyBlockEntityClass).size();
     }
 
     public Collection<IdProxyBlockEntity<?>> getAllProxies() {
@@ -42,14 +51,19 @@ public class ProxyRegistry<T extends IdProxyBlockEntity<T>> {
         return PosToIdMap.keySet();
     }
 
-    public void addLink(long id, long pos) {
-        PosToIdMap.computeIfAbsent(pos, (k) -> LongOpenHashSet.of(id));
-        IdToPosMap.putIfAbsent(id, pos);
+    private void addLink(long id, long pos) {
+        if (id < 0) {
+            throw new IndexOutOfBoundsException("Cannot add a link with id < 0");
+        }
+        IdToPosMap.put(id, pos);
+        LongOpenHashSet set = PosToIdMap.computeIfAbsent(pos, (k) -> new LongOpenHashSet());
+        set.add(id);
     }
 
-    public void removeLink(long id, long pos) {
-        IdToPosMap.remove(id);
+    private void removeLink(long id, long pos) {
+
         if (PosToIdMap.containsKey(pos)) {
+            IdToPosMap.remove(id);
             Set<Long> set = PosToIdMap.get(pos);
             set.remove(id);
             if (set.isEmpty()) {
@@ -58,20 +72,33 @@ public class ProxyRegistry<T extends IdProxyBlockEntity<T>> {
         }
     }
 
-    public void addLink(T proxy, BlockPos pos) {
+    private void addLink(T proxy, BlockPos pos) {
         addLink(proxy.getId(), pos.asLong());
     }
 
-    public void addLink(T proxy, long pos) {
+    private void addLink(T proxy, long pos) {
         addLink(proxy.getId(), pos);
     }
 
-    public void removeLink(T proxy, BlockPos pos) {
+    private void removeLink(T proxy, BlockPos pos) {
         removeLink(proxy.getId(), pos.asLong());
     }
 
-    public void removeLink(T proxy, long pos) {
+    private void removeLink(T proxy, long pos) {
         removeLink(proxy.getId(), pos);
+    }
+
+    /**
+     * This is a dangerous method. Make absolute sure that the proxy is still targeting the old position
+     */
+    public void replaceLink(T proxy, BlockPos newPos) {
+        removeProxy(proxy);
+        addLink(proxy, newPos);
+    }
+
+    public void replaceLink(T proxy, long newPos) {
+        removeProxy(proxy);
+        addLink(proxy, newPos);
     }
 
     public void replaceLink(T proxy, BlockPos oldPos, BlockPos newPos) {
@@ -79,24 +106,19 @@ public class ProxyRegistry<T extends IdProxyBlockEntity<T>> {
         addLink(proxy, newPos);
     }
 
-    public void replaceLink(T proxy, BlockPos newPos) {
-        Long oldPos = getLongTargetOf(proxy);
-        if (oldPos != null) {
-            removeLink(proxy, oldPos);
-            addLink(proxy, newPos);
-        } else {
-            addLink(proxy, newPos);
-        }
+    public void replaceLink(T proxy, BlockPos oldPos, long newPos) {
+        removeLink(proxy, oldPos);
+        addLink(proxy, newPos);
     }
 
-    public void replaceLink(T proxy, long newPos) {
-        Long oldPos = getLongTargetOf(proxy);
-        if (oldPos != null) {
-            removeLink(proxy, oldPos);
-            addLink(proxy, newPos);
-        } else {
-            addLink(proxy, newPos);
-        }
+    public void replaceLink(T proxy, long oldPos, BlockPos newPos) {
+        removeLink(proxy, oldPos);
+        addLink(proxy, newPos);
+    }
+
+    public void replaceLink(T proxy, long oldPos, long newPos) {
+        removeLink(proxy, oldPos);
+        addLink(proxy, newPos);
     }
 
     public boolean isTargeted(BlockPos pos) {
@@ -104,47 +126,35 @@ public class ProxyRegistry<T extends IdProxyBlockEntity<T>> {
     }
 
     public boolean isTargeted(long pos) {
+        //BuildstoneToolkit.LOGGER.info("Targeted by proxy!");
         return PosToIdMap.containsKey(pos);
     }
 
+    public boolean isTargeting(T proxy) {
+        return IdToPosMap.containsKey(proxy.getId());
+    }
+
     public LongSet getIdOfProxiesTargeting(BlockPos pos) {
-        LongSet proxySet = PosToIdMap.get(pos.asLong());
-        if (proxySet == null) {return LongSet.of();}
-        return proxySet;
+        return new LongOpenHashSet(PosToIdMap.get(pos.asLong()));
     }
 
     public Collection<T> getProxiesTargeting(BlockPos pos) {
-        Collection<T> collection = idRegistry.getEntries(getIdOfProxiesTargeting(pos), expectedClass);
-        Set<T> set = new HashSet<>();
-
-        for (T entry : collection) {
-            if (expectedClass.isInstance(entry)) {
-                set.add(entry);
-            }
-        }
-
-        return set;
+        return idRegistry.getEntries(getIdOfProxiesTargeting(pos), proxyBlockEntityClass);
     }
 
-    @Nullable
-    public BlockPos getBlockPosTargetOf(T proxy) {
-        Long i = getLongTargetOf(proxy);
-        if (i == null) {return null;}
-        return BlockPos.of(i);
-    }
-
-    @Nullable
-    public Long getLongTargetOf(T proxy) {
-        return IdToPosMap.get(proxy.getId());
+    public <V> Collection<V> getProxiesTargeting(BlockPos pos, Class<V> expectedClass) {
+        return idRegistry.getEntries(getIdOfProxiesTargeting(pos), expectedClass);
     }
 
     public void removeProxy(T proxy) {
-        long pos = IdToPosMap.remove(proxy.getId());
-        LongSet ids = PosToIdMap.get(pos);
-        if (ids != null) {
-            ids.remove(proxy.getId());
-            if (ids.isEmpty()) {
-                PosToIdMap.remove(pos);
+        if (IdToPosMap.containsKey(proxy.getId())) {
+            long pos = IdToPosMap.get(proxy.getId());
+            LongSet ids = PosToIdMap.get(pos);
+            if (ids != null) {
+                ids.remove(proxy.getId());
+                if (ids.isEmpty()) {
+                    PosToIdMap.remove(pos);
+                }
             }
         }
     }

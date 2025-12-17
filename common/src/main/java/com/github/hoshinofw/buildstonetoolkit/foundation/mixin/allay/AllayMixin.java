@@ -1,7 +1,9 @@
 package com.github.hoshinofw.buildstonetoolkit.foundation.mixin.allay;
 
 import com.github.hoshinofw.buildstonetoolkit.content.common.items.ModWand;
+import com.github.hoshinofw.buildstonetoolkit.foundation.util.NBTUtil;
 import com.github.hoshinofw.buildstonetoolkit.foundation.util.ParticleUtil;
+import com.github.hoshinofw.buildstonetoolkit.foundation.util.PlayerUtil;
 import com.github.hoshinofw.buildstonetoolkit.foundation.util.Util;
 import com.github.hoshinofw.buildstonetoolkit.foundation.util.mixin.AllayMixinInterface;
 import net.minecraft.core.BlockPos;
@@ -82,7 +84,7 @@ public class AllayMixin extends PathfinderMob implements AllayMixinInterface {
     protected void mobInteract(Player player, InteractionHand interactionHand, CallbackInfoReturnable<InteractionResult> cir) {
         ItemStack playerIS = player.getItemInHand(interactionHand);
         if (playerIS.getItem() instanceof ModWand) {
-            BlockPos selectedPos = Util.getSelectedPos(player);
+            BlockPos selectedPos = PlayerUtil.getSelectedPos(player);
             BlockPos storedAllaySearchPos = buildstonetoolkit$getSearchOriginAsPos();
             if (!player.isShiftKeyDown()) {
                 buildstonetoolkit$setAllaySearchOrigin(player, selectedPos);
@@ -96,7 +98,7 @@ public class AllayMixin extends PathfinderMob implements AllayMixinInterface {
                         playAllayConfirmationSound(player);
                     }
                 } else {
-                    Util.setSelectedPos(player, storedAllaySearchPos);
+                    PlayerUtil.setSelectedPos(player, storedAllaySearchPos);
                     if (!player.level().isClientSide()) {
                         player.displayClientMessage(Component.translatable("message.buildstonetoolkit.allay_tracking"), true);
                     } else {
@@ -144,7 +146,7 @@ public class AllayMixin extends PathfinderMob implements AllayMixinInterface {
 
     @Inject(method = "readAdditionalSaveData", at = @At("TAIL"))
     public void readAdditionalSaveData(CompoundTag compoundTag, CallbackInfo ci) {
-        this.buildstonetoolkit$setSearchOrigin(Util.getSearchOriginFromNBT(compoundTag));
+        this.buildstonetoolkit$setSearchOrigin(NBTUtil.getSearchOriginFromNBT(compoundTag));
         this.buildstonetoolkit$setMaxDistanceToOrigin(compoundTag.getFloat("maxSearchDistance"));
     }
 }

@@ -40,7 +40,6 @@ dependencies {
 
     modImplementation("mezz.jei:jei-$minecraft_version-neoforge:$jei_version")
 
-
     common(project(path: ':common', configuration: 'namedElements')) { transitive = false }
     shadowBundle project(path: ':common', configuration: 'transformProductionNeoForge')
 }

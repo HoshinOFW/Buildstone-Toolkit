@@ -1,8 +1,8 @@
 package com.github.hoshinofw.buildstonetoolkit.foundation.common.registries;
 
-import com.github.hoshinofw.buildstonetoolkit.content.common.particles.TargetBlockParticle.BlockParticleOptions;
-import com.github.hoshinofw.buildstonetoolkit.content.common.particles.TargetBlockParticle.BlockParticleType;
 import com.github.hoshinofw.buildstonetoolkit.foundation.common.core.BuildstoneToolkit;
+import com.github.hoshinofw.buildstonetoolkit.foundation.common.particles.StaticCubeParticle.CubeParticleOptions;
+import com.github.hoshinofw.buildstonetoolkit.foundation.common.particles.StaticCubeParticle.CubeParticleType;
 import dev.architectury.registry.registries.DeferredRegister;
 import net.minecraft.core.particles.ParticleType;
 import net.minecraft.core.registries.Registries;
@@ -13,8 +13,8 @@ public class BuildstoneParticles {
 
     public static final DeferredRegister<ParticleType<?>> PARTICLE_TYPES = DeferredRegister.create(BuildstoneToolkit.MOD_ID, Registries.PARTICLE_TYPE);
 
-    public static final Supplier<BlockParticleType<BlockParticleOptions>> BLOCK = PARTICLE_TYPES.register("block",
-            () -> new BlockParticleType<>(false));
+    public static final Supplier<CubeParticleType<CubeParticleOptions>> BLOCK = PARTICLE_TYPES.register("block",
+            () -> new CubeParticleType<>(false));
 
     public static void register() {
         PARTICLE_TYPES.register();

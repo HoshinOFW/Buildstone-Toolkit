@@ -12,13 +12,9 @@
   - Possibly 2 methods: getter and a setter that both sets the necessary fields and spawn particles. 
 - Test everything in multiplayer
 - Switch FailableResult in parsePos and setLinkedRelPos to normal exception handling.
-- Transfer the POWER_LEVEL blockstate property to each inheriting class.
-
 
 # TODO FOR NEXT RELEASE:
-    Write the relevant mixin for RedstoneProxy functionality.
     Test multiplayer proly
-
 
     Create Compat for cooler and more expressive tooltips. Maybe even implement them in the base mod.
   

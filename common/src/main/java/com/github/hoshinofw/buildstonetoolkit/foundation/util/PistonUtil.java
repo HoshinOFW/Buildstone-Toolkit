@@ -1,7 +1,6 @@
 package com.github.hoshinofw.buildstonetoolkit.foundation.util;
 
 import com.github.hoshinofw.buildstonetoolkit.content.common.blocks.PistonProxyBlock;
-import com.github.hoshinofw.buildstonetoolkit.foundation.util.mixin.PistonMovingBlockEntityMixinInterface;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;

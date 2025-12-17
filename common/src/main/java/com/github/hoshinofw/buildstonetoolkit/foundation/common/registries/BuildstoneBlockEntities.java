@@ -1,5 +1,6 @@
 package com.github.hoshinofw.buildstonetoolkit.foundation.common.registries;
 
+import com.github.hoshinofw.buildstonetoolkit.content.common.blocks.entity.ObserverProxyBlockEntity;
 import com.github.hoshinofw.buildstonetoolkit.content.common.blocks.entity.PistonProxyBlockEntity;
 import com.github.hoshinofw.buildstonetoolkit.content.common.blocks.entity.RedstoneProxyBlockEntity;
 import com.github.hoshinofw.buildstonetoolkit.foundation.common.blocks.entity.DummyBE;
@@ -16,17 +17,19 @@ public class BuildstoneBlockEntities {
 
     public static final RegistrySupplier<BlockEntityType<PistonProxyBlockEntity>> PISTON_PROXY =
             BLOCK_ENTITIES.register("piston_proxy", () ->
-                BlockEntityType.Builder.of(PistonProxyBlockEntity::new, BuildstoneBlocks.PISTON_PROXY.get()).build(null)
-            );
+                    BlockEntityType.Builder.of(PistonProxyBlockEntity::new, BuildstoneBlocks.PISTON_PROXY.get()).build(null));
 
     public static final RegistrySupplier<BlockEntityType<?>> GUIDED_PROXY =
             BLOCK_ENTITIES.register("directional_proxy", () ->
-                    BlockEntityType.Builder.of(DummyBE::new, BuildstoneBlocks.GUIDED_PROXY.get()).build(null)
-            );
+                    BlockEntityType.Builder.of(DummyBE::new, BuildstoneBlocks.GUIDED_PROXY.get()).build(null));
 
     public static final RegistrySupplier<BlockEntityType<RedstoneProxyBlockEntity>> REDSTONE_PROXY =
             BLOCK_ENTITIES.register("redstone_proxy", () ->
                     BlockEntityType.Builder.of(RedstoneProxyBlockEntity::new, BuildstoneBlocks.REDSTONE_PROXY.get()).build(null));
+
+    public static final RegistrySupplier<BlockEntityType<ObserverProxyBlockEntity>> OBSERVER_PROXY =
+            BLOCK_ENTITIES.register("observer_proxy", () ->
+                    BlockEntityType.Builder.of(ObserverProxyBlockEntity::new, BuildstoneBlocks.OBSERVER_PROXY.get()).build(null));
 
     public static void register() {
         BLOCK_ENTITIES.register();

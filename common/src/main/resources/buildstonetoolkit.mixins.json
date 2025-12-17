@@ -11,9 +11,8 @@
     "pistonproxy.PistonBaseBlockMixin",
     "pistonproxy.PistonMovingBlockEntityMixin",
     "pistonproxy.PistonStructureResolverMixin",
-    "redstoneproxy.CollectingNeighborUpdaterMixin",
-    "redstoneproxy.InstantNeighborUpdaterMixin",
     "redstoneproxy.LevelMixin",
+    "redstoneproxy.ServerLevelMixin",
     "redstoneproxy.SignalGetterMixin"
   ],
   "injectors": {

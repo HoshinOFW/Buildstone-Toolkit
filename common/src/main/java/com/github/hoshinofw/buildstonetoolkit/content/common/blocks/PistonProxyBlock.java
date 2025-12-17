@@ -1,10 +1,9 @@
 package com.github.hoshinofw.buildstonetoolkit.content.common.blocks;
 
-import com.github.hoshinofw.buildstonetoolkit.foundation.common.blocks.ProxyEntityBlock;
 import com.github.hoshinofw.buildstonetoolkit.content.common.blocks.entity.PistonProxyBlockEntity;
-import com.github.hoshinofw.buildstonetoolkit.foundation.common.core.BuildstoneToolkit;
-import com.github.hoshinofw.buildstonetoolkit.foundation.common.registries.BuildstoneBlockEntities;
-import com.github.hoshinofw.buildstonetoolkit.foundation.util.Util;
+import com.github.hoshinofw.buildstonetoolkit.foundation.common.blocks.IdProxyBlock;
+import com.github.hoshinofw.buildstonetoolkit.foundation.common.registries.BuildstoneBlocks;
+import com.github.hoshinofw.buildstonetoolkit.foundation.util.NBTUtil;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -24,21 +23,29 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
-import java.util.Optional;
+import java.util.Objects;
 
-public class PistonProxyBlock extends ProxyEntityBlock<PistonProxyBlockEntity> {
+public class PistonProxyBlock extends IdProxyBlock<PistonProxyBlockEntity> {
 
     public static final IntegerProperty POWER_LEVEL = IntegerProperty.create("power_level", 0, 2);
 
     public PistonProxyBlock(Properties properties) {
-        super(properties);
+        super(properties, PistonProxyBlockEntity.class);
         this.registerDefaultState(this.defaultBlockState()
                 .setValue(POWER_LEVEL, 0));
     }
 
     @Override
-    public boolean isPowered(BlockState state) {
-        return state.getValue(POWER_LEVEL) != 0;
+    public long getId(@NotNull Level level, BlockPos proxyPos) {
+        return getBlockEntity(level, proxyPos).getId();
+    }
+
+    public static RedstoneProxyBlock getBlock() {
+        return BuildstoneBlocks.REDSTONE_PROXY.get();
+    }
+
+    public @NotNull PistonProxyBlockEntity getBlockEntity(Level level, BlockPos proxyPos) {
+        return Objects.requireNonNull(getBlockEntity(level, proxyPos, PistonProxyBlockEntity.class));
     }
 
     @Override
@@ -108,41 +115,15 @@ public class PistonProxyBlock extends ProxyEntityBlock<PistonProxyBlockEntity> {
     }
 
     @Override
-    @Nullable
-    public BlockPos getLinkedAbsPos(@NotNull Level level, BlockPos blockPos) {
-        Optional<PistonProxyBlockEntity> optionalBe = level.getBlockEntity(blockPos, BuildstoneBlockEntities.PISTON_PROXY.get());
-        if (optionalBe.isPresent()) {
-            PistonProxyBlockEntity be = optionalBe.get();
-            return be.getLinkedAbsPos();
-        }
-        return null;
+    public @NotNull BlockPos getLinkedAbsPos(@NotNull Level level, BlockPos blockPos) {
+        PistonProxyBlockEntity be =  getBlockEntity(level, blockPos);
+        return be.getLinkedAbsPos();
     }
 
     @Override
-    public @Nullable BlockPos getLinkedRelPos(@NotNull Level level, BlockPos pos) {
-        Optional<PistonProxyBlockEntity> optionalBe = level.getBlockEntity(pos, BuildstoneBlockEntities.PISTON_PROXY.get());
-        if (optionalBe.isPresent()) {
-            PistonProxyBlockEntity be = optionalBe.get();
-            return be.getLinkedRelPos();
-        }
-        return null;
-    }
-
-    @Override
-    public boolean setLinkedRelPos(@NotNull Level level, BlockPos pos, BlockPos newRelativeTargetPos) {
-        Optional<PistonProxyBlockEntity> optionalBe = level.getBlockEntity(pos, BuildstoneBlockEntities.PISTON_PROXY.get());
-        if (optionalBe.isPresent()) {
-            PistonProxyBlockEntity be = optionalBe.get();
-            be.setLinkedRelPos(newRelativeTargetPos);
-            return true;
-        }
-        return false;
-    }
-
-    @Override
-    public Util.FailableResult<BlockPos> parsePos(@NotNull Level level, BlockPos proxyPos, BlockPos inputPos) {
-        BlockPos outputPos = inputPos.subtract(proxyPos);
-        return new Util.FailableResult<>(outputPos, true);
+    public @NotNull BlockPos getLinkedRelPos(@NotNull Level level, BlockPos pos) {
+        PistonProxyBlockEntity be =  getBlockEntity(level, pos);
+        return be.getLinkedRelPos();
     }
 
     @Override
@@ -151,6 +132,6 @@ public class PistonProxyBlock extends ProxyEntityBlock<PistonProxyBlockEntity> {
     }
 
     public void saveShiftedTargetAbsPosToNBT(Level level, BlockPos pos, BlockState state, @NotNull CompoundTag nbt, Direction moveDirection) {
-        Util.savePosToNBT(nbt, BlockPos.of(Util.getTargetPosFromNBT(nbt)).relative(moveDirection));
+        NBTUtil.savePosToNBT(nbt, BlockPos.of(NBTUtil.getTargetPosFromNBT(nbt)).relative(moveDirection));
     }
 }

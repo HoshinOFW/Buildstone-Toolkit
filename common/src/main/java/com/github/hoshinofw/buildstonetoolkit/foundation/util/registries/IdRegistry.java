@@ -7,49 +7,35 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.Collection;
 @MethodsReturnNonnullByDefault
-public class IdRegistry<T extends IdObject> {
-    private long nextId = 0;
-    private final Long2ObjectOpenHashMap<T> map = new Long2ObjectOpenHashMap<>();
+public interface IdRegistry<T extends IdObject> {
 
-    private long allocateID() {
-        long output = nextId;
-        this.nextId++;
-        return output;
-    }
+    String getName();
+    Long2ObjectOpenHashMap<T> getMap();
 
-    public void addEntry(T entry) {
+    default void ensureEntry(T entry) {
         if (entry.getId() > -1) {
-            map.put(entry.getId(), entry);
+            getMap().put(entry.getId(), entry);
         }
     }
 
-    /**
-     * Returns id to be stored in entry and retrieved with the idObject#getId method.
-     */
-    public long register(T entry) {
-        long id = allocateID();
-        map.put(id, entry);
-        return id;
+    default int size() {
+        return getMap().size();
     }
 
-    public int size() {
-        return map.size();
+    default void remove(long id) {
+        getMap().remove(id);
     }
-
-    public void remove(long id) {
-        map.remove(id);
-    }
-    public void remove(T entry) {
-        map.remove(entry.getId(), entry);
+    default void remove(T entry) {
+        getMap().remove(entry.getId());
     }
 
     @Nullable
-    public T getEntry(long id) {
-        return map.get(id);
+    default T getEntry(long id) {
+        return getMap().get(id);
     }
 
     @SuppressWarnings("unchecked")
-    public <V> Collection<V> getEntries(Collection<Long> ids, Class<V> entryClass) {
+    default <V> Collection<V> getEntries(Collection<Long> ids, Class<V> entryClass) {
         ObjectOpenHashSet<V> set = new ObjectOpenHashSet<>();
         ids.forEach((id) -> {
             T entry = this.getEntry(id);
@@ -60,8 +46,23 @@ public class IdRegistry<T extends IdObject> {
         return set;
     }
 
-    public Collection<T> getAllEntries() {
-        return map.values();
+    @SuppressWarnings("unchecked")
+    default <V> Collection<V> getAllEntries(Class<V> entryClass) {
+        ObjectOpenHashSet<V> set = new ObjectOpenHashSet<>();
+        getMap().forEach(((id, entry) -> {
+            if (entryClass.isInstance(entry)) {
+                set.add((V)entry);
+            }
+        }));
+        return set;
+    }
+
+    default Collection<T> getAllEntries() {
+        return getMap().values();
+    }
+
+    default void clear() {
+        getMap().clear();
     }
 
 }

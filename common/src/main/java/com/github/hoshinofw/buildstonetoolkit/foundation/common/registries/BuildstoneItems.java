@@ -14,11 +14,9 @@ public class BuildstoneItems {
     public static final DeferredRegister<Item> ITEMS = DeferredRegister.create(BuildstoneToolkit.MOD_ID, Registries.ITEM);
 
     public static final DeferredSupplier<ModWand> MOD_WAND = ITEMS.register("proxy_tuner",
-            () -> {
-                return new ModWand(new Item.Properties()
-                        .arch$tab(CreativeModeTabs.REDSTONE_BLOCKS)
-                        .stacksTo(1));
-            });
+            () -> new ModWand(new Item.Properties()
+                    .arch$tab(CreativeModeTabs.REDSTONE_BLOCKS)
+                    .stacksTo(1)));
 
     public static final DeferredSupplier<Item> GUIDED_PROXY =
             ITEMS.register("guided_proxy", () -> new BlockItem(BuildstoneBlocks.GUIDED_PROXY.get(),
@@ -29,6 +27,10 @@ public class BuildstoneItems {
 
     public static final DeferredSupplier<Item> REDSTONE_PROXY =
             ITEMS.register("redstone_proxy", () -> new BlockItem(BuildstoneBlocks.REDSTONE_PROXY.get(),
+                    new Item.Properties().arch$tab(CreativeModeTabs.REDSTONE_BLOCKS)));
+
+    public static final DeferredSupplier<Item> OBSERVER_PROXY =
+            ITEMS.register("observer_proxy", () -> new BlockItem(BuildstoneBlocks.OBSERVER_PROXY.get(),
                     new Item.Properties().arch$tab(CreativeModeTabs.REDSTONE_BLOCKS)));
 
     public static void register() {

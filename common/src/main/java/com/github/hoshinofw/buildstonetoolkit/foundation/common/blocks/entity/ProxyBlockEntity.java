@@ -1,54 +1,63 @@
 package com.github.hoshinofw.buildstonetoolkit.foundation.common.blocks.entity;
 
-import com.github.hoshinofw.buildstonetoolkit.foundation.util.Util;
+import com.github.hoshinofw.buildstonetoolkit.foundation.util.NBTUtil;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
-import org.jetbrains.annotations.NotNull;
 
-public abstract class ProxyBlockEntity extends SyncedBlockEntity{
+public abstract class ProxyBlockEntity<T extends ProxyBlockEntity<T>> extends SyncedBlockEntity{
+
+    private final BlockPos.MutableBlockPos relativeTargetPos = BlockPos.ZERO.mutable();
+
     public ProxyBlockEntity(BlockEntityType<?> type, BlockPos pos, BlockState state) {
         super(type, pos, state);
     }
 
+    public abstract Class<T> selfClass();
+
     @Override
     protected void saveAdditional(CompoundTag nbt, HolderLookup.Provider registries) {
-        super.saveAdditional(nbt, registries);
-        Util.saveTargetNBTFromProxy(nbt, this);
+        NBTUtil.saveTargetNBTFromProxy(nbt, this);
     }
 
     @Override
     public void loadAdditional(CompoundTag nbt, HolderLookup.Provider registries) {
-        super.loadAdditional(nbt, registries);
-        this.setLinkedAbsPos(Util.getTargetPosFromNBT(nbt));
+        this.setLinkedAbsPos(NBTUtil.getTargetPosFromNBT(nbt));
     }
 
-    @Override
-    public @NotNull CompoundTag getUpdateTag(HolderLookup.@NotNull Provider provider) {
-        CompoundTag tag = super.getUpdateTag(provider);
-        this.saveAdditional(tag, provider);
-        return tag;
+    public BlockPos getLinkedAbsPos() {
+        return this.worldPosition.offset(this.relativeTargetPos);
+    }
+    public Long getLinkedAbsLongPos() {
+        return this.worldPosition.offset(this.relativeTargetPos).asLong();
     }
 
-    public abstract BlockPos getLinkedAbsPos();
-    public abstract Long getLinkedAbsLongPos();
-
-    public abstract BlockPos getLinkedRelPos();
-    public abstract Long getLinkedRelLongPos();
+    public BlockPos getLinkedRelPos() {
+        return this.relativeTargetPos;
+    }
+    public Long getLinkedRelLongPos() {
+        return this.relativeTargetPos.asLong();
+    }
 
     public void setLinkedAbsPos(BlockPos value) {
-        this.setChanged();
+        setLinkedRelPos(value.subtract(this.getBlockPos()));
     }
     public void setLinkedAbsPos(Long value){
-        this.setChanged();
+        setLinkedAbsPos(BlockPos.of(value));
     }
 
     public void setLinkedRelPos(BlockPos value){
-        this.setChanged();
+        if (value.asLong() != relativeTargetPos.asLong()) {
+            this.relativeTargetPos.set(value);
+            this.notifyUpdate();
+        }
     }
     public void setLinkedRelPos(Long value){
-        this.setChanged();
+        if (value != relativeTargetPos.asLong()) {
+            this.relativeTargetPos.set(value);
+            this.notifyUpdate();
+        }
     }
 }

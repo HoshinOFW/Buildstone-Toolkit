@@ -10,11 +10,11 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 @Mixin(Level.class)
-public class LevelMixin {
+public abstract class LevelMixin {
 
     @Inject(method = "updateNeighbourForOutputSignal", at = @At("HEAD"))
     public void beforeUpdateNeighbourForOutputSignal(BlockPos blockPos, Block block, CallbackInfo ci) {
-        UpdateUtil.doTargetUpdatedLogic(blockPos);
+        UpdateUtil.doInstantTargetUpdatedLogic(blockPos, (Level)(Object)this);
     }
 
 }

@@ -1,7 +1,8 @@
-package com.github.hoshinofw.buildstonetoolkit.content.common.particles.TargetBlockParticle;
+package com.github.hoshinofw.buildstonetoolkit.foundation.common.particles.StaticCubeParticle;
 
-import com.github.hoshinofw.buildstonetoolkit.foundation.client.Sprites;
 import com.github.hoshinofw.buildstonetoolkit.content.common.items.ModWand;
+import com.github.hoshinofw.buildstonetoolkit.foundation.client.Sprites;
+import com.github.hoshinofw.buildstonetoolkit.foundation.util.BlockPosSupplier;
 import com.github.hoshinofw.buildstonetoolkit.foundation.util.render.BlockParticleTexture;
 import com.mojang.blaze3d.platform.GlStateManager;
 import com.mojang.blaze3d.systems.RenderSystem;
@@ -24,7 +25,7 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.function.BooleanSupplier;
 
-public class BlockParticle extends TextureSheetParticle {
+public class CubeParticle extends TextureSheetParticle {
 
     private SpriteSet sprites;
     private static final BlockParticleRenderProvider renderer = (Platform.isFabric() ? new FabricRenderer() : new NFRenderer());
@@ -34,7 +35,7 @@ public class BlockParticle extends TextureSheetParticle {
     float minV;
     float maxV;
 
-    protected BlockParticle(ClientLevel clientLevel, BlockPos pos, SpriteSet spriteSet) {
+    protected CubeParticle(ClientLevel clientLevel, BlockPos pos, SpriteSet spriteSet) {
         super(clientLevel, pos.getX() + 0.5, pos.getY() + 0.5, pos.getZ() + 0.5);
         this.sprites = spriteSet;
         this.setTextureSprite(spriteSet);
@@ -46,6 +47,7 @@ public class BlockParticle extends TextureSheetParticle {
     private float size = 1;
 
     private BooleanSupplier shouldPersist = () -> false;
+    private BlockPosSupplier posSupplier = null;
 
     private boolean fading = false;
     private int fadeTicks = 0;
@@ -71,17 +73,17 @@ public class BlockParticle extends TextureSheetParticle {
             new Vec3(1, -1, 1), new Vec3(1, 1, 1), new Vec3(1, 1, -1), new Vec3(1, -1, -1)
     };
 
-    public static BlockParticle create(ClientLevel clientLevel, BlockPos pos, SpriteSet spriteSet) {
+    public static CubeParticle create(ClientLevel clientLevel, BlockPos pos, SpriteSet spriteSet) {
         ModWand.setClientMode(ModWand.Mode.ON);
-        return new BlockParticle(clientLevel, pos, spriteSet);
+        return new CubeParticle(clientLevel, pos, spriteSet);
     }
 
-    public static BlockParticle create(ClientLevel clientLevel, BlockPos pos) {
+    public static CubeParticle create(ClientLevel clientLevel, BlockPos pos) {
         ModWand.setClientMode(ModWand.Mode.ON);
-        return new BlockParticle(clientLevel, pos, Sprites.BLOCK_PARTICLE_SPRITES);
+        return new CubeParticle(clientLevel, pos, Sprites.BLOCK_PARTICLE_SPRITES);
     }
 
-    public BlockParticle setRGBATint(float r, float g, float b, float a) {
+    public CubeParticle setRGBATint(float r, float g, float b, float a) {
         this.r = r;
         this.g = g;
         this.b = b;
@@ -90,24 +92,29 @@ public class BlockParticle extends TextureSheetParticle {
         return this;
     }
 
-    public BlockParticle setSize(float size) {
+    public CubeParticle setSize(float size) {
         this.size = size;
         return this;
     }
 
-    public BlockParticle setPersistSupplier(BooleanSupplier supplier) {
+    public CubeParticle setPersistSupplier(BooleanSupplier supplier) {
         this.shouldPersist = supplier;
         return this;
     }
 
-    public BlockParticle setTextureSprite(SpriteSet spriteSet) {
+    public CubeParticle setPosSupplier(BlockPosSupplier supplier) {
+        this.posSupplier = supplier;
+        return this;
+    }
+
+    public CubeParticle setTextureSprite(SpriteSet spriteSet) {
         this.sprites = spriteSet;
         this.pickSprite(spriteSet);
         this.updateUVValues();
         return this;
     }
 
-    public BlockParticle setTextureIndex(BlockParticleTexture texture) {
+    public CubeParticle setTextureIndex(BlockParticleTexture texture) {
         this.setSprite(sprites.get(texture.index(), 2));
         this.updateUVValues();
         return this;
@@ -128,6 +135,16 @@ public class BlockParticle extends TextureSheetParticle {
 
     @Override
     public void tick() {
+        if (posSupplier != null) {
+            BlockPos pos = posSupplier.getAsBlockPos();
+            if (pos != null) {
+                Vec3 vector = pos.getCenter();
+                this.x = vector.x();
+                this.y = vector.y();
+                this.z = vector.z();
+            }
+        }
+
         if (!fading) {
             //Not good practice...
             ModWand.setClientMode(ModWand.Mode.ON);
@@ -184,7 +201,7 @@ public class BlockParticle extends TextureSheetParticle {
         return RENDER_TYPE;
     }
 
-    public static class Provider implements ParticleProvider<BlockParticleOptions> {
+    public static class Provider implements ParticleProvider<CubeParticleOptions> {
 
         private final SpriteSet sprite;
 
@@ -193,9 +210,9 @@ public class BlockParticle extends TextureSheetParticle {
         }
 
         @Override
-        public @Nullable Particle createParticle(BlockParticleOptions particleOptions, ClientLevel clientLevel, double x, double y, double z, double dx, double dy, double dz) {
+        public @Nullable Particle createParticle(CubeParticleOptions particleOptions, ClientLevel clientLevel, double x, double y, double z, double dx, double dy, double dz) {
 
-            return BlockParticle.create(clientLevel, new BlockPos((int)x, (int)y, (int)z), this.sprite)
+            return CubeParticle.create(clientLevel, new BlockPos((int)x, (int)y, (int)z), this.sprite)
                     .setRGBATint(1F, 1F, 1F, 0.8F)
                     .setSize(1F)
                     .setTextureSprite(this.sprite)
@@ -204,7 +221,7 @@ public class BlockParticle extends TextureSheetParticle {
     }
     @Environment(EnvType.CLIENT)
     public interface BlockParticleRenderProvider {
-        default void render(VertexConsumer consumer, @NotNull Camera camera, float partialTicks, BlockParticle particle) {
+        default void render(VertexConsumer consumer, @NotNull Camera camera, float partialTicks, CubeParticle particle) {
             Vec3 projectedView = camera.getPosition();
 
             float x = (float) (particle.x - projectedView.x());
@@ -237,7 +254,7 @@ public class BlockParticle extends TextureSheetParticle {
     @Environment(EnvType.CLIENT)
     public static class NFRenderer implements BlockParticleRenderProvider {
 
-        public void render(VertexConsumer consumer, @NotNull Camera camera, float partialTicks, BlockParticle particle) {
+        public void render(VertexConsumer consumer, @NotNull Camera camera, float partialTicks, CubeParticle particle) {
             BlockParticleRenderProvider.super.render(consumer, camera, partialTicks, particle);
         }
     }
@@ -245,7 +262,7 @@ public class BlockParticle extends TextureSheetParticle {
     @Environment(EnvType.CLIENT)
     public static class FabricRenderer implements BlockParticleRenderProvider {
 
-        public void render(VertexConsumer consumer, @NotNull Camera camera, float partialTicks, BlockParticle particle) {
+        public void render(VertexConsumer consumer, @NotNull Camera camera, float partialTicks, CubeParticle particle) {
             RenderSystem.disableDepthTest();
             RenderSystem.disableCull();
             RenderSystem.depthMask(false);

@@ -12,6 +12,9 @@ public class PlayerMixin implements PlayerMixinInterface {
     private BlockPos buildstonetoolkit$selectedBlockPos = null;
 
     @Unique
+    private long buildstonetoolkit$selectedProxyId = -1;
+
+    @Unique
     public BlockPos buildstonetoolkit$getSelectedBlockPos() {
         return this.buildstonetoolkit$selectedBlockPos;
     }
@@ -19,6 +22,16 @@ public class PlayerMixin implements PlayerMixinInterface {
     @Unique
     public void buildstonetoolkit$setSelectedBlockPos(BlockPos pos) {
         this.buildstonetoolkit$selectedBlockPos = pos;
+    }
+
+    @Override
+    public long buildstonetoolkit$getSelectedProxyId() {
+        return this.buildstonetoolkit$selectedProxyId;
+    }
+
+    @Override
+    public void buildstonetoolkit$setSelectedProxyId(long pos) {
+        this.buildstonetoolkit$selectedProxyId = pos;
     }
 
 }

@@ -1,7 +1,7 @@
 package com.github.hoshinofw.buildstonetoolkit.neoforge.registries;
 
 import com.github.hoshinofw.buildstonetoolkit.foundation.client.Sprites;
-import com.github.hoshinofw.buildstonetoolkit.content.common.particles.TargetBlockParticle.BlockParticle;
+import com.github.hoshinofw.buildstonetoolkit.foundation.common.particles.StaticCubeParticle.CubeParticle;
 import com.github.hoshinofw.buildstonetoolkit.foundation.common.core.BuildstoneToolkit;
 import com.github.hoshinofw.buildstonetoolkit.foundation.common.registries.BuildstoneParticles;
 import net.neoforged.api.distmarker.Dist;
@@ -18,7 +18,7 @@ public class BuildstoneNeoForgeClientEvents {
                 (spriteSet) -> {
                     Sprites.BLOCK_PARTICLE_SPRITES = spriteSet;
                     BuildstoneToolkit.LOGGER.info("Registering sprites: {}", spriteSet);
-                    return new BlockParticle.Provider(spriteSet);
+                    return new CubeParticle.Provider(spriteSet);
                 }
                 );
     }

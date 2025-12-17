@@ -1,8 +1,6 @@
 package com.github.hoshinofw.buildstonetoolkit.foundation.util.mixin;
 
-import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.world.level.Level;
 
 public interface PistonMovingBlockEntityMixinInterface {
     CompoundTag buildstonetoolkit$getProxyTag();
