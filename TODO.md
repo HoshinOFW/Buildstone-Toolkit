@@ -4,26 +4,19 @@
 - Allay configurable searchOrigin, maxDistance, and general player tracking
 
 ## BUGS:
-    For some reason the setTargetAbsPos doesn't work consistently on both forge and fabric.
-    Synchronization works like dogshit with weak powered.
     I discovered that the synchronization is fragile in more complex proxy applications. Tested the 3x3 door.
         The desync actually happens naturally even without manual setTargetAbsPos()
 ### Debt:
-- Create generalized methods for setting a selection that also spawns a particle if on the client 
-  - Possibly 2 methods: getter and a setter that both sets the necessary fields and spawn particles. 
 - Test everything in multiplayer
 - Switch FailableResult in parsePos and setLinkedRelPos to normal exception handling.
 - Transfer the POWER_LEVEL blockstate property to each inheriting class.
 
 
 # TODO FOR NEXT RELEASE:
-    Port to 1.20.1
+    
 
 # Planned features (Possibly made a different mod):
 ### Future plans for particles:
-    I want proxy particles to track their respective positions, but this requires rewriting a crap ton of the base mod code.
-    Main issue is that proxy must be a BlockEntity in order to update a tracker that can then be used by the particle to move.
-    However, all the logic is on the Block objects atm and moving it is nontrivial
 - Glasses that you can put on an allay. Bigger glasses = bigger radius. Essentially a fun way to set maxDistance.
 
 - Ponder optional dependency.
