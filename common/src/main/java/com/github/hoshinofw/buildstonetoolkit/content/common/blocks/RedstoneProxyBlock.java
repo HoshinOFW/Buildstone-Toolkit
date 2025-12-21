@@ -6,6 +6,7 @@ import com.github.hoshinofw.buildstonetoolkit.foundation.common.blocks.entity.Up
 import com.github.hoshinofw.buildstonetoolkit.foundation.common.registries.BuildstoneBlocks;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
@@ -50,7 +51,7 @@ public class RedstoneProxyBlock extends UpdateListenerProxyBlock {
     private void setSignal(Level level, BlockPos pos, int value) {
         BlockState state = level.getBlockState(pos);
         if (state.is(this)) {
-            level.setBlock(pos, state.setValue(REDSTONE_LEVEL, value), 3);
+            level.setBlock(pos, state.setValue(REDSTONE_LEVEL, value), Block.UPDATE_CLIENTS);
         }
     }
 
@@ -66,21 +67,27 @@ public class RedstoneProxyBlock extends UpdateListenerProxyBlock {
 
     @Override
     public void neighborChanged(BlockState state, Level level, BlockPos proxyPos, Block block, BlockPos pos2, boolean bl) {
-        super.neighborChanged(state, level, proxyPos, block, pos2, bl);
-        setSignal(level, proxyPos, level.getBestNeighborSignal(proxyPos));
+        if (!(block instanceof UpdateListenerProxyBlock)) setSignal(level, proxyPos, level.getBestNeighborSignal(proxyPos));
         BlockPos targetPos = getLinkedAbsPos(level, proxyPos);
         BlockState targetState = level.getBlockState(targetPos);
         Block targetBlock = targetState.getBlock();
         //BuildstoneToolkit.LOGGER.info("RedstoneProxyBlock#neighborChanged called, targetPos: {} targetState: {} targetBlock: {}", targetPos, targetState, targetState.getBlock());
         if (targetPos.asLong() == proxyPos.asLong()) return;
-        level.neighborChanged(targetState, targetPos, targetBlock, proxyPos, false);
+        level.neighborChanged(targetState, targetPos, targetBlock, targetPos, false);
         level.updateNeighborsAt(targetPos, targetBlock);
     }
 
     @Override
     public void targetUpdated(UpdateListenerProxyBlockEntity be, @NotNull Level level) {
         //BuildstoneToolkit.LOGGER.info("RedstoneProxyBlock#targetUpdated called");
-        level.updateNeighborsAt(be.getBlockPos(), this);
+        BlockPos proxyPos = be.getBlockPos();
+        for (Direction direction : Direction.values()) {
+            BlockPos neighborPos = proxyPos.relative(direction);
+            BlockState neighborState = level.getBlockState(neighborPos);
+            if (!(neighborState.getBlock() instanceof UpdateListenerProxyBlock)) {
+                level.neighborChanged(neighborPos, this, proxyPos);
+            }
+        }
     }
 
     @Override

@@ -8,6 +8,7 @@ import it.unimi.dsi.fastutil.longs.LongOpenHashSet;
 import it.unimi.dsi.fastutil.longs.LongSet;
 import net.minecraft.core.BlockPos;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
@@ -144,6 +145,12 @@ public class ProxyRegistry<T extends IdProxyBlockEntity<?>> {
 
     public <V> Collection<V> getProxiesTargeting(BlockPos pos, Class<V> expectedClass) {
         return idRegistry.getEntries(getIdOfProxiesTargeting(pos), expectedClass);
+    }
+
+    public Collection<BlockPos> getProxiesTargetingPos(BlockPos pos) {
+        ArrayList<BlockPos> array = new ArrayList<>();
+        getProxiesTargeting(pos).forEach((be) -> array.add(be.getBlockPos()));
+        return array;
     }
 
     public void removeProxy(T proxy) {

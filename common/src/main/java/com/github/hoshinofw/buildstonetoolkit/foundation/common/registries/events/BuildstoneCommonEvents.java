@@ -8,7 +8,9 @@ import com.github.hoshinofw.buildstonetoolkit.foundation.util.EventUtil;
 import com.github.hoshinofw.buildstonetoolkit.foundation.util.ParticleUtil;
 import com.github.hoshinofw.buildstonetoolkit.foundation.util.PlayerUtil;
 import dev.architectury.event.CompoundEventResult;
+import dev.architectury.event.events.client.ClientPlayerEvent;
 import dev.architectury.event.events.common.InteractionEvent;
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.InteractionHand;
@@ -27,6 +29,8 @@ public class BuildstoneCommonEvents {
     //TODO This method is a mess.........
     private static CompoundEventResult<ItemStack> onRightClickItem(Player player, InteractionHand hand) {
         if (player.level() instanceof ClientLevel clientLevel) {
+            Minecraft mc = Minecraft.getInstance();
+
             ItemStack itemStack = player.getItemInHand(hand);
             if (itemStack.is(BuildstoneItems.MOD_WAND.get())) {
                 HitResult hit =  player.pick(96, 0.0F, false);

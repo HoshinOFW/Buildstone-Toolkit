@@ -2,23 +2,99 @@ package com.github.hoshinofw.buildstonetoolkit.foundation.util;
 
 import com.github.hoshinofw.buildstonetoolkit.content.common.blocks.PistonProxyBlock;
 import com.github.hoshinofw.buildstonetoolkit.foundation.util.mixin.PistonMovingBlockEntityMixinInterface;
+import io.netty.buffer.ByteBuf;
 import net.minecraft.ChatFormatting;
+import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.network.chat.Component;
+import net.minecraft.network.codec.StreamCodec;
+import net.minecraft.world.level.ClipContext;
+import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.piston.PistonMovingBlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.phys.BlockHitResult;
+import net.minecraft.world.phys.Vec3;
+import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.Collection;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 import java.util.function.Consumer;
 import java.util.function.Supplier;
 
 public class Util {
+
+    public static StreamCodec<FriendlyByteBuf, Collection<BlockPos>> POSCOLLECTION_STREAM_CODEC = new StreamCodec<FriendlyByteBuf, Collection<BlockPos>>() {
+        @Override
+        public @NotNull Collection<BlockPos> decode(FriendlyByteBuf buf) {
+            ArrayList<BlockPos> array = new ArrayList<>();
+            for (long i : buf.readLongArray()) {
+                array.add(BlockPos.of(i));
+            }
+            return array;
+        }
+
+        @Override
+        public void encode(FriendlyByteBuf buf, Collection<BlockPos> collection) {
+            long[] array = new long[collection.size()];
+            int index = 0;
+            for (BlockPos pos : collection) {
+                array[index] = pos.asLong();
+                index++;
+            }
+            buf.writeLongArray(array);
+        }
+    };
+
+    public static StreamCodec<ByteBuf, Vec3> VEC3_STREAM_CODEC = new StreamCodec<ByteBuf, Vec3>() {
+        @Override
+        public Vec3 decode(ByteBuf buf) {
+            return new Vec3(buf.readDouble(), buf.readDouble(), buf.readDouble());
+        }
+
+        @Override
+        public void encode(ByteBuf buf, Vec3 vec3) {
+            buf.writeDouble(vec3.x);
+            buf.writeDouble(vec3.y);
+            buf.writeDouble(vec3.z);
+        }
+    };
+
+    public static BlockHitResult raycastBlockIgnoringReach(LocalPlayer player, Level level, double maxDistance) {
+        float partialTick = 1.0f;
+
+        Vec3 eye = player.getEyePosition(partialTick);
+        Vec3 look = player.getViewVector(partialTick);
+        Vec3 end = eye.add(look.scale(maxDistance));
+
+        ClipContext ctx = new ClipContext(
+                eye,
+                end,
+                ClipContext.Block.OUTLINE,
+                ClipContext.Fluid.NONE,
+                player
+        );
+
+        return level.clip(ctx);
+    }
+
+    public static int calculateSignal(double distance) {
+        if (distance <= 2.0) return 1;
+        if (distance >= 64.0) return 15;
+
+        double t = (distance - 2.0) / (64.0 - 2.0);
+
+        double value = 1.0 + 14.0 * (t * t);
+
+        int signal = (int) Math.round(value);
+
+        if (signal < 1) return 1;
+        if (signal > 15) return 15;
+        return signal;
+    }
+
     public static CompoundTag getProxyTag(PistonMovingBlockEntity mbe) {
         return ((PistonMovingBlockEntityMixinInterface) mbe).buildstonetoolkit$getProxyTag();
     }

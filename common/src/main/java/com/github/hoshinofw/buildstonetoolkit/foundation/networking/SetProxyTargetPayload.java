@@ -1,6 +1,7 @@
 package com.github.hoshinofw.buildstonetoolkit.foundation.networking;
 
 import com.github.hoshinofw.buildstonetoolkit.foundation.common.core.BuildstoneToolkit;
+import dev.architectury.networking.NetworkManager;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.codec.StreamCodec;
@@ -22,6 +23,10 @@ public record SetProxyTargetPayload(BlockPos proxyPos, BlockPos targetPos)
                     BlockPos.STREAM_CODEC, SetProxyTargetPayload::targetPos,
                     SetProxyTargetPayload::new
             );
+
+    public static void sendToServer(BlockPos proxyPos, BlockPos targetPos) {
+        NetworkManager.sendToServer(new SetProxyTargetPayload(proxyPos, targetPos));
+    }
 
     @Override
     public @NotNull Type<? extends CustomPacketPayload> type() {

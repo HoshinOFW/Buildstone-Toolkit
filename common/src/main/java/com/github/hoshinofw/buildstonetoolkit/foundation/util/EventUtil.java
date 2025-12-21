@@ -31,9 +31,9 @@ public class EventUtil {
                 targetPos = PlayerUtil.getSelectedPos(player);
             }
             //Server will call setLinkedAbsPos and update the client.
-            NetworkManager.sendToServer(new SetProxyTargetPayload(hitPos, targetPos));
+            SetProxyTargetPayload.sendToServer(hitPos, targetPos);
 
-            SoundUtil.playLinkSuccessSound(player);
+            //SoundUtil.playLinkSuccessSound(player);
             player.displayClientMessage(Component.translatable("message.buildstonetoolkit.link_success",
                             blueComponent(level.getBlockState(targetPos).getBlock().getName().getString()),
                             blueComponent(Arrays.toString(blockPosToArray(targetPos)))),
