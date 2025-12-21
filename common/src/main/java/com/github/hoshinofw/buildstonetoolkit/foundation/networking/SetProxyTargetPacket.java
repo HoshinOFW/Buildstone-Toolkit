@@ -6,6 +6,7 @@ import io.netty.buffer.Unpooled;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.resources.ResourceLocation;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.function.Supplier;
 
@@ -15,7 +16,7 @@ public record SetProxyTargetPacket(BlockPos proxyPos, BlockPos targetPos) {
             new ResourceLocation(BuildstoneToolkit.MOD_ID, "set_proxy_target");
 
     // Encode to buffer
-    public static void write(FriendlyByteBuf buf, BlockPos proxyPos, BlockPos targetPos) {
+    public static void write(FriendlyByteBuf buf, @NotNull BlockPos proxyPos, @NotNull BlockPos targetPos) {
         buf.writeBlockPos(proxyPos);
         buf.writeBlockPos(targetPos);
     }

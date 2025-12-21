@@ -30,5 +30,4 @@ public abstract class RegisteredProxyBlock<T extends RegisteredProxyBlockEntity<
         return null;
     }
 
-
 }

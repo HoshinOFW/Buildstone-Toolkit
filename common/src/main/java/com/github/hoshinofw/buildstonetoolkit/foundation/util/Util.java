@@ -3,22 +3,69 @@ package com.github.hoshinofw.buildstonetoolkit.foundation.util;
 import com.github.hoshinofw.buildstonetoolkit.content.common.blocks.PistonProxyBlock;
 import com.github.hoshinofw.buildstonetoolkit.foundation.util.mixin.PistonMovingBlockEntityMixinInterface;
 import net.minecraft.ChatFormatting;
+import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
+import net.minecraft.world.level.ClipContext;
+import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.piston.PistonMovingBlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.phys.BlockHitResult;
+import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.Collection;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 import java.util.function.Consumer;
 import java.util.function.Supplier;
 
 public class Util {
+
+    public static long[] buildLongArray(Collection<BlockPos> blockPosCollection) {
+        ArrayList<Long> array = new ArrayList<>();
+        blockPosCollection.forEach((pos) -> array.add(pos.asLong()));
+        Long[] array2 = new Long[array.size()];
+        return toPrimitive(array.toArray(array2));
+    }
+
+    public static ArrayList<BlockPos> buildBlockPosList(long[] array) {
+        ArrayList<BlockPos> array2 = new ArrayList<>();
+        for (long i : array) {
+            array2.add(BlockPos.of(i));
+        }
+        return array2;
+    }
+
+    public static long[] toPrimitive(Long[] boxed) {
+        if (boxed == null) return null;
+
+        long[] result = new long[boxed.length];
+        for (int i = 0; i < boxed.length; i++) {
+            Long value = boxed[i];
+            result[i] = (value != null) ? value : 0L; // or throw if null
+        }
+        return result;
+    }
+
+    public static BlockHitResult raycastBlockIgnoringReach(LocalPlayer player, Level level, double maxDistance) {
+        float partialTick = 1.0f;
+
+        Vec3 eye = player.getEyePosition(partialTick);
+        Vec3 look = player.getViewVector(partialTick);
+        Vec3 end = eye.add(look.scale(maxDistance));
+
+        ClipContext ctx = new ClipContext(
+                eye,
+                end,
+                ClipContext.Block.OUTLINE,
+                ClipContext.Fluid.NONE,
+                player
+        );
+
+        return level.clip(ctx);
+    }
+
     public static CompoundTag getProxyTag(PistonMovingBlockEntity mbe) {
         return ((PistonMovingBlockEntityMixinInterface) mbe).buildstonetoolkit$getProxyTag();
     }
@@ -98,6 +145,21 @@ public class Util {
             longSet.add(pos.asLong());
         }
         return longSet;
+    }
+
+    public static int calculateSignal(double distance) {
+        if (distance <= 2.0) return 1;
+        if (distance >= 64.0) return 15;
+
+        double t = (distance - 2.0) / (64.0 - 2.0);
+
+        double value = 1.0 + 14.0 * (t * t);
+
+        int signal = (int) Math.round(value);
+
+        if (signal < 1) return 1;
+        if (signal > 15) return 15;
+        return signal;
     }
 
     public record FailableResult<T>(T value, boolean succeeded) {

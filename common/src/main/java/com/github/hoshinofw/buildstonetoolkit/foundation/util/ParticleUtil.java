@@ -19,8 +19,6 @@ import java.util.function.BooleanSupplier;
 
 public class ParticleUtil {
 
-    //TODO replace texture indexes with enums
-
     public static BooleanSupplier selectionParticleShouldPersist(@NotNull Player player, @NotNull BlockPos targetPos) {
         return () -> (player.getItemBySlot(EquipmentSlot.MAINHAND).is(BuildstoneItems.MOD_WAND.get())
                 || player.getItemBySlot(EquipmentSlot.OFFHAND).is(BuildstoneItems.MOD_WAND.get()))

@@ -1,0 +1,6 @@
+{
+  "parent": "block/cube_all",
+  "textures": {
+    "all": "buildstonetoolkit:block/looking_at_proxy_on"
+  }
+}

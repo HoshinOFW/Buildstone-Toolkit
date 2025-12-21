@@ -29,15 +29,16 @@ public class EventUtil {
             } else {
                 targetPos = PlayerUtil.getSelectedPos(player);
             }
-            //Server will call setLinkedAbsPos and update the client.
-            SetProxyTargetPacket.sendToServer(hitPos, targetPos);
+            if (targetPos != null) {
+                //Server will call setLinkedAbsPos and update the client.
+                SetProxyTargetPacket.sendToServer(hitPos, targetPos);
 
-            SoundUtil.playLinkSuccessSound(player);
-            player.displayClientMessage(Component.translatable("message.buildstonetoolkit.link_success",
-                            blueComponent(level.getBlockState(targetPos).getBlock().getName().getString()),
-                            blueComponent(Arrays.toString(blockPosToArray(targetPos)))),
-                    true);
-
+                SoundUtil.playLinkSuccessSound(player);
+                player.displayClientMessage(Component.translatable("message.buildstonetoolkit.link_success",
+                                blueComponent(level.getBlockState(targetPos).getBlock().getName().getString()),
+                                blueComponent(Arrays.toString(blockPosToArray(targetPos)))),
+                        true);
+            }
         }
     }
 }

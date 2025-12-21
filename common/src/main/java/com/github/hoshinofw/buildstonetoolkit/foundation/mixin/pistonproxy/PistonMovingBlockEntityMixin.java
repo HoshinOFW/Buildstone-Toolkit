@@ -5,7 +5,6 @@ import com.github.hoshinofw.buildstonetoolkit.foundation.util.Util;
 import com.github.hoshinofw.buildstonetoolkit.foundation.util.mixin.PistonMovingBlockEntityMixinInterface;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
-import net.minecraft.core.HolderLookup;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
@@ -99,27 +98,11 @@ public abstract class PistonMovingBlockEntityMixin implements PistonMovingBlockE
     }
 
     @Inject(method = "load", at = @At("TAIL"))
-    private void buildstonetoolkit$loadAdditional(CompoundTag tag, CallbackInfo ci) {
+    private void buildstonetoolkit$load(CompoundTag tag, CallbackInfo ci) {
         if (tag.contains("BuildstoneProxyTag", CompoundTag.TAG_COMPOUND)) {
             this.buildstonetoolkit$proxyTag = tag.getCompound("BuildstoneProxyTag").copy();
         } else {
             this.buildstonetoolkit$proxyTag = null;
         }
     }
-
-    //Tests
-    @Inject(method = "finalTick", at = @At("HEAD"))
-    private void finalTick(CallbackInfo ci) {
-        //BuildstoneToolkit.LOGGER.info("finalTick called");
-    }
-
-    @Inject(method = "<init>*", at = @At("RETURN"))
-    private void testCtor(BlockPos blockPos, BlockState blockState, BlockState blockState2, Direction direction, boolean bl, boolean bl2, CallbackInfo ci) {
-        //BuildstoneToolkit.LOGGER.info("PistonMovingBlockEntity created at {}", blockPos);
-    }
-
-
-
-
-
 }

@@ -11,6 +11,7 @@ architectury {
 allprojects {
     group = rootProject.maven_group
     version = rootProject.mod_version
+    description = rootProject.description
 }
 
 subprojects {
@@ -19,7 +20,7 @@ subprojects {
     apply plugin: 'maven-publish'
 
     base {
-        archivesName = archivesName = "${rootProject.archives_name}-${project.name}-${project.minecraft_version}"
+        archivesName = "${rootProject.archives_name}-${project.name}-${project.minecraft_version}"
     }
 
     repositories {

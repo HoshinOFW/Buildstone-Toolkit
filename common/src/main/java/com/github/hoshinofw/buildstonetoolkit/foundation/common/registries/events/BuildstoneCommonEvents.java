@@ -8,6 +8,7 @@ import com.github.hoshinofw.buildstonetoolkit.foundation.util.EventUtil;
 import com.github.hoshinofw.buildstonetoolkit.foundation.util.ParticleUtil;
 import com.github.hoshinofw.buildstonetoolkit.foundation.util.PlayerUtil;
 import dev.architectury.event.CompoundEventResult;
+import dev.architectury.event.events.client.ClientPlayerEvent;
 import dev.architectury.event.events.common.InteractionEvent;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.core.BlockPos;

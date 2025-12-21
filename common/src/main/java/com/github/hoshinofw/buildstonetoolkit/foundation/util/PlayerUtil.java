@@ -7,6 +7,7 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 public class PlayerUtil {
+    @Nullable
     public static BlockPos getSelectedPos(@NotNull Player player) {
         return ((PlayerMixinInterface)player).buildstonetoolkit$getSelectedBlockPos();
     }
