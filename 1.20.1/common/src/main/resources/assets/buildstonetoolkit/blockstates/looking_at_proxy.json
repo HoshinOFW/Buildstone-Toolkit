@@ -1,0 +1,20 @@
+{
+  "variants": {
+    "power_level=0": { "model": "buildstonetoolkit:block/looking_at_proxy_off" },
+    "power_level=1": { "model": "buildstonetoolkit:block/looking_at_proxy_on" },
+    "power_level=2": { "model": "buildstonetoolkit:block/looking_at_proxy_on" },
+    "power_level=3": { "model": "buildstonetoolkit:block/looking_at_proxy_on" },
+    "power_level=4": { "model": "buildstonetoolkit:block/looking_at_proxy_on" },
+    "power_level=5": { "model": "buildstonetoolkit:block/looking_at_proxy_on" },
+    "power_level=6": { "model": "buildstonetoolkit:block/looking_at_proxy_on" },
+    "power_level=7": { "model": "buildstonetoolkit:block/looking_at_proxy_on" },
+    "power_level=8": { "model": "buildstonetoolkit:block/looking_at_proxy_on" },
+    "power_level=9": { "model": "buildstonetoolkit:block/looking_at_proxy_on" },
+    "power_level=10": { "model": "buildstonetoolkit:block/looking_at_proxy_on" },
+    "power_level=11": { "model": "buildstonetoolkit:block/looking_at_proxy_on" },
+    "power_level=12": { "model": "buildstonetoolkit:block/looking_at_proxy_on" },
+    "power_level=13": { "model": "buildstonetoolkit:block/looking_at_proxy_on" },
+    "power_level=14": { "model": "buildstonetoolkit:block/looking_at_proxy_on" },
+    "power_level=15": { "model": "buildstonetoolkit:block/looking_at_proxy_on" }
+  }
+}

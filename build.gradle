@@ -1,0 +1,160 @@
+plugins {
+    id 'dev.architectury.loom' version '1.11-SNAPSHOT' apply false
+    id 'architectury-plugin' version '3.4-SNAPSHOT' apply false
+    id 'com.gradleup.shadow' version '8.3.6' apply false
+}
+
+allprojects {
+    group = rootProject.maven_group
+    version = rootProject.mod_version
+    description = rootProject.description
+}
+
+// Helper predicates
+static def is120(p) { p.path.startsWith(':1.20.1:') }
+static def is121(p) { p.path.startsWith(':1.21.1:') }
+
+subprojects { p ->
+    if (!(is120(p) || is121(p))) return
+
+    apply plugin: 'dev.architectury.loom'
+    apply plugin: 'architectury-plugin'
+    apply plugin: 'maven-publish'
+    apply plugin: 'java-library'
+
+    architectury {
+        minecraft = project.minecraft_version
+    }
+
+    base {
+        archivesName = "${rootProject.archives_name}-${project.name}-${project.minecraft_version}"
+    }
+
+    repositories {
+
+    }
+
+    loom {
+        silentMojangMappingsLicense()
+    }
+
+    dependencies {
+        minecraft "net.minecraft:minecraft:$project.minecraft_version"
+        mappings loom.officialMojangMappings()
+    }
+
+    processResources {
+        var replaceProperties = [
+                mod_id          : project.mod_id,
+                mod_version     : project.mod_version,
+                mod_name        : project.mod_name,
+                mod_author      : project.mod_author,
+                mod_description : project.mod_description,
+                mod_license     : project.mod_license,
+                minecraft_version: project.minecraft_version,
+                architectury_api_version: project.architectury_api_version,
+                fabric_loader_version: project.fabric_loader_version
+        ]
+
+        replaceProperties.put("file", [jarVersion: project.version])
+
+        filesMatching(['META-INF/mods.toml', 'fabric.mod.json', 'META-INF/neoforge.mods.toml']) {
+            expand(replaceProperties)
+        }
+    }
+
+    java {
+        withSourcesJar()
+        if (is120(p)) {
+            sourceCompatibility = JavaVersion.VERSION_17
+            targetCompatibility = JavaVersion.VERSION_17
+        } else if (is121(p)) {
+            sourceCompatibility = JavaVersion.VERSION_21
+            targetCompatibility = JavaVersion.VERSION_21
+        }
+    }
+
+    tasks.withType(JavaCompile).configureEach {
+        if (is120(p)) {
+            options.release = 17
+        } else if (is121(p)) {
+            options.release = 21
+        } else {
+            options.release = 21
+        }
+    }
+
+    publishing {
+        publications {
+            mavenJava(MavenPublication) {
+                artifactId = base.archivesName.get()
+                from components.java
+            }
+        }
+
+        repositories {
+
+        }
+    }
+}
+
+//Common tasks
+tasks.register("build1_20_1") {
+    group = "build"
+    dependsOn(":1.20.1:common:build", ":1.20.1:fabric:build", ":1.20.1:forge:build")
+}
+tasks.register("build1_21_1") {
+    group = "build"
+    dependsOn(":1.21.1:common:build", ":1.21.1:fabric:build", ":1.21.1:neoforge:build")
+}
+
+def collectJarFrom = { String mc, String loader, String projectPath ->
+    def modVer = rootProject.mod_version.toString()
+    def destDir = layout.projectDirectory.dir("builds/${modVer}/${mc}/${loader}")
+
+    tasks.register("collect_${mc.replace('.','_')}_${loader}", Copy) {
+        group = "distribution"
+        description = "Builds ${projectPath} and collects jars into builds/${modVer}/${mc}/${loader}"
+
+        dependsOn("${projectPath}:build")
+
+        from(project(projectPath).layout.buildDirectory.dir("libs"))
+        into(destDir)
+
+        include("*.jar")
+        exclude("*-sources.jar")
+        exclude("*-javadoc.jar")
+        exclude("*-shadow.jar")
+        exclude("*-dev.jar")
+        exclude("*-dev-shadow.jar")
+        exclude("*-all.jar")
+
+        doFirst {
+            if (destDir.asFile.exists()) {
+                destDir.asFile.deleteDir()
+            }
+            destDir.asFile.mkdirs()
+        }
+    }
+}
+
+
+// Per-module collectors
+collectJarFrom("1.20.1", "fabric",   ":1.20.1:fabric")
+collectJarFrom("1.20.1", "forge",    ":1.20.1:forge")
+collectJarFrom("1.21.1", "fabric",   ":1.21.1:fabric")
+collectJarFrom("1.21.1", "neoforge", ":1.21.1:neoforge")
+
+// Aggregate collectors
+tasks.register("collectBuilds120") {
+    group = "distribution"
+    dependsOn("collect_1_20_1_fabric", "collect_1_20_1_forge")
+}
+tasks.register("collectBuilds121") {
+    group = "distribution"
+    dependsOn("collect_1_21_1_fabric", "collect_1_21_1_neoforge")
+}
+tasks.register("collectBuildsAll") {
+    group = "distribution"
+    dependsOn("collectBuilds120", "collectBuilds121")
+}

@@ -1,0 +1,6 @@
+{
+  "parent": "block/cube_all",
+  "textures": {
+    "all": "buildstonetoolkit:block/piston_proxy_off"
+  }
+}

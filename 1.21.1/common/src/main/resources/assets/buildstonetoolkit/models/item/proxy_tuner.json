@@ -1,0 +1,7 @@
+{
+  "parent": "item/generated",
+  "textures": { "layer0": "buildstonetoolkit:item/proxy_tuner_off" },
+  "overrides": [
+    { "predicate": { "buildstonetoolkit:proxy_mode": 1 }, "model": "buildstonetoolkit:item/proxy_tuner_on" }
+  ]
+}

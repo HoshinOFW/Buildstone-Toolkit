@@ -1,0 +1,4 @@
+{
+  "parent": "item/handheld",
+  "textures": { "layer0": "buildstonetoolkit:item/proxy_tuner_on" }
+}

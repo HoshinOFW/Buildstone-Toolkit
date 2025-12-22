@@ -1,0 +1,6 @@
+{
+  "parent": "block/cube_all",
+  "textures": {
+    "all": "buildstonetoolkit:block/right_click_proxy_off"
+  }
+}

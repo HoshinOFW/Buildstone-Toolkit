@@ -1,0 +1,31 @@
+pluginManagement {
+    repositories {
+        maven { url = 'https://maven.fabricmc.net/' }
+        maven { url = 'https://maven.architectury.dev/' }
+        maven { url = 'https://files.minecraftforge.net/maven/' }
+        gradlePluginPortal()
+    }
+}
+
+rootProject.name = 'buildstonetoolkit'
+
+include(
+        //"common",
+        "1.20.1:common",
+        "1.20.1:fabric",
+        "1.20.1:forge",
+
+        "1.21.1:common",
+        "1.21.1:fabric",
+        "1.21.1:neoforge"
+)
+
+//project(":common").projectDir = file("common")
+
+project(":1.20.1:common").projectDir = file("1.20.1/common")
+project(":1.20.1:fabric").projectDir = file("1.20.1/fabric")
+project(":1.20.1:forge").projectDir = file("1.20.1/forge")
+
+project(":1.21.1:common").projectDir = file("1.21.1/common")
+project(":1.21.1:fabric").projectDir = file("1.21.1/fabric")
+project(":1.21.1:neoforge").projectDir = file("1.21.1/neoforge")

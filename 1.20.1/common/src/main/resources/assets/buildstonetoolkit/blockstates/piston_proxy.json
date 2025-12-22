@@ -1,0 +1,7 @@
+{
+  "variants": {
+    "power_level=0": { "model": "buildstonetoolkit:block/piston_proxy_off" },
+    "power_level=1": { "model": "buildstonetoolkit:block/piston_proxy_on" },
+    "power_level=2": { "model": "buildstonetoolkit:block/piston_proxy_on" }
+  }
+}
