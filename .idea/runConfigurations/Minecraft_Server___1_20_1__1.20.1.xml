@@ -1,10 +1,10 @@
 <component name="ProjectRunConfigurationManager">
-  <configuration default="false" factoryName="Application" name="Minecraft Server (:1.20.1:fabric)" type="Application">
-    <option name="MAIN_CLASS_NAME" value="dev.architectury.transformer.TransformerRuntime"/>
-    <module name="buildstonetoolkit.1.20.1.fabric.main"/>
+  <configuration default="false" factoryName="Application" name="Minecraft Server (:1.20.1)" type="Application">
+    <option name="MAIN_CLASS_NAME" value="net.fabricmc.devlaunchinjector.Main"/>
+    <module name="buildstonetoolkit.1.20.1.main"/>
     <option name="PROGRAM_PARAMETERS" value="nogui"/>
-    <option name="VM_PARAMETERS" value="-Dfabric.dli.config=C:\Users\plasm\Documents\Coding\modding\BuildstoneToolkit\1.20.1\fabric\.gradle\loom-cache\launch.cfg -Dfabric.dli.env=server -Dfabric.dli.main=net.fabricmc.loader.impl.launch.knot.KnotServer -Darchitectury.main.class=C:\Users\plasm\Documents\Coding\modding\BuildstoneToolkit\1.20.1\fabric\.gradle\architectury\.main_class -Darchitectury.runtime.transformer=C:\Users\plasm\Documents\Coding\modding\BuildstoneToolkit\1.20.1\fabric\.gradle\architectury\.transforms -Darchitectury.properties=C:\Users\plasm\Documents\Coding\modding\BuildstoneToolkit\1.20.1\fabric\.gradle\architectury\.properties -Djdk.attach.allowAttachSelf=true -javaagent:C:\Users\plasm\Documents\Coding\modding\BuildstoneToolkit\.gradle\architectury\architectury-transformer-agent.jar"/>
-    <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/1.20.1\fabric/run/"/>
+    <option name="VM_PARAMETERS" value="-Dfabric.dli.config=C:\Users\plasm\Documents\Coding\modding\BuildstoneToolkit\1.20.1\.gradle\loom-cache\launch.cfg -Dfabric.dli.env=server -Dfabric.dli.main=net.fabricmc.loader.launch.knot.KnotServer"/>
+    <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/1.20.1/run/"/>
     <method v="2">
       <option enabled="true" name="Make"/>
     </method>
