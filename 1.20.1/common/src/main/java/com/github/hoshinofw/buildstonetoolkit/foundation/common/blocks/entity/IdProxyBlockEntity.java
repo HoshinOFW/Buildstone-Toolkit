@@ -14,6 +14,7 @@ import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 
 public abstract class IdProxyBlockEntity<T extends IdProxyBlockEntity<T>> extends ProxyBlockEntity<T> implements IdObject {
+    //TODO REPLACE WITH HOOK in  IdProxy
     public static IdRegistry<IdProxyBlockEntity<?>> getIdRegistry(Level level) {
         return ProxyIdStorage.getIdRegistry(level);
     }
@@ -27,6 +28,7 @@ public abstract class IdProxyBlockEntity<T extends IdProxyBlockEntity<T>> extend
     @Override
     public void setLevel(Level level) {
         super.setLevel(level);
+        //TODO REPLACE WITH HOOK in IdProxy
         if (!level.isClientSide() && level instanceof ServerLevel serverLevel) {
             if (id < 0) {
                 this.id = ProxyIdStorage.getServerIdRegistry(serverLevel).registerNew(this);
@@ -43,6 +45,7 @@ public abstract class IdProxyBlockEntity<T extends IdProxyBlockEntity<T>> extend
     public void setRemoved() {
         //BuildstoneToolkit.LOGGER.info("setRemoved called");
         super.setRemoved();
+        //TODO REPLACE WITH HOOK in  IdProxy
         getIdRegistry(this.getLevel()).remove(this);
     }
 
@@ -51,15 +54,19 @@ public abstract class IdProxyBlockEntity<T extends IdProxyBlockEntity<T>> extend
         return this.id;
     }
 
+    public void setId(long id) {this.id = id;}
+
     @Override
     protected void saveAdditional(CompoundTag nbt) {
         super.saveAdditional(nbt);
+        //TODO REPLACE WITH HOOK in IdProxy
         NBTUtil.saveId(nbt, this);
         //BuildstoneToolkit.LOGGER.info("saveAdditional called for nbt: {}", nbt);
     }
 
     @Override
     public void load(CompoundTag nbt) {
+        //TODO REPLACE WITH HOOK in IdProxy
         this.id = NBTUtil.getId(nbt);
         if (level != null) {
             getIdRegistry(this.getLevel()).ensureEntry(this);
