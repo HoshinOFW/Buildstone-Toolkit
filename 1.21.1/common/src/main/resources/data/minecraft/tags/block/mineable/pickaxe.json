@@ -3,6 +3,8 @@
   "values": [
     "buildstonetoolkit:piston_proxy",
     "buildstonetoolkit:redstone_proxy",
-    "buildstonetoolkit:observer_proxy"
+    "buildstonetoolkit:observer_proxy",
+    "buildstonetoolkit:interaction_proxy",
+    "buildstonetoolkit:vision_proxy"
   ]
 }

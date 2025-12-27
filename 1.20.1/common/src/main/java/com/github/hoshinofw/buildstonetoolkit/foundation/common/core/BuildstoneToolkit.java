@@ -2,7 +2,6 @@ package com.github.hoshinofw.buildstonetoolkit.foundation.common.core;
 
 
 import com.github.hoshinofw.buildstonetoolkit.foundation.common.registries.*;
-
 import com.github.hoshinofw.buildstonetoolkit.foundation.common.registries.events.BuildstoneCommonEvents;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -21,5 +20,7 @@ public final class BuildstoneToolkit {
         BuildstonePackets.register();
 
         LOGGER.info("Finished registries");
+        LOGGER.info("Common version 1.20.1");
+
     }
 }

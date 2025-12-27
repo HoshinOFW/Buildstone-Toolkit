@@ -10,7 +10,7 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.Map;
 
-public abstract class UpdateListenerProxyBlock extends RegisteredProxyBlock<UpdateListenerProxyBlockEntity>{
+public abstract class UpdateListenerProxyBlock extends RegisteredProxyBlock<UpdateListenerProxyBlockEntity> implements UpdateListener<UpdateListenerProxyBlockEntity>{
     public UpdateListenerProxyBlock(Properties properties) {
         super(properties, UpdateListenerProxyBlockEntity.class);
     }
@@ -30,7 +30,7 @@ public abstract class UpdateListenerProxyBlock extends RegisteredProxyBlock<Upda
         return serverRegistryMap;
     }
 
+    @Override
     public abstract void targetUpdated(UpdateListenerProxyBlockEntity be, @NotNull Level level);
-
 
 }

@@ -1,6 +1,6 @@
 package com.github.hoshinofw.buildstonetoolkit.foundation.mixin.allay;
 
-import com.github.hoshinofw.buildstonetoolkit.content.common.items.ModWand;
+import com.github.hoshinofw.buildstonetoolkit.content.common.items.unstable.ModWand;
 import com.github.hoshinofw.buildstonetoolkit.foundation.util.NBTUtil;
 import com.github.hoshinofw.buildstonetoolkit.foundation.util.ParticleUtil;
 import com.github.hoshinofw.buildstonetoolkit.foundation.util.PlayerUtil;

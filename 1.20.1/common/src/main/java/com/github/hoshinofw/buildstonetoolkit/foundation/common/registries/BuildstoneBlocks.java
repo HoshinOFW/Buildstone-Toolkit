@@ -1,6 +1,6 @@
 package com.github.hoshinofw.buildstonetoolkit.foundation.common.registries;
 
-import com.github.hoshinofw.buildstonetoolkit.content.common.blocks.*;
+import com.github.hoshinofw.buildstonetoolkit.content.common.blocks.unstable.*;
 import com.github.hoshinofw.buildstonetoolkit.foundation.common.core.BuildstoneToolkit;
 import dev.architectury.registry.registries.DeferredRegister;
 import dev.architectury.registry.registries.RegistrySupplier;
@@ -44,18 +44,18 @@ public class BuildstoneBlocks {
                     .isRedstoneConductor((state, level, pos) -> false)
             ));
 
-    public static final RegistrySupplier<RightClickProxyBlock> RIGHT_CLICK_PROXY = BLOCKS.register(
-            "right_click_proxy",
-            () -> new RightClickProxyBlock(BlockBehaviour.Properties.of()
+    public static final RegistrySupplier<InteractionProxyBlock> INTERACTION_PROXY = BLOCKS.register(
+            "interaction_proxy",
+            () -> new InteractionProxyBlock(BlockBehaviour.Properties.of()
                     .strength(2.0f, 6.0f)
                     .sound(SoundType.STONE)
                     .requiresCorrectToolForDrops()
                     .isRedstoneConductor((state, level, pos) -> false)
             ));
 
-    public static final RegistrySupplier<LookingAtProxyBlock> LOOKING_AT_PROXY = BLOCKS.register(
-            "looking_at_proxy",
-            () -> new LookingAtProxyBlock(BlockBehaviour.Properties.of()
+    public static final RegistrySupplier<VisionProxyBlock> VISION_PROXY = BLOCKS.register(
+            "vision_proxy",
+            () -> new VisionProxyBlock(BlockBehaviour.Properties.of()
                     .strength(2.0f, 6.0f)
                     .sound(SoundType.STONE)
                     .requiresCorrectToolForDrops()

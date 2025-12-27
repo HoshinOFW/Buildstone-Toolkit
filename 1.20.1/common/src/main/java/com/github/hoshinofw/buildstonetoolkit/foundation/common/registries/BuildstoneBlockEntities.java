@@ -25,8 +25,8 @@ public class BuildstoneBlockEntities {
     public static final RegistrySupplier<BlockEntityType<PistonProxyBlockEntity>> PISTON_PROXY = registerProxyBE("piston_proxy", PistonProxyBlockEntity::new, BuildstoneBlocks.PISTON_PROXY);
     public static final RegistrySupplier<BlockEntityType<RedstoneProxyBlockEntity>> REDSTONE_PROXY = registerProxyBE("redstone_proxy", RedstoneProxyBlockEntity::new, BuildstoneBlocks.REDSTONE_PROXY);
     public static final RegistrySupplier<BlockEntityType<ObserverProxyBlockEntity>> OBSERVER_PROXY = registerProxyBE("observer_proxy", ObserverProxyBlockEntity::new, BuildstoneBlocks.OBSERVER_PROXY);
-    public static final RegistrySupplier<BlockEntityType<RightClickProxyBlockEntity>> RIGHT_CLICK_PROXY = registerProxyBE("right_click_proxy", RightClickProxyBlockEntity::new, BuildstoneBlocks.RIGHT_CLICK_PROXY);
-    public static final RegistrySupplier<BlockEntityType<LookingAtProxyBlockEntity>> LOOKING_AT_PROXY = registerProxyBE("looking_at_proxy", LookingAtProxyBlockEntity::new, BuildstoneBlocks.LOOKING_AT_PROXY);
+    public static final RegistrySupplier<BlockEntityType<InteractionProxyBlockEntity>> INTERACTION_PROXY = registerProxyBE("interaction_proxy", InteractionProxyBlockEntity::new, BuildstoneBlocks.INTERACTION_PROXY);
+    public static final RegistrySupplier<BlockEntityType<VisionProxyBlockEntity>> VISION_PROXY = registerProxyBE("vision_proxy", VisionProxyBlockEntity::new, BuildstoneBlocks.VISION_PROXY);
 
     //Block has been removed...
     public static final RegistrySupplier<BlockEntityType<DummyBE>> GUIDED_PROXY = registerProxyBE("directional_proxy", DummyBE::new, BuildstoneBlocks.GUIDED_PROXY);

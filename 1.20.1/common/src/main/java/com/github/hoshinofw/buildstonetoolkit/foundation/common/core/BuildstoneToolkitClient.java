@@ -1,11 +1,11 @@
 package com.github.hoshinofw.buildstonetoolkit.foundation.common.core;
 
 
-import com.github.hoshinofw.buildstonetoolkit.content.common.items.ModWand;
+import com.github.hoshinofw.buildstonetoolkit.content.common.items.unstable.ModWand;
+import com.github.hoshinofw.buildstonetoolkit.foundation.common.core.unstable.CoreResourceLocations;
 import com.github.hoshinofw.buildstonetoolkit.foundation.common.registries.BuildstoneItems;
 import com.github.hoshinofw.buildstonetoolkit.foundation.common.registries.events.BuildstoneClientEvents;
 import dev.architectury.registry.item.ItemPropertiesRegistry;
-import net.minecraft.resources.ResourceLocation;
 
 
 public class BuildstoneToolkitClient{
@@ -15,7 +15,7 @@ public class BuildstoneToolkitClient{
 
         ItemPropertiesRegistry.register(
                 BuildstoneItems.MOD_WAND.get(),
-                new ResourceLocation(BuildstoneToolkit.MOD_ID, "proxy_mode"),
+                CoreResourceLocations.MOD_WAND_PROXY_MODE,
                 (stack, level, entity, seed) -> ModWand.getClientMode().ordinal()
         );
     }

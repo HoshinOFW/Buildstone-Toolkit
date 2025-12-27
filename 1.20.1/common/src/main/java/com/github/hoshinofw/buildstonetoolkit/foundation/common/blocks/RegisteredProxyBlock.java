@@ -1,7 +1,7 @@
 package com.github.hoshinofw.buildstonetoolkit.foundation.common.blocks;
 
 import com.github.hoshinofw.buildstonetoolkit.foundation.common.blocks.entity.RegisteredProxyBlockEntity;
-import com.github.hoshinofw.buildstonetoolkit.foundation.storage.ProxyIdStorage;
+import com.github.hoshinofw.buildstonetoolkit.foundation.storage.unstable.ProxyIdStorage;
 import com.github.hoshinofw.buildstonetoolkit.foundation.util.registries.ProxyRegistry;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.server.level.ServerLevel;

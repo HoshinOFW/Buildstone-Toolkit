@@ -1,24 +1,24 @@
 {
   "parent": "block/block",
   "textures": {
-    "particle": "buildstonetoolkit:block/observer_proxy_on",
-    "north": "buildstonetoolkit:block/observer_proxy_on",
-    "south": "buildstonetoolkit:block/observer_proxy_back",
-    "eastON": "buildstonetoolkit:block/observer_proxy_side_on_right",
-    "westON": "buildstonetoolkit:block/observer_proxy_side_on_left",
-    "up_and_down": "buildstonetoolkit:block/observer_proxy_top_and_bottom"
+    "particle": "buildstonetoolkit:block/observer_proxy_north_on",
+    "north_ON": "buildstonetoolkit:block/observer_proxy_north_on",
+    "south_ON": "buildstonetoolkit:block/observer_proxy_south_on",
+    "east_and_west": "buildstonetoolkit:block/observer_proxy_east_and_west",
+    "up": "buildstonetoolkit:block/observer_proxy_top",
+    "down": "buildstonetoolkit:block/observer_proxy_bottom"
   },
   "elements": [
     {
       "from": [0, 0, 0],
       "to": [16, 16, 16],
       "faces": {
-        "north": { "texture": "#north" },
-        "south": { "texture": "#south" },
-        "east": { "texture": "#eastON" },
-        "west": { "texture": "#westON" },
-        "up": { "texture": "#up_and_down", "rotation":  270},
-        "down": { "texture": "#up_and_down", "rotation": 90}
+        "north": { "texture": "#north_ON" },
+        "south": { "texture": "#south_ON" },
+        "east": { "texture": "#east_and_west" },
+        "west": { "texture": "#east_and_west" },
+        "up": { "texture": "#up", "rotation": 180},
+        "down": { "texture": "#down"}
       }
     }
   ]

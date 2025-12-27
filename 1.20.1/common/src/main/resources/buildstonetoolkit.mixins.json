@@ -8,12 +8,13 @@
     "allay.AllayMixin",
     "allay.GoAndGiveItemsToTargetMixin",
     "pistonproxy.BlockEntityAccessor",
-    "pistonproxy.PistonBaseBlockMixin",
-    "pistonproxy.PistonMovingBlockEntityMixin",
+    "pistonproxy.unstable.PistonBaseBlockMixin",
+    "pistonproxy.PistonMovingBlockEntityMixinStable",
     "pistonproxy.PistonStructureResolverMixin",
-    "redstoneproxy.LevelMixin",
-    "redstoneproxy.ServerLevelMixin",
-    "redstoneproxy.SignalGetterMixin"
+    "pistonproxy.unstable.PistonMovingBlockEntityMixin",
+    "updatelistenerproxy.LevelMixin",
+    "updatelistenerproxy.ServerLevelMixin",
+    "updatelistenerproxy.SignalGetterMixin"
   ],
   "injectors": {
     "defaultRequire": 1

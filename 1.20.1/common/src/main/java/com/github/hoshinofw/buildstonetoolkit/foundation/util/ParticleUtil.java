@@ -2,10 +2,9 @@ package com.github.hoshinofw.buildstonetoolkit.foundation.util;
 
 import com.github.hoshinofw.buildstonetoolkit.foundation.common.blocks.IdProxyBlock;
 import com.github.hoshinofw.buildstonetoolkit.foundation.common.blocks.ProxyBlock;
-import com.github.hoshinofw.buildstonetoolkit.foundation.common.blocks.entity.IdProxyBlockEntity;
+import com.github.hoshinofw.buildstonetoolkit.foundation.common.blocks.entity.unstable.IdProxyBlockEntity;
 import com.github.hoshinofw.buildstonetoolkit.foundation.common.particles.StaticCubeParticle.CubeParticle;
 import com.github.hoshinofw.buildstonetoolkit.foundation.common.registries.BuildstoneItems;
-import com.github.hoshinofw.buildstonetoolkit.foundation.storage.ProxyIdStorage;
 import com.github.hoshinofw.buildstonetoolkit.foundation.util.render.BlockParticleTexture;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.multiplayer.ClientLevel;

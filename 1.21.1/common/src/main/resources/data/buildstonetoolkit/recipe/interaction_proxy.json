@@ -1,0 +1,11 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    { "item": "minecraft:stone_pressure_plate" },
+    { "item": "buildstonetoolkit:vision_proxy" }
+  ],
+  "result": {
+    "id": "buildstonetoolkit:interaction_proxy",
+    "count": 1
+  }
+}

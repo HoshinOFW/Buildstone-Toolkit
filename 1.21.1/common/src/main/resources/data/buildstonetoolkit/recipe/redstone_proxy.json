@@ -1,0 +1,19 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "key": {
+    "I": { "item": "minecraft:iron_ingot" },
+    "E": { "item": "minecraft:ender_eye" },
+    "C": { "item": "minecraft:cobblestone" },
+    "R": { "item": "minecraft:redstone" },
+    "B": { "item": "minecraft:redstone_block" }
+  },
+  "pattern": [
+    "IBI",
+    "IEI",
+    "CRC"
+  ],
+  "result": {
+    "id": "buildstonetoolkit:redstone_proxy",
+    "count": 1
+  }
+}

@@ -1,6 +1,6 @@
 package com.github.hoshinofw.buildstonetoolkit.content.common.blocks.entity;
 
-import com.github.hoshinofw.buildstonetoolkit.content.common.blocks.RedstoneProxyBlock;
+import com.github.hoshinofw.buildstonetoolkit.content.common.blocks.unstable.RedstoneProxyBlock;
 import com.github.hoshinofw.buildstonetoolkit.foundation.common.blocks.entity.UpdateListenerProxyBlockEntity;
 import com.github.hoshinofw.buildstonetoolkit.foundation.common.registries.BuildstoneBlockEntities;
 import net.minecraft.core.BlockPos;

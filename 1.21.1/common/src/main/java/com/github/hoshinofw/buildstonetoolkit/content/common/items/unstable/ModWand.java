@@ -1,0 +1,27 @@
+package com.github.hoshinofw.buildstonetoolkit.content.common.items.unstable;
+
+import com.github.hoshinofw.buildstonetoolkit.content.common.items.ModWandStable;
+import net.minecraft.client.gui.screens.Screen;
+import net.minecraft.network.chat.Component;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.TooltipFlag;
+
+import java.util.List;
+
+public class ModWand extends ModWandStable {
+
+    public ModWand(Properties properties) {
+        super(properties);
+    }
+
+    @Override
+    public void appendHoverText(ItemStack itemStack, Item.TooltipContext tooltipContext, List<Component> list, TooltipFlag tooltipFlag) {
+        if (Screen.hasShiftDown()) {
+            list.add(Component.translatable("tooltip.buildstonetoolkit.proxy_tuner.details"));
+        } else {
+            list.add(Component.translatable("tooltip.buildstonetoolkit.hold_shift"));
+        }
+    }
+
+}

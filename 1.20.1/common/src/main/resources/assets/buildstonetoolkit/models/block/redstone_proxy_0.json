@@ -1,6 +1,6 @@
 {
   "parent": "block/cube_all",
   "textures": {
-    "all": "buildstonetoolkit:block/redstone_proxy"
+    "all": "buildstonetoolkit:block/redstone_proxy_0"
   }
 }

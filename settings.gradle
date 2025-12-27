@@ -10,7 +10,6 @@ pluginManagement {
 rootProject.name = 'buildstonetoolkit'
 
 include(
-        //"common",
         "1.20.1:common",
         "1.20.1:fabric",
         "1.20.1:forge",
@@ -19,8 +18,6 @@ include(
         "1.21.1:fabric",
         "1.21.1:neoforge"
 )
-
-//project(":common").projectDir = file("common")
 
 project(":1.20.1:common").projectDir = file("1.20.1/common")
 project(":1.20.1:fabric").projectDir = file("1.20.1/fabric")

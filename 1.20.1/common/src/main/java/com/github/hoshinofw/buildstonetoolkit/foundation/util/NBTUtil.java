@@ -1,10 +1,12 @@
 package com.github.hoshinofw.buildstonetoolkit.foundation.util;
 
-import com.github.hoshinofw.buildstonetoolkit.foundation.common.blocks.entity.ProxyBlockEntity;
+import com.github.hoshinofw.buildstonetoolkit.foundation.common.blocks.entity.unstable.IdProxyBlockEntity;
+import com.github.hoshinofw.buildstonetoolkit.foundation.common.blocks.entity.unstable.ProxyBlockEntity;
 import com.github.hoshinofw.buildstonetoolkit.foundation.util.registries.IdObject;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.Tag;
+import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.Nullable;
 
@@ -66,6 +68,14 @@ public class NBTUtil {
             return nbt.getLong(NBTIdKey);
         } else {
             return -1L;
+        }
+    }
+
+    public static void IdBlockEntityLoadLogic(IdProxyBlockEntity<?> be, CompoundTag nbt) {
+        be.setId(NBTUtil.getId(nbt));
+        Level level = be.getLevel();
+        if (level != null) {
+            IdProxyBlockEntity.getIdRegistry(level).ensureEntry(be);
         }
     }
 

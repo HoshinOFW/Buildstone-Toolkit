@@ -1,0 +1,7 @@
+{
+  "variants": {
+    "tick=0": {"model": "buildstonetoolkit:block/vision_proxy_off"},
+    "tick=1": {"model": "buildstonetoolkit:block/vision_proxy_on"},
+    "tick=2": {"model": "buildstonetoolkit:block/vision_proxy_on"}
+  }
+}

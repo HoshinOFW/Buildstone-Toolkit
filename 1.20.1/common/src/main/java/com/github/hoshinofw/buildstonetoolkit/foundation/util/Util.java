@@ -1,6 +1,6 @@
 package com.github.hoshinofw.buildstonetoolkit.foundation.util;
 
-import com.github.hoshinofw.buildstonetoolkit.content.common.blocks.PistonProxyBlock;
+import com.github.hoshinofw.buildstonetoolkit.content.common.blocks.unstable.PistonProxyBlock;
 import com.github.hoshinofw.buildstonetoolkit.foundation.util.mixin.PistonMovingBlockEntityMixinInterface;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.player.LocalPlayer;
@@ -94,10 +94,6 @@ public class Util {
 
     public static int[] blockPosToArray(BlockPos pos) {
         return new int[]{pos.getX(), pos.getY(), pos.getZ()};
-    }
-
-    public static int max(int a, int b, int c) {
-        return (Math.max(a, Math.max(b, c)));
     }
 
     public static boolean isNonZeroOnlyOn(BlockPos pos, Direction.Axis axis) {

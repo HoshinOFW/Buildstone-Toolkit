@@ -1,5 +1,6 @@
 package com.github.hoshinofw.buildstonetoolkit.foundation.common.blocks.entity;
 
+import com.github.hoshinofw.buildstonetoolkit.foundation.common.blocks.entity.unstable.IdProxyBlockEntity;
 import com.github.hoshinofw.buildstonetoolkit.foundation.util.registries.ProxyRegistry;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.Level;
@@ -7,7 +8,7 @@ import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import org.jetbrains.annotations.NotNull;
 
-public abstract class RegisteredProxyBlockEntity<T extends RegisteredProxyBlockEntity<T>> extends IdProxyBlockEntity<T>{
+public abstract class RegisteredProxyBlockEntity<T extends RegisteredProxyBlockEntity<T>> extends IdProxyBlockEntity<T> {
     public RegisteredProxyBlockEntity(BlockEntityType<?> type, BlockPos pos, BlockState state) {
         super(type, pos, state);
     }

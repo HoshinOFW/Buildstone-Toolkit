@@ -7,10 +7,16 @@
 - Tuner to configure mod features
 - Allay configurable searchOrigin, maxDistance, and general player tracking
 
+## 1.21.1 fix list:
+- Tooltips:
+  - Modwand, all blocks
+
 ## BUGS:
+    Occasional lagspikes with redstone proxy when, in pairs, the targets and proxies are close together
     I discovered that the synchronization is fragile in more complex proxy applications. Tested the 3x3 door.
         The desync actually happens naturally even without manual setTargetAbsPos()
 ### Debt:
+- Do RedstoneProxy via ticking instead of brute force neighbor updates.
 - Join the ObserverBlockEntity and RedstoneBlockEntity proxy registries into 1 common one for efficiency.
 - Create a true common directory between versions.
   - A lot of things become Impl

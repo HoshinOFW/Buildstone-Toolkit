@@ -1,9 +1,9 @@
 package com.github.hoshinofw.buildstonetoolkit.foundation.util;
 
 import com.github.hoshinofw.buildstonetoolkit.foundation.common.blocks.ProxyBlock;
-import com.github.hoshinofw.buildstonetoolkit.foundation.common.blocks.entity.IdProxyBlockEntity;
-import com.github.hoshinofw.buildstonetoolkit.foundation.common.blocks.entity.ProxyBlockEntity;
-import com.github.hoshinofw.buildstonetoolkit.foundation.networking.SetProxyTargetPacket;
+import com.github.hoshinofw.buildstonetoolkit.foundation.common.blocks.entity.unstable.IdProxyBlockEntity;
+import com.github.hoshinofw.buildstonetoolkit.foundation.common.blocks.entity.unstable.ProxyBlockEntity;
+import com.github.hoshinofw.buildstonetoolkit.foundation.networking.unstable.SetProxyTargetPacket;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.entity.player.Player;
