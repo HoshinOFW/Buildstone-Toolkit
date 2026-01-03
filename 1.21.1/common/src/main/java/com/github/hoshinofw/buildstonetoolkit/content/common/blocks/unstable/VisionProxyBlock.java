@@ -18,7 +18,7 @@ public class VisionProxyBlock extends VisionProxyBlockStable {
     @Override
     public void appendHoverText(ItemStack itemStack, Item.TooltipContext tooltipContext, List<Component> list, TooltipFlag tooltipFlag) {
         if (Screen.hasShiftDown()) {
-            list.add(Component.translatable("tooltip.buildstonetoolkit.looking_at_proxy.details"));
+            list.add(Component.translatable("tooltip.buildstonetoolkit.vision_proxy.details"));
         } else {
             list.add(Component.translatable("tooltip.buildstonetoolkit.hold_shift"));
         }

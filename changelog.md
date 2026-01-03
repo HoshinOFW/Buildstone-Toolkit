@@ -1,1 +1,1 @@
-- Small backend changes.
+- Fixed a small bug with the tooltips on 1.21.1

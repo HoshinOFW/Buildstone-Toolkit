@@ -8,11 +8,9 @@
 - Allay configurable searchOrigin, maxDistance, and general player tracking
 
 ## 1.21.1 fix list:
-- Tooltips:
-  - Modwand, all blocks
 
 ## BUGS:
-    Occasional lagspikes with redstone proxy when, in pairs, the targets and proxies are close together
+    
     I discovered that the synchronization is fragile in more complex proxy applications. Tested the 3x3 door.
         The desync actually happens naturally even without manual setTargetAbsPos()
 ### Debt:
@@ -24,7 +22,7 @@
 - Switch FailableResult in parsePos and setLinkedRelPos to normal exception handling.
 
 # TODO FOR NEXT RELEASE:
-    Test multiplayer proly
+    Add a way to tell in-world when something is being targeted. A small lingering particle, maybe
 
     Create Compat for cooler and more expressive tooltips. Maybe even implement them in the base mod.
   

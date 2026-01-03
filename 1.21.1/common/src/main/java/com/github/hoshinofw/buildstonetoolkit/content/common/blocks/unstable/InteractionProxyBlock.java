@@ -17,7 +17,7 @@ public class InteractionProxyBlock extends InteractionProxyBlockStable {
     @Override
     public void appendHoverText(ItemStack itemStack, Item.TooltipContext tooltipContext, List<Component> list, TooltipFlag tooltipFlag) {
         if (Screen.hasShiftDown()) {
-            list.add(Component.translatable("tooltip.buildstonetoolkit.right_click_proxy.details"));
+            list.add(Component.translatable("tooltip.buildstonetoolkit.interaction_proxy.details"));
         } else {
             list.add(Component.translatable("tooltip.buildstonetoolkit.hold_shift"));
         }
