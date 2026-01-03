@@ -1,14 +1,13 @@
 package com.github.hoshinofw.buildstonetoolkit.foundation.common.particles.StaticCubeParticle.unstable;
 
 import com.github.hoshinofw.buildstonetoolkit.foundation.common.registries.BuildstoneParticles;
-import com.github.hoshinofw.multiversion.Overwrite;
 import com.mojang.serialization.MapCodec;
 import io.netty.buffer.ByteBuf;
 import net.minecraft.core.particles.ParticleOptions;
 import net.minecraft.core.particles.ParticleType;
 import net.minecraft.network.codec.StreamCodec;
 import org.jetbrains.annotations.NotNull;
-@Overwrite
+
 public class CubeParticleOptions implements ParticleOptions {
     // Read and write information, typically for use in commands
     // Since there is no information in this type, this will be an empty string

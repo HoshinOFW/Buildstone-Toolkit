@@ -2,7 +2,6 @@ package com.github.hoshinofw.buildstonetoolkit.foundation.mixin.pistonproxy.unst
 
 import com.github.hoshinofw.buildstonetoolkit.foundation.util.Util;
 import com.github.hoshinofw.buildstonetoolkit.foundation.util.mixin.PistonMovingBlockEntityMixinInterface;
-import com.github.hoshinofw.multiversion.Overwrite;
 import com.llamalad7.mixinextras.injector.ModifyReturnValue;
 import com.llamalad7.mixinextras.sugar.Local;
 import net.minecraft.core.BlockPos;
@@ -17,7 +16,6 @@ import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
-@Overwrite
 @Mixin(PistonBaseBlock.class)
 public class PistonBaseBlockMixin {
 

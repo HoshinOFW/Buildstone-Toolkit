@@ -1,7 +1,6 @@
 package com.github.hoshinofw.buildstonetoolkit.foundation.common.particles.StaticCubeParticle.unstable;
 
 import com.github.hoshinofw.buildstonetoolkit.foundation.common.particles.StaticCubeParticle.CubeParticle;
-import com.github.hoshinofw.multiversion.Overwrite;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import net.minecraft.client.Camera;
 import net.minecraft.client.renderer.LightTexture;
@@ -10,7 +9,7 @@ import org.jetbrains.annotations.NotNull;
 
 import static com.github.hoshinofw.buildstonetoolkit.foundation.common.particles.StaticCubeParticle.CubeParticle.CUBE;
 
-@Overwrite
+
 public interface CubeParticleRenderProvider {
 
     default void render(VertexConsumer consumer, @NotNull Camera camera, float partialTicks, CubeParticle particle) {

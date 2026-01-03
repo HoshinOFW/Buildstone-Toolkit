@@ -1,6 +1,5 @@
 package com.github.hoshinofw.buildstonetoolkit.foundation.common.particles.StaticCubeParticle.unstable;
 
-import com.github.hoshinofw.multiversion.Overwrite;
 import com.mojang.blaze3d.platform.GlStateManager;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.BufferBuilder;
@@ -11,7 +10,7 @@ import net.minecraft.client.particle.ParticleRenderType;
 import net.minecraft.client.renderer.GameRenderer;
 import net.minecraft.client.renderer.texture.TextureAtlas;
 import net.minecraft.client.renderer.texture.TextureManager;
-@Overwrite
+
 public class CubeParticleParticleRenderTypeHolder {
     public static final ParticleRenderType NO_DEPTH = new ParticleRenderType() {
         @Override

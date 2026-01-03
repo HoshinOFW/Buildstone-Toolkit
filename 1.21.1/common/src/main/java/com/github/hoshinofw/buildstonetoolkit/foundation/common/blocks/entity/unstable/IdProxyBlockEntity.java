@@ -2,13 +2,12 @@ package com.github.hoshinofw.buildstonetoolkit.foundation.common.blocks.entity.u
 
 import com.github.hoshinofw.buildstonetoolkit.foundation.common.blocks.entity.IdProxyBlockEntityStable;
 import com.github.hoshinofw.buildstonetoolkit.foundation.util.NBTUtil;
-import com.github.hoshinofw.multiversion.Overwrite;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
-@Overwrite
+
 public abstract class IdProxyBlockEntity<T extends IdProxyBlockEntity<T>> extends IdProxyBlockEntityStable<T> {
 
     public IdProxyBlockEntity(BlockEntityType<?> type, BlockPos pos, BlockState state) {

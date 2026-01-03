@@ -2,14 +2,12 @@ package com.github.hoshinofw.buildstonetoolkit.foundation.util.registries.unstab
 
 import com.github.hoshinofw.buildstonetoolkit.foundation.util.registries.IdObject;
 import com.github.hoshinofw.buildstonetoolkit.foundation.util.registries.IdRegistry;
-import com.github.hoshinofw.multiversion.Overwrite;
 import it.unimi.dsi.fastutil.longs.Long2ObjectOpenHashMap;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.level.saveddata.SavedData;
 import org.jetbrains.annotations.NotNull;
 
-@Overwrite
 public class ServerIdRegistry<T extends IdObject> extends SavedData implements IdRegistry<T> {
     private static final String name = "ServerIdRegistry";
     private final Long2ObjectOpenHashMap<T> map = new Long2ObjectOpenHashMap<>();

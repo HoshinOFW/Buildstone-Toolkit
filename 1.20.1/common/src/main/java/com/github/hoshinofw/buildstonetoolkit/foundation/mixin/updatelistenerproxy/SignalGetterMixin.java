@@ -21,7 +21,7 @@ public interface SignalGetterMixin {
      * @author HoshinOFW
      * @reason Target is an interface, this version of mixins does not support @Inject for interface default methods. I tried, but it was not possible. Please reach out to me if you believe you can find a workaround that does not involve an overwrite.
      */
-    @Overwrite()
+    @Overwrite(remap = true)
     default int getSignal(BlockPos blockPos, Direction direction) {
         BlockState blockState = ((SignalGetter)this).getBlockState(blockPos);
         int i = blockState.getSignal(((SignalGetter)this), blockPos, direction);
@@ -46,7 +46,7 @@ public interface SignalGetterMixin {
      * @author HoshinOFW
      * @reason Target is an interface, this version of mixins does not support @Inject for interface default methods. I tried, but it was not possible. Please reach out to me if you believe you can find a workaround that does not involve an overwrite.
      */
-    @Overwrite()
+    @Overwrite(remap = true)
     default boolean hasNeighborSignal(BlockPos blockPos) {
         if (this.getSignal(blockPos.below(), Direction.DOWN) > 0) {
             return true;
@@ -71,12 +71,11 @@ public interface SignalGetterMixin {
         return false;
     }
 
-    //@Inject(method = "getBestNeighborSignal", at = @At("TAIL"), cancellable = true)
     /**
      * @author HoshinOFW
      * @reason Target is an interface, this version of mixins does not support @Inject for interface default methods. I tried, but it was not possible. Please reach out to me if you believe you can find a workaround that does not involve an overwrite.
      */
-    @Overwrite()
+    @Overwrite(remap = true)
     default int getBestNeighborSignal(BlockPos blockPos) {
         int i = 0;
         for(Direction direction : DIRECTIONS) {

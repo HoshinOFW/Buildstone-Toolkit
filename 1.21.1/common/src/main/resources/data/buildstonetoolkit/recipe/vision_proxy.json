@@ -6,7 +6,6 @@
     "C": { "item": "minecraft:cobblestone" },
     "R": { "item": "minecraft:redstone" },
     "G": { "item": "minecraft:glass" }
-
   },
   "pattern": [
     "IGI",

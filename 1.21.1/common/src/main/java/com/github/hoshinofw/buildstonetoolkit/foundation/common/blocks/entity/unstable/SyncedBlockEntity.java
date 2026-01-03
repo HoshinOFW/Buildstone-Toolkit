@@ -1,6 +1,5 @@
 package com.github.hoshinofw.buildstonetoolkit.foundation.common.blocks.entity.unstable;
 
-import com.github.hoshinofw.multiversion.Overwrite;
 import net.minecraft.MethodsReturnNonnullByDefault;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.HolderGetter;
@@ -17,7 +16,6 @@ import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import org.jetbrains.annotations.NotNull;
 
-@Overwrite
 @MethodsReturnNonnullByDefault
 public abstract class SyncedBlockEntity extends BlockEntity{
 

@@ -2,7 +2,6 @@ package com.github.hoshinofw.buildstonetoolkit.foundation.networking.unstable;
 
 import com.github.hoshinofw.buildstonetoolkit.foundation.common.core.BuildstoneToolkit;
 import com.github.hoshinofw.buildstonetoolkit.foundation.util.CodecUtil;
-import com.github.hoshinofw.multiversion.Overwrite;
 import dev.architectury.networking.NetworkManager;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.FriendlyByteBuf;
@@ -13,7 +12,7 @@ import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.Collection;
-@Overwrite
+
 public record PlayerProxyInteractionPacket(Collection<BlockPos> proxyPos, Vec3 playerPosition, ProxyInteractionType interactionType)
 implements CustomPacketPayload{
 

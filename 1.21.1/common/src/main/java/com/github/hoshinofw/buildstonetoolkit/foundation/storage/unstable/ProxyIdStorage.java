@@ -5,13 +5,11 @@ import com.github.hoshinofw.buildstonetoolkit.foundation.util.registries.ClientI
 import com.github.hoshinofw.buildstonetoolkit.foundation.util.registries.IdObject;
 import com.github.hoshinofw.buildstonetoolkit.foundation.util.registries.IdRegistry;
 import com.github.hoshinofw.buildstonetoolkit.foundation.util.registries.unstable.ServerIdRegistry;
-import com.github.hoshinofw.multiversion.Overwrite;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.saveddata.SavedData;
 import org.jetbrains.annotations.NotNull;
 
-@Overwrite
 public class ProxyIdStorage{
 
     public static final String DATA_NAME = "buildstonetoolkit-ServerIdRegistry";

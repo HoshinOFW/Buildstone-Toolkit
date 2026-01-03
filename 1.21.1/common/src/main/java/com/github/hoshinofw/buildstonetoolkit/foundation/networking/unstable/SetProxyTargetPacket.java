@@ -1,7 +1,6 @@
 package com.github.hoshinofw.buildstonetoolkit.foundation.networking.unstable;
 
 import com.github.hoshinofw.buildstonetoolkit.foundation.common.core.BuildstoneToolkit;
-import com.github.hoshinofw.multiversion.Overwrite;
 import dev.architectury.networking.NetworkManager;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.RegistryFriendlyByteBuf;
@@ -10,7 +9,6 @@ import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
 import net.minecraft.resources.ResourceLocation;
 import org.jetbrains.annotations.NotNull;
 
-@Overwrite
 public record SetProxyTargetPacket(BlockPos proxyPos, BlockPos targetPos)
         implements CustomPacketPayload {
 

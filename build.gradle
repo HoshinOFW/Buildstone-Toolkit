@@ -3,6 +3,8 @@ plugins {
     id 'dev.architectury.loom' version '1.11-SNAPSHOT' apply false
     id 'architectury-plugin' version '3.4-SNAPSHOT' apply false
     id 'com.gradleup.shadow' version '8.3.6' apply false
+
+    id "me.modmuss50.mod-publish-plugin" version "1.1.0"
 }
 
 allprojects {
@@ -26,7 +28,6 @@ def isNeoForge = { Project p -> p.name == "neoforge" }
 
 def isNotBaseVersionModule = {Project p -> isCommon(p) || isFabric(p) || isForge(p) || isNeoForge(p)}
 
-// MC version group helpers
 def mcVersion = { Project p ->
     p.path.split(':').findAll { it }[0]
 }
@@ -51,7 +52,6 @@ def configureArchitecturyPlatform = { Project p, Object ext ->
         return
     }
 
-    // platform modules
     ext.platformSetupLoomIde()
 
     switch (p.name) {
@@ -133,8 +133,6 @@ subprojects { p ->
         minecraft "net.minecraft:minecraft:$project.minecraft_version"
         mappings loom.officialMojangMappings()
 
-        compileOnly("com.github.hoshinofw.multiversion:annotations:0.0.1")
-
         if (isCommon(p)) {
             modImplementation "net.fabricmc:fabric-loader:$project.fabric_loader_version"
         } else if (isFabric(p)) {
@@ -159,23 +157,24 @@ subprojects { p ->
             implementation("io.github.llamalad7:mixinextras-$project.name:${project.mixin_extras_version}")
             compileOnly(annotationProcessor("io.github.llamalad7:mixinextras-common:${project.mixin_extras_version}"))
         }
-
     }
 
     processResources {
         var replaceProperties = [
-                mod_id          : project.mod_id,
-                mod_version     : project.mod_version,
-                mod_name        : project.mod_name,
-                mod_author      : project.mod_author,
-                mod_description : project.mod_description,
-                mod_license     : project.mod_license,
-                minecraft_version: project.minecraft_version,
-                architectury_api_version: project.architectury_api_version,
-                fabric_loader_version: project.fabric_loader_version
+                mod_id          : mod_id,
+                mod_version     : mod_version,
+                mod_name        : mod_name,
+                mod_author      : mod_author,
+                mod_description : mod_description,
+                mod_license     : mod_license,
+                minecraft_version: minecraft_version,
+                architectury_api_version: architectury_api_version,
+                fabric_loader_version: fabric_loader_version,
+                file             : [jarVersion: project.mod_version],
         ]
 
-        replaceProperties.put("file", [jarVersion: project.version])
+        inputs.properties(replaceProperties)
+        filteringCharset = "UTF-8"
 
         filesMatching(['META-INF/mods.toml', 'fabric.mod.json', 'META-INF/neoforge.mods.toml']) {
             expand(replaceProperties)
@@ -233,16 +232,6 @@ subprojects { p ->
     }
 }
 
-//Common tasks
-tasks.register("build1_20_1") {
-    group = "build"
-    dependsOn(":1.20.1:common:build", ":1.20.1:fabric:build", ":1.20.1:forge:build")
-}
-tasks.register("build1_21_1") {
-    group = "build"
-    dependsOn(":1.21.1:common:build", ":1.21.1:fabric:build", ":1.21.1:neoforge:build")
-}
-
 def collectJarFrom = { String mc, String loader, String projectPath ->
     def modVer = rootProject.mod_version.toString()
     def destDir = layout.projectDirectory.dir("builds/${modVer}/${mc}/${loader}")
@@ -256,13 +245,14 @@ def collectJarFrom = { String mc, String loader, String projectPath ->
         from(project(projectPath).layout.buildDirectory.dir("libs"))
         into(destDir)
 
-        include("*.jar")
+        include("*-${modVer}.jar")
         exclude("*-sources.jar")
         exclude("*-javadoc.jar")
         exclude("*-shadow.jar")
         exclude("*-dev.jar")
         exclude("*-dev-shadow.jar")
         exclude("*-all.jar")
+
 
         doFirst {
             if (destDir.asFile.exists()) {
@@ -293,6 +283,7 @@ tasks.register("collectBuildsAll") {
     group = "distribution"
     dependsOn("collectBuilds120", "collectBuilds121")
 }
+
 
 import groovy.io.FileType
 import groovy.json.JsonSlurper
@@ -352,6 +343,7 @@ def normalizeExcludePatterns = { Collection<String> rels ->
         return s
     }.findAll { it != null }
 }
+
 
 gradle.projectsEvaluated {
     def sharedJava = rootProject.file("common/src/main/java")
@@ -470,8 +462,9 @@ gradle.projectsEvaluated {
                 }
             }
 
-            patchP.tasks.named("compileJava").configure { it.dependsOn(genJava) }
-            patchP.tasks.named("processResources").configure { it.dependsOn(genRes) }
+            patchP.tasks.named("compileJava").configure {it.dependsOn(genJava)}
+            patchP.tasks.named("processResources").configure {it.dependsOn(genRes)}
+            patchP.tasks.named("sourcesJar").configure {it.dependsOn(genJava, genRes)}
         }
 
         patchP.plugins.withId("idea") {
@@ -491,3 +484,136 @@ gradle.projectsEvaluated {
 
 }
 
+def requirePublishFlag = providers.gradleProperty("PUBLISH_RELEASE")
+        .map { it.equalsIgnoreCase("true") }
+        .orElse(false)
+
+def readChangelog = {
+    def f = rootProject.file("changelog.md")
+    return f.exists() ? f.getText("UTF-8") : "No changelog.md found."
+}
+
+def singleJarFromDir = { String dirPath ->
+    providers.provider {
+        def dir = rootProject.file(dirPath)
+        def ver = rootProject.mod_version.toString()
+
+        def tree = fileTree(dir) {
+            include("*-${ver}.jar")
+            exclude("*-sources.jar", "*-javadoc.jar", "*-shadow.jar", "*-dev.jar", "*-dev-shadow.jar", "*-all.jar")
+        }
+
+        def files = tree.files.toList()
+        if (files.isEmpty()) throw new GradleException("No publishable jar found in: ${dir} (expected *-${ver}.jar)")
+        if (files.size() > 1) throw new GradleException("Multiple *-${ver}.jar found in ${dir}: ${files*.name}")
+
+        return files[0]
+    }
+}
+
+
+
+tasks.register("publishAllSafe") {
+    group = "distribution"
+    description = "Publishes ALL collected jars to CurseForge + Modrinth (requires -PPUBLISH_RELEASE=true)."
+    dependsOn("publishMods") // task added by mod-publish-plugin
+}
+
+
+publishMods {
+    dryRun = !requirePublishFlag.get()
+
+    version = rootProject.mod_version.toString()
+    changelog = readChangelog()
+
+    def channel = providers.gradleProperty("release_channel").orElse("release").get().toLowerCase()
+    type = (channel == "alpha") ? ALPHA : (channel == "beta") ? BETA : STABLE
+
+    def curseToken = providers.environmentVariable("CURSEFORGE_TOKEN")
+    def modrinthToken = providers.environmentVariable("MODRINTH_TOKEN")
+
+    def cf = curseforgeOptions {
+        accessToken = curseToken
+        projectId = providers.gradleProperty("curseforge_id")
+
+        clientRequired = mod_client.asBoolean()
+        serverRequired = mod_server.asBoolean()
+
+        requires(curseforge_dependencies.split(","))
+    }
+    def mr = modrinthOptions {
+        accessToken = modrinthToken
+        projectId = providers.gradleProperty("modrinth_id")
+        requires(modrinth_dependencies.split(","))
+    }
+
+    def addVariant = { String name, String mc, String loader ->
+        def loaderLabel = (loader == "neoforge") ? "NeoForge" : capitalizeFirst(loader)
+        def versionDisplay = "${mod_name} ${mod_version} [${loaderLabel} ${mc}]"
+        def versionNumber = "${loader}-${mc}-${mod_version}"
+        def javaVersion = mc.startsWith("1.20.") ? JavaVersion.VERSION_17 : JavaVersion.VERSION_21
+
+        def dir = "builds/${mod_version}/${mc}/${loader}"
+        def pub = publishOptions {
+            file = layout.file(singleJarFromDir(dir))
+            displayName = versionDisplay
+            modLoaders.add(loader)
+        }
+
+        curseforge("curseforge_${name}") {
+            from(cf, pub)
+            changelogType = "markdown"
+            version = versionNumber
+            minecraftVersions.add(mc)
+
+            javaVersions.add(javaVersion)
+        }
+
+        modrinth("modrinth_${name}") {
+            from(mr, pub)
+            version = versionNumber
+            minecraftVersions.add(mc)
+        }
+    }
+
+    addVariant("1_20_1_fabric",   "1.20.1", "fabric")
+    addVariant("1_20_1_forge",    "1.20.1", "forge")
+    addVariant("1_21_1_fabric",   "1.21.1", "fabric")
+    addVariant("1_21_1_neoforge", "1.21.1", "neoforge")
+}
+
+def collectTaskNameForPublishTask = { String publishTaskName ->
+    // publishCurseforge_1_21_1_neoforge -> collect_1_21_1_neoforge
+    if (publishTaskName.startsWith("publishCurseforge_")) {
+        return publishTaskName.replaceFirst("publishCurseforge_", "collect_")
+    }
+    // publishModrinth_1_21_1_neoforge -> collect_1_21_1_neoforge
+    if (publishTaskName.startsWith("publishModrinth_")) {
+        return publishTaskName.replaceFirst("publishModrinth_", "collect_")
+    }
+    return null
+}
+
+tasks.configureEach { t ->
+    def ct = collectTaskNameForPublishTask(t.name)
+    if (ct != null && tasks.findByName(ct) != null) {
+        t.dependsOn(ct)
+    }
+}
+
+// Make sure the aggregate publish depends on collecting everything
+tasks.matching { it.name == "publishMods" }.configureEach {
+    dependsOn("collectBuildsAll")
+}
+
+tasks.named("publishMods").configure {
+    dependsOn("collectBuildsAll")
+}
+
+tasks.named("publishMods").configure {
+    doFirst {
+        if (!providers.gradleProperty("PUBLISH_RELEASE").orElse("false").get().equalsIgnoreCase("true")) {
+            logger.lifecycle("publishMods is running in DRY RUN mode. To actually publish: -PPUBLISH_RELEASE=true")
+        }
+    }
+}

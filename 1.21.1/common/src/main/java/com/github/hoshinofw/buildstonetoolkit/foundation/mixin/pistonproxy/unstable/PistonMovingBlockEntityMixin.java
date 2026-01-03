@@ -1,7 +1,6 @@
 package com.github.hoshinofw.buildstonetoolkit.foundation.mixin.pistonproxy.unstable;
 
 import com.github.hoshinofw.buildstonetoolkit.foundation.util.mixin.PistonMovingBlockEntityMixinInterface;
-import com.github.hoshinofw.multiversion.Overwrite;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.level.block.piston.PistonMovingBlockEntity;
@@ -9,7 +8,6 @@ import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
-@Overwrite
 @Mixin(PistonMovingBlockEntity.class)
 public abstract class PistonMovingBlockEntityMixin implements PistonMovingBlockEntityMixinInterface{
 

@@ -2,13 +2,11 @@ package com.github.hoshinofw.buildstonetoolkit.foundation.common.registries.unst
 
 import com.github.hoshinofw.buildstonetoolkit.foundation.common.blocks.entity.unstable.ProxyBlockEntity;
 import com.github.hoshinofw.buildstonetoolkit.foundation.networking.unstable.SetProxyTargetPacket;
-import com.github.hoshinofw.multiversion.Overwrite;
 import dev.architectury.networking.NetworkManager;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.level.block.entity.BlockEntity;
 
-@Overwrite
 public class BuildstonePacketsRegisterSetProxyTarget {
 
     public static void register() {

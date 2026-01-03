@@ -2,14 +2,12 @@ package com.github.hoshinofw.buildstonetoolkit.foundation.common.registries.unst
 
 import com.github.hoshinofw.buildstonetoolkit.foundation.common.blocks.InteractiveProxyBlock;
 import com.github.hoshinofw.buildstonetoolkit.foundation.networking.unstable.PlayerProxyInteractionPacket;
-import com.github.hoshinofw.multiversion.Overwrite;
 import dev.architectury.networking.NetworkManager;
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.level.block.state.BlockState;
 
-@Overwrite
 public class BuildstonePacketsRegisterPlayerProxyInteraction {
 
     public static void register() {

@@ -1,12 +1,9 @@
 package com.github.hoshinofw.buildstonetoolkit.foundation.networking.unstable;
 
-import com.github.hoshinofw.multiversion.Overwrite;
 import io.netty.buffer.ByteBuf;
-import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.network.codec.StreamCodec;
 import org.jetbrains.annotations.NotNull;
 
-@Overwrite
 public enum ProxyInteractionType {
 
     RightClickedRightClickProxy(1),

@@ -1,7 +1,6 @@
 package com.github.hoshinofw.buildstonetoolkit.content.common.blocks.unstable;
 
 import com.github.hoshinofw.buildstonetoolkit.content.common.blocks.PistonProxyBlockStable;
-import com.github.hoshinofw.multiversion.Overwrite;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.item.Item;
@@ -9,7 +8,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
 
 import java.util.List;
-@Overwrite
+
 public class PistonProxyBlock extends PistonProxyBlockStable {
     public PistonProxyBlock(Properties properties) {
         super(properties);

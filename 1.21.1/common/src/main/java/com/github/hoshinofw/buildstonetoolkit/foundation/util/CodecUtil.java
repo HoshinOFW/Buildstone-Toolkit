@@ -1,6 +1,5 @@
 package com.github.hoshinofw.buildstonetoolkit.foundation.util;
 
-import com.github.hoshinofw.multiversion.Overwrite;
 import io.netty.buffer.ByteBuf;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.FriendlyByteBuf;
@@ -11,7 +10,6 @@ import org.jetbrains.annotations.NotNull;
 import java.util.ArrayList;
 import java.util.Collection;
 
-@Overwrite
 public class CodecUtil {
     public static StreamCodec<FriendlyByteBuf, Collection<BlockPos>> POSCOLLECTION_STREAM_CODEC = new StreamCodec<FriendlyByteBuf, Collection<BlockPos>>() {
         @Override
