@@ -1,10 +1,10 @@
-package com.github.hoshinofw.buildstonetoolkit.foundation.common.particles.StaticCubeParticle;
+package com.github.hoshinofw.buildstonetoolkit.foundation.client.particles.StaticCubeParticle;
 
 import com.github.hoshinofw.buildstonetoolkit.content.common.items.unstable.ModWand;
 import com.github.hoshinofw.buildstonetoolkit.foundation.client.Sprites;
-import com.github.hoshinofw.buildstonetoolkit.foundation.common.particles.StaticCubeParticle.unstable.CubeParticleOptions;
-import com.github.hoshinofw.buildstonetoolkit.foundation.common.particles.StaticCubeParticle.unstable.CubeParticleParticleRenderTypeHolder;
-import com.github.hoshinofw.buildstonetoolkit.foundation.common.particles.StaticCubeParticle.unstable.CubeParticleRenderProvider;
+import com.github.hoshinofw.buildstonetoolkit.foundation.client.particles.StaticCubeParticle.unstable.CubeParticleOptions;
+import com.github.hoshinofw.buildstonetoolkit.foundation.client.particles.StaticCubeParticle.unstable.CubeParticleParticleRenderTypeHolder;
+import com.github.hoshinofw.buildstonetoolkit.foundation.client.particles.StaticCubeParticle.unstable.CubeParticleRenderProvider;
 import com.github.hoshinofw.buildstonetoolkit.foundation.util.BlockPosSupplier;
 import com.github.hoshinofw.buildstonetoolkit.foundation.util.render.BlockParticleTexture;
 import com.mojang.blaze3d.systems.RenderSystem;
@@ -23,6 +23,7 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.function.BooleanSupplier;
 
+@Environment(EnvType.CLIENT)
 public class CubeParticle extends TextureSheetParticle {
 
     public static final Vec3[] CUBE = {

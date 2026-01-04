@@ -9,7 +9,6 @@ import com.github.hoshinofw.buildstonetoolkit.foundation.networking.unstable.Pro
 import com.github.hoshinofw.buildstonetoolkit.foundation.util.Util;
 import com.github.hoshinofw.buildstonetoolkit.foundation.util.registries.ProxyRegistry;
 import it.unimi.dsi.fastutil.objects.Object2ObjectOpenHashMap;
-import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.server.level.ServerLevel;
@@ -34,7 +33,7 @@ public class VisionProxyBlockStable extends RegisteredProxyBlock<VisionProxyBloc
     public static final IntegerProperty TICK = IntegerProperty.create("tick", 0, maxTick);
 
     private static final Map<ServerLevel, ProxyRegistry<VisionProxyBlockEntity>> serverRegistryMap = new Object2ObjectOpenHashMap<>();
-    private static final Map<ClientLevel, ProxyRegistry<VisionProxyBlockEntity>> clientRegistryMap = new Object2ObjectOpenHashMap<>();
+    private static final Map<Level, ProxyRegistry<VisionProxyBlockEntity>> clientRegistryMap = new Object2ObjectOpenHashMap<>();
 
     public VisionProxyBlockStable(Properties properties) {
         super(properties, VisionProxyBlockEntity.class);
@@ -119,7 +118,7 @@ public class VisionProxyBlockStable extends RegisteredProxyBlock<VisionProxyBloc
     }
 
     @Override
-    protected @NotNull Map<ClientLevel, ProxyRegistry<VisionProxyBlockEntity>> getClientRegistryMap() {
+    protected @NotNull Map<Level, ProxyRegistry<VisionProxyBlockEntity>> getClientRegistryMap() {
         return clientRegistryMap;
     }
 

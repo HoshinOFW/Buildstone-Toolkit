@@ -16,6 +16,7 @@ import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
+import org.spongepowered.asm.mixin.injection.callback.LocalCapture;
 
 @Mixin(PistonBaseBlock.class)
 public class PistonBaseBlockMixin {
@@ -23,7 +24,8 @@ public class PistonBaseBlockMixin {
     @Inject(method = "moveBlocks",
             at = @At(value = "INVOKE", target = "Lnet/minecraft/world/level/Level;setBlockEntity(Lnet/minecraft/world/level/block/entity/BlockEntity;)V",
                     ordinal = 0,
-                    shift = At.Shift.AFTER))
+                    shift = At.Shift.AFTER),
+    locals = LocalCapture.CAPTURE_FAILHARD)
     private void buildstonetoolkit$afterSetBlockEntity(Level level, BlockPos blockPos, Direction direction, boolean extending,
             CallbackInfoReturnable<Boolean> cir,
             @Local(ordinal = 2) BlockPos currentFinalPos) {

@@ -1,4 +1,4 @@
-package com.github.hoshinofw.buildstonetoolkit.foundation.common.particles.StaticCubeParticle.unstable;
+package com.github.hoshinofw.buildstonetoolkit.foundation.client.particles.StaticCubeParticle.unstable;
 
 
 import com.mojang.brigadier.StringReader;

@@ -1,7 +1,7 @@
 package com.hoshin.buildstonetoolkit.fabric.registries;
 
 import com.github.hoshinofw.buildstonetoolkit.foundation.client.Sprites;
-import com.github.hoshinofw.buildstonetoolkit.foundation.common.particles.StaticCubeParticle.CubeParticle;
+import com.github.hoshinofw.buildstonetoolkit.foundation.client.particles.StaticCubeParticle.CubeParticle;
 import com.github.hoshinofw.buildstonetoolkit.foundation.common.registries.BuildstoneParticles;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;

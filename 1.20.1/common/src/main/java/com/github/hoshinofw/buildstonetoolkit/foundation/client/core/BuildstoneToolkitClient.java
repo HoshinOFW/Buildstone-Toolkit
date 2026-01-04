@@ -1,5 +1,4 @@
-package com.github.hoshinofw.buildstonetoolkit.foundation.common.core;
-
+package com.github.hoshinofw.buildstonetoolkit.foundation.client.core;
 
 import com.github.hoshinofw.buildstonetoolkit.content.common.items.unstable.ModWand;
 import com.github.hoshinofw.buildstonetoolkit.foundation.common.core.unstable.CoreResourceLocations;

@@ -1,16 +1,17 @@
-package com.github.hoshinofw.buildstonetoolkit.foundation.common.particles.StaticCubeParticle.unstable;
+package com.github.hoshinofw.buildstonetoolkit.foundation.client.particles.StaticCubeParticle.unstable;
 
-import com.github.hoshinofw.buildstonetoolkit.foundation.common.particles.StaticCubeParticle.CubeParticle;
+import com.github.hoshinofw.buildstonetoolkit.foundation.client.particles.StaticCubeParticle.CubeParticle;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import net.minecraft.client.Camera;
 import net.minecraft.client.renderer.LightTexture;
 import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.NotNull;
 
-import static com.github.hoshinofw.buildstonetoolkit.foundation.common.particles.StaticCubeParticle.CubeParticle.CUBE;
+import static com.github.hoshinofw.buildstonetoolkit.foundation.client.particles.StaticCubeParticle.CubeParticle.CUBE;
 
 
 public interface CubeParticleRenderProvider {
+
 
     default void render(VertexConsumer consumer, @NotNull Camera camera, float partialTicks, CubeParticle particle) {
         Vec3 projectedView = camera.getPosition();
@@ -33,11 +34,13 @@ public interface CubeParticleRenderProvider {
                     default -> { u = particle.minU; v = particle.maxV; } //Case 3
                 }
 
-                consumer.addVertex((float) vec.x, (float) vec.y, (float) vec.z)
-                        .setUv(u, v)
-                        .setColor(particle.r, particle.g, particle.b, particle.alpha)
-                        .setLight(light);
+                consumer.vertex((float) vec.x, (float) vec.y, (float) vec.z)
+                        .uv(u, v)
+                        .color(particle.r, particle.g, particle.b, particle.alpha)
+                        .uv2(light)
+                        .endVertex();
             }
         }
     }
+
 }

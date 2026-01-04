@@ -1,1 +1,2 @@
-- Fixed a small bug with the tooltips on 1.21.1
+- Fixed bug crashing on server
+- Fixed Redstone Proxy analog output not working bug

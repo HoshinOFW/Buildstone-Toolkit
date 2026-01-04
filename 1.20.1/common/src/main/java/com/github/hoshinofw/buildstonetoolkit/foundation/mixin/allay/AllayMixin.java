@@ -2,7 +2,6 @@ package com.github.hoshinofw.buildstonetoolkit.foundation.mixin.allay;
 
 import com.github.hoshinofw.buildstonetoolkit.content.common.items.unstable.ModWand;
 import com.github.hoshinofw.buildstonetoolkit.foundation.util.NBTUtil;
-import com.github.hoshinofw.buildstonetoolkit.foundation.util.ParticleUtil;
 import com.github.hoshinofw.buildstonetoolkit.foundation.util.PlayerUtil;
 import com.github.hoshinofw.buildstonetoolkit.foundation.util.Util;
 import com.github.hoshinofw.buildstonetoolkit.foundation.util.mixin.AllayMixinInterface;
@@ -102,8 +101,9 @@ public class AllayMixin extends PathfinderMob implements AllayMixinInterface {
                     if (!player.level().isClientSide()) {
                         player.displayClientMessage(Component.translatable("message.buildstonetoolkit.allay_tracking"), true);
                     } else {
-                        if (storedAllaySearchPos != null) {
-                            ParticleUtil.spawnSelectionParticle(player, storedAllaySearchPos);}
+//                        if (storedAllaySearchPos != null) {
+//                            ParticleUtil.spawnSelectionParticle(player, storedAllaySearchPos);
+//                        }
                         playAllayConfirmationSound(player);
                     }
                 }

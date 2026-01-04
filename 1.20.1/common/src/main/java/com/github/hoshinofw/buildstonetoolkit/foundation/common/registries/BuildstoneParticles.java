@@ -1,8 +1,8 @@
 package com.github.hoshinofw.buildstonetoolkit.foundation.common.registries;
 
 import com.github.hoshinofw.buildstonetoolkit.foundation.common.core.BuildstoneToolkit;
-import com.github.hoshinofw.buildstonetoolkit.foundation.common.particles.StaticCubeParticle.unstable.CubeParticleOptions;
-import com.github.hoshinofw.buildstonetoolkit.foundation.common.particles.StaticCubeParticle.unstable.CubeParticleType;
+import com.github.hoshinofw.buildstonetoolkit.foundation.client.particles.StaticCubeParticle.unstable.CubeParticleOptions;
+import com.github.hoshinofw.buildstonetoolkit.foundation.client.particles.StaticCubeParticle.unstable.CubeParticleType;
 import dev.architectury.registry.registries.DeferredRegister;
 import net.minecraft.core.particles.ParticleType;
 import net.minecraft.core.registries.Registries;

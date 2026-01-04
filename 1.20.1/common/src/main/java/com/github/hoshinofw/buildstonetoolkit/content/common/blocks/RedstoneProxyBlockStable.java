@@ -56,12 +56,10 @@ public abstract class RedstoneProxyBlockStable extends UpdateListenerProxyBlock 
                                         BlockState targetState, BlockPos targetPos) {
         int targetPower = 0;
         int proxyPower = level.getBestNeighborSignal(proxyPos);
-        if (targetState.isRedstoneConductor(level, targetPos)) {
-            if (targetState.hasAnalogOutputSignal()) {
-                targetPower = targetState.getAnalogOutputSignal(level, targetPos);
-            } else {
-                targetPower = level.getDirectSignalTo(targetPos);
-            }
+        if (targetState.hasAnalogOutputSignal()) {
+            targetPower = targetState.getAnalogOutputSignal(level, targetPos);
+        } else if (targetState.isRedstoneConductor(level, targetPos)) {
+            targetPower = level.getDirectSignalTo(targetPos);
         }
         return Math.max(targetPower, proxyPower);
     }
@@ -93,15 +91,5 @@ public abstract class RedstoneProxyBlockStable extends UpdateListenerProxyBlock 
         setSignal(level, be.getBlockPos(),
                 computePowerLevel(level, proxyPos, level.getBlockState(targetPos), targetPos));
         level.updateNeighborsAt(proxyPos, this);
-    }
-
-    @Override
-    public boolean hasAnalogOutputSignal(BlockState blockState) {
-        return true;
-    }
-
-    @Override
-    public int getAnalogOutputSignal(BlockState blockState, Level level, BlockPos blockPos) {
-        return getSignal(blockState);
     }
 }

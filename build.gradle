@@ -129,6 +129,26 @@ subprojects { p ->
         }
     }
 
+    if (!isCommon(p)) {
+        shadowJar {
+            configurations = [project.configurations.shadowBundle]
+            archiveClassifier = 'dev-shadow'
+        }
+
+        remapJar {
+            inputFile.set shadowJar.archiveFile
+        }
+    } else if (isNotBaseVersionModule(p)) {
+        def sharedRoot = rootProject.file("common")
+
+        sourceSets {
+            main {
+                java.srcDir sharedRoot.toPath().resolve("src/main/java").toFile()
+                resources.srcDir sharedRoot.toPath().resolve("src/main/resources").toFile()
+            }
+        }
+    }
+
     dependencies {
         minecraft "net.minecraft:minecraft:$project.minecraft_version"
         mappings loom.officialMojangMappings()
@@ -155,6 +175,7 @@ subprojects { p ->
 
         if (is120(p)) {
             implementation("io.github.llamalad7:mixinextras-$project.name:${project.mixin_extras_version}")
+            //if (!isCommon(p)) {shadowBundle("io.github.llamalad7:mixinextras-$project.name:${project.mixin_extras_version}")}
             compileOnly(annotationProcessor("io.github.llamalad7:mixinextras-common:${project.mixin_extras_version}"))
         }
     }
@@ -199,26 +220,6 @@ subprojects { p ->
             options.release = 21
         } else {
             options.release = 21
-        }
-    }
-
-    if (!isCommon(p)) {
-        shadowJar {
-            configurations = [project.configurations.shadowBundle]
-            archiveClassifier = 'dev-shadow'
-        }
-
-        remapJar {
-            inputFile.set shadowJar.archiveFile
-        }
-    } else if (isNotBaseVersionModule(p)) {
-        def sharedRoot = rootProject.file("common")
-
-        sourceSets {
-            main {
-                java.srcDir sharedRoot.toPath().resolve("src/main/java").toFile()
-                resources.srcDir sharedRoot.toPath().resolve("src/main/resources").toFile()
-            }
         }
     }
 

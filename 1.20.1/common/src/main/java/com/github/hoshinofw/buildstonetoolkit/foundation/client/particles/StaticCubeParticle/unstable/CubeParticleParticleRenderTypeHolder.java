@@ -1,4 +1,4 @@
-package com.github.hoshinofw.buildstonetoolkit.foundation.common.particles.StaticCubeParticle.unstable;
+package com.github.hoshinofw.buildstonetoolkit.foundation.client.particles.StaticCubeParticle.unstable;
 
 import com.mojang.blaze3d.platform.GlStateManager;
 import com.mojang.blaze3d.systems.RenderSystem;
@@ -14,7 +14,7 @@ import net.minecraft.client.renderer.texture.TextureManager;
 public class CubeParticleParticleRenderTypeHolder {
     public static final ParticleRenderType NO_DEPTH = new ParticleRenderType() {
         @Override
-        public BufferBuilder begin(Tesselator tesselator, TextureManager textureManager) {
+        public void begin(BufferBuilder bufferBuilder, TextureManager textureManager) {
             RenderSystem.setShaderTexture(0, TextureAtlas.LOCATION_PARTICLES);
 
             RenderSystem.disableDepthTest();
@@ -28,7 +28,12 @@ public class CubeParticleParticleRenderTypeHolder {
                     GlStateManager.DestFactor.ONE_MINUS_SRC_ALPHA
             );
 
-            return tesselator.begin(VertexFormat.Mode.QUADS, DefaultVertexFormat.PARTICLE);
+            bufferBuilder.begin(VertexFormat.Mode.QUADS, DefaultVertexFormat.PARTICLE);
+        }
+
+        @Override
+        public void end(Tesselator tesselator) {
+            tesselator.end();
         }
 
         @Override

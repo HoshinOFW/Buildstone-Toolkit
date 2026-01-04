@@ -17,19 +17,19 @@ public abstract class ServerLevelMixin {
 
     @Inject(method = "updateNeighborsAt", at = @At("HEAD"))
     public void updateNeighborsAt(BlockPos blockPos, Block block, CallbackInfo ci) {
-        UpdateUtil.doInstantTargetUpdatedLogic(blockPos, (Level)(Object)this);
+        UpdateUtil.doTargetUpdatedLogic(blockPos, (Level)(Object)this);
     }
     @Inject(method = "updateNeighborsAtExceptFromFacing", at = @At("HEAD"))
     public void updateNeighborsAtExceptFromFacing(BlockPos blockPos, Block block, Direction direction, CallbackInfo ci) {
-        UpdateUtil.doInstantTargetUpdatedLogic(blockPos, (Level)(Object)this);
+        UpdateUtil.doTargetUpdatedLogic(blockPos, (Level)(Object)this);
     }
     @Inject(method = "neighborChanged(Lnet/minecraft/core/BlockPos;Lnet/minecraft/world/level/block/Block;Lnet/minecraft/core/BlockPos;)V", at = @At("HEAD"))
     public void neighborChanged(BlockPos blockPos, Block block, BlockPos blockPos2, CallbackInfo ci) {
-        UpdateUtil.doInstantTargetUpdatedLogic(blockPos, (Level)(Object)this);
+        UpdateUtil.doTargetUpdatedLogic(blockPos, (Level)(Object)this);
     }
     @Inject(method = "neighborChanged(Lnet/minecraft/world/level/block/state/BlockState;Lnet/minecraft/core/BlockPos;Lnet/minecraft/world/level/block/Block;Lnet/minecraft/core/BlockPos;Z)V", at = @At("HEAD"))
     public void neighborChanged(BlockState blockState, BlockPos blockPos, Block block, BlockPos blockPos2, boolean bl, CallbackInfo ci) {
-        UpdateUtil.doInstantTargetUpdatedLogic(blockPos, (Level)(Object)this);
+        UpdateUtil.doTargetUpdatedLogic(blockPos, (Level)(Object)this);
     }
 
 

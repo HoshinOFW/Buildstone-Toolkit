@@ -14,7 +14,7 @@ public abstract class LevelMixin {
 
     @Inject(method = "updateNeighbourForOutputSignal", at = @At("HEAD"))
     public void beforeUpdateNeighbourForOutputSignal(BlockPos blockPos, Block block, CallbackInfo ci) {
-        UpdateUtil.doInstantTargetUpdatedLogic(blockPos, (Level)(Object)this);
+        UpdateUtil.doTargetUpdatedLogic(blockPos, (Level)(Object)this);
     }
 
 }

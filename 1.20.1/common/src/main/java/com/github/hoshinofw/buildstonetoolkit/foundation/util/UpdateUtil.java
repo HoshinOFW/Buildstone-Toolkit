@@ -11,7 +11,7 @@ public class UpdateUtil {
 
     private static boolean IN_PROXY_UPDATE = false;
 
-    public static void doInstantTargetUpdatedLogic(BlockPos targetPos, Level level) {
+    public static void doTargetUpdatedLogic(BlockPos targetPos, Level level) {
         if (IN_PROXY_UPDATE) return;
 
         IN_PROXY_UPDATE = true;
