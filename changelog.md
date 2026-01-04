@@ -1,2 +1,1 @@
-- Fixed bug crashing on server
-- Fixed Redstone Proxy analog output not working bug
+- Various optimizations and small bugfixes related to the Redstone Proxy.

@@ -4,10 +4,13 @@ import com.github.hoshinofw.buildstonetoolkit.content.common.blocks.entity.Redst
 import com.github.hoshinofw.buildstonetoolkit.content.common.blocks.unstable.RedstoneProxyBlock;
 import com.github.hoshinofw.buildstonetoolkit.foundation.common.blocks.UpdateListenerProxyBlock;
 import com.github.hoshinofw.buildstonetoolkit.foundation.common.blocks.entity.UpdateListenerProxyBlockEntity;
+import com.github.hoshinofw.buildstonetoolkit.foundation.common.core.BuildstoneToolkit;
 import com.github.hoshinofw.buildstonetoolkit.foundation.common.registries.BuildstoneBlocks;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
+import net.minecraft.server.level.ServerLevel;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.level.BlockGetter;
@@ -17,6 +20,7 @@ import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.IntegerProperty;
+import net.minecraft.world.ticks.TickPriority;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -40,10 +44,14 @@ public abstract class RedstoneProxyBlockStable extends UpdateListenerProxyBlock 
         return state.getValue(REDSTONE_LEVEL);
     }
 
-    private void setSignal(Level level, BlockPos pos, int value) {
-        BlockState state = level.getBlockState(pos);
-        if (state.is(this)) {
-            level.setBlock(pos, state.setValue(REDSTONE_LEVEL, value), 3);
+    private void setSignal(Level level, BlockPos proxyPos, int newSignal) {
+        BlockState oldState = level.getBlockState(proxyPos);
+        setSignal(level, proxyPos, oldState, newSignal);
+    }
+
+    private void setSignal(Level level, BlockPos proxyPos, BlockState oldState, int newSignal) {
+        if (oldState.is(this) && getSignal(oldState) != newSignal) {
+            level.setBlock(proxyPos, oldState.setValue(REDSTONE_LEVEL, newSignal), Block.UPDATE_ALL);
         }
     }
 
@@ -52,11 +60,10 @@ public abstract class RedstoneProxyBlockStable extends UpdateListenerProxyBlock 
         return new RedstoneProxyBlockEntity(blockPos, blockState);
     }
 
-    public static int computePowerLevel(Level level, BlockPos proxyPos,
-                                        BlockState targetState, BlockPos targetPos) {
+    public static int computePowerLevel(Level level, BlockPos proxyPos, BlockState targetState, BlockPos targetPos) {
         int targetPower = 0;
         int proxyPower = level.getBestNeighborSignal(proxyPos);
-        if (targetState.hasAnalogOutputSignal()) {
+        if (targetState.hasAnalogOutputSignal() && !(targetState.getBlock() instanceof RedstoneProxyBlockStable)) {
             targetPower = targetState.getAnalogOutputSignal(level, targetPos);
         } else if (targetState.isRedstoneConductor(level, targetPos)) {
             targetPower = level.getDirectSignalTo(targetPos);
@@ -70,26 +77,32 @@ public abstract class RedstoneProxyBlockStable extends UpdateListenerProxyBlock 
     }
 
     @Override
-    public void neighborChanged(BlockState state, Level level, BlockPos proxyPos, Block block, BlockPos pos2, boolean bl) {
-        super.neighborChanged(state, level, proxyPos, block, pos2, bl);
+    public void neighborChanged(BlockState state, Level level, BlockPos proxyPos, Block neighboringBlock, BlockPos pos2, boolean bl) {
+        super.neighborChanged(state, level, proxyPos, neighboringBlock, pos2, bl);
         BlockPos targetPos = getLinkedAbsPos(level, proxyPos);
         BlockState targetState = level.getBlockState(targetPos);
 
         setSignal(level, proxyPos, computePowerLevel(level, proxyPos, targetState, targetPos));
 
-        Block targetBlock = targetState.getBlock();
         if (targetPos.asLong() == proxyPos.asLong()) return;
-        level.neighborChanged(targetState, targetPos, targetBlock, proxyPos, false);
-        level.updateNeighborsAt(targetPos, targetBlock);
+        level.neighborChanged(targetState, targetPos, this, proxyPos, false);
+        level.updateNeighborsAt(targetPos, this);
     }
 
     @Override
     public void targetUpdated(UpdateListenerProxyBlockEntity be, @NotNull Level level) {
-        //BuildstoneToolkit.LOGGER.info("RedstoneProxyBlock#targetUpdated called");
         BlockPos targetPos = be.getLinkedAbsPos();
         BlockPos proxyPos = be.getBlockPos();
-        setSignal(level, be.getBlockPos(),
-                computePowerLevel(level, proxyPos, level.getBlockState(targetPos), targetPos));
-        level.updateNeighborsAt(proxyPos, this);
+        setSignal(level, be.getBlockPos(), computePowerLevel(level, proxyPos, level.getBlockState(targetPos), targetPos));
+    }
+
+    @Override
+    public int getAnalogOutputSignal(BlockState blockState, Level level, BlockPos blockPos) {
+        return getSignal(blockState);
+    }
+
+    @Override
+    public boolean hasAnalogOutputSignal(BlockState blockState) {
+        return true;
     }
 }
