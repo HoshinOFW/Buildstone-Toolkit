@@ -6,7 +6,7 @@ import com.github.hoshinofw.buildstonetoolkit.foundation.common.blocks.ProxyBloc
 import com.github.hoshinofw.buildstonetoolkit.foundation.common.registries.BuildstoneItems;
 import com.github.hoshinofw.buildstonetoolkit.foundation.networking.unstable.PlayerProxyInteractionPacket;
 import com.github.hoshinofw.buildstonetoolkit.foundation.networking.unstable.ProxyInteractionType;
-import com.github.hoshinofw.buildstonetoolkit.foundation.util.ParticleUtil;
+import com.github.hoshinofw.buildstonetoolkit.foundation.client.util.ParticleUtil;
 import com.github.hoshinofw.buildstonetoolkit.foundation.util.PlayerUtil;
 import com.github.hoshinofw.buildstonetoolkit.foundation.util.Util;
 import dev.architectury.event.events.client.ClientTickEvent;

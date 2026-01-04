@@ -19,4 +19,18 @@ public class RedstoneProxyBlockEntity extends UpdateListenerProxyBlockEntity {
     public RedstoneProxyBlock getBlock() {
         return (RedstoneProxyBlock) (this.getBlockState().getBlock());
     }
+
+    @Override
+    public void setLinkedRelPos(Long value) {
+        BlockPos oldPos = this.getLinkedAbsPos();
+        super.setLinkedRelPos(value);
+        BlockPos newPos = this.getLinkedAbsPos();
+        if (level != null && !level.isClientSide()) {
+            level.neighborChanged(oldPos, this.getBlock(), oldPos);
+            level.updateNeighborsAt(oldPos, this.getBlock());
+
+            level.neighborChanged(newPos, this.getBlock(), newPos);
+            level.updateNeighborsAt(newPos, this.getBlock());
+        }
+    }
 }

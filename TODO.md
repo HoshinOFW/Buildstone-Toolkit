@@ -14,17 +14,21 @@
     I discovered that the synchronization is fragile in more complex proxy applications. Tested the 3x3 door.
         The desync actually happens naturally even without manual setTargetAbsPos()
 ### Debt:
-- Do RedstoneProxy via ticking instead of brute force neighbor updates.
 - Join the ObserverBlockEntity and RedstoneBlockEntity proxy registries into 1 common one for efficiency.
-- Create a true common directory between versions.
-  - A lot of things become Impl
 - Test everything in multiplayer
-- Switch FailableResult in parsePos and setLinkedRelPos to normal exception handling.
 
 # TODO FOR NEXT RELEASE:
-    Add a way to tell in-world when something is being targeted. A small lingering particle, maybe
+    Add a way to tell in-world when something is being targeted.
+      A small lingering particle, maybe, or something customizable per-proxy.
 
-    Create Compat for cooler and more expressive tooltips. Maybe even implement them in the base mod.
+    Interaction and Vision proxy targeting air support. Maybe even targeting entities also
+
+    Create compat for ponders and better tooltips
+
+    Redirection Proxy, a proxy with 2 linked positions (A, B) 
+      When powered with redstone, proxy at A will have its target redirected to position B
+
+    Storage Proxy, redirects storage access.
   
 
 # Planned features (Possibly made a different mod):

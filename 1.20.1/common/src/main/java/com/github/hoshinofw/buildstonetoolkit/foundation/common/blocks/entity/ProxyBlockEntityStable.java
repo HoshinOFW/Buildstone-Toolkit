@@ -6,6 +6,9 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
+import org.jetbrains.annotations.NotNull;
+
+import java.util.Objects;
 
 //Unstable and therefore missing methods: load and saveAdditional
 public abstract class ProxyBlockEntityStable <T extends ProxyBlockEntity<T>> extends SyncedBlockEntity {

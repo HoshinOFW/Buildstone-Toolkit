@@ -1,6 +1,6 @@
 package com.github.hoshinofw.buildstonetoolkit.foundation.common.registries.events;
 
-import com.github.hoshinofw.buildstonetoolkit.foundation.util.ClientEventUtil;
+import com.github.hoshinofw.buildstonetoolkit.foundation.client.util.ClientEventUtil;
 import dev.architectury.event.CompoundEventResult;
 import dev.architectury.event.events.common.InteractionEvent;
 import net.minecraft.world.InteractionHand;

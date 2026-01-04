@@ -1,6 +1,7 @@
 package com.github.hoshinofw.buildstonetoolkit.foundation.mixin.updatelistenerproxy;
 
 import com.github.hoshinofw.buildstonetoolkit.content.common.blocks.entity.RedstoneProxyBlockEntity;
+import com.github.hoshinofw.buildstonetoolkit.foundation.common.core.BuildstoneToolkit;
 import com.github.hoshinofw.buildstonetoolkit.foundation.util.UpdateUtil;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -29,8 +30,8 @@ public interface SignalGetterMixin {
 
         if (((Object)this) instanceof ServerLevel serverLevel) {
             if (!RedstoneProxyBlockEntity.getRegistry(serverLevel).isTargeted(blockPos)) return u;
-            boolean isConductor = blockState.isRedstoneConductor((SignalGetter)this, blockPos);
-            if (!isConductor) return u;
+
+            if (!blockState.isRedstoneConductor(serverLevel, blockPos) || blockState.hasAnalogOutputSignal()) return u;
 
             Collection<RedstoneProxyBlockEntity> rpbeCollection = RedstoneProxyBlockEntity.getRegistry(serverLevel).getProxiesTargeting(blockPos, RedstoneProxyBlockEntity.class);
             int bestFromProxies = UpdateUtil.getBestSignalFromRedstoneProxies(rpbeCollection);
@@ -64,6 +65,8 @@ public interface SignalGetterMixin {
         if (((Object)this) instanceof ServerLevel serverLevel) {
             if (!RedstoneProxyBlockEntity.getRegistry(serverLevel).isTargeted(blockPos)) return false;
 
+            if (serverLevel.getBlockState(blockPos).hasAnalogOutputSignal()) return false;
+
             Collection<RedstoneProxyBlockEntity> rpbeCollection = RedstoneProxyBlockEntity.getRegistry(serverLevel).getProxiesTargeting(blockPos, RedstoneProxyBlockEntity.class);
 
             return UpdateUtil.hasSignalFromRedstoneProxies(rpbeCollection);
@@ -91,6 +94,8 @@ public interface SignalGetterMixin {
         if (((Object)this) instanceof ServerLevel serverLevel) {
             if (!RedstoneProxyBlockEntity.getRegistry(serverLevel).isTargeted(blockPos)) return i;
 
+            if (serverLevel.getBlockState(blockPos).hasAnalogOutputSignal()) return i;
+
             Collection<RedstoneProxyBlockEntity> rpbeCollection = RedstoneProxyBlockEntity.getRegistry(serverLevel).getProxiesTargeting(blockPos, RedstoneProxyBlockEntity.class);
             int bestFromProxies = UpdateUtil.getBestSignalFromRedstoneProxies(rpbeCollection);
 
@@ -99,5 +104,7 @@ public interface SignalGetterMixin {
         return i;
 
     }
+
+
     
 }

@@ -59,6 +59,11 @@ public abstract class ObserverProxyBlockStable extends UpdateListenerProxyBlock 
     }
 
     @Override
+    public int getDirectSignal(BlockState blockState, BlockGetter blockGetter, BlockPos blockPos, Direction direction) {
+        return blockState.getSignal(blockGetter, blockPos, direction);
+    }
+
+    @Override
     public boolean isSignalSource(BlockState blockState) {
         return true;
     }
@@ -70,15 +75,15 @@ public abstract class ObserverProxyBlockStable extends UpdateListenerProxyBlock 
     }
 
     @Override
-    public void tick(BlockState arg, ServerLevel arg2, BlockPos arg3, RandomSource arg4) {
-        if (arg.getValue(POWERED)) {
-            arg2.setBlock(arg3, arg.setValue(POWERED, false), 2);
+    public void tick(BlockState blockState, ServerLevel serverLevel, BlockPos blockPos, RandomSource randomSource) {
+        if (blockState.getValue(POWERED)) {
+            serverLevel.setBlock(blockPos, blockState.setValue(POWERED, false), 2);
         } else {
-            arg2.setBlock(arg3, arg.setValue(POWERED, true), 2);
-            arg2.scheduleTick(arg3, this, 2);
+            serverLevel.setBlock(blockPos, blockState.setValue(POWERED, true), 2);
+            serverLevel.scheduleTick(blockPos, this, 2);
         }
 
-        this.updateNeighborsInFront(arg2, arg3, arg);
+        this.updateNeighborsInFront(serverLevel, blockPos, blockState);
     }
 
     protected void updateNeighborsInFront(Level arg, BlockPos arg2, BlockState arg3) {

@@ -1,1 +1,1 @@
-- Various optimizations and small bugfixes related to the Redstone Proxy.
+- Observer Proxy acts more like a vanilla observer now. Before it didn't 'strongly' power blocks like the observer does.
