@@ -5,9 +5,9 @@ import com.github.hoshinofw.buildstonetoolkit.foundation.common.blocks.ProxyBloc
 import com.github.hoshinofw.buildstonetoolkit.foundation.common.blocks.entity.unstable.IdProxyBlockEntity;
 import com.github.hoshinofw.buildstonetoolkit.foundation.client.particles.StaticCubeParticle.CubeParticle;
 import com.github.hoshinofw.buildstonetoolkit.foundation.common.registries.BuildstoneItems;
-import com.github.hoshinofw.buildstonetoolkit.foundation.util.BlockPosSupplier;
-import com.github.hoshinofw.buildstonetoolkit.foundation.util.PlayerUtil;
-import com.github.hoshinofw.buildstonetoolkit.foundation.util.render.BlockParticleTexture;
+import com.github.hoshinofw.buildstonetoolkit.foundation.common.util.BlockPosSupplier;
+import com.github.hoshinofw.buildstonetoolkit.foundation.common.util.PlayerUtil;
+import com.github.hoshinofw.buildstonetoolkit.foundation.common.util.render.BlockParticleTexture;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.client.Minecraft;

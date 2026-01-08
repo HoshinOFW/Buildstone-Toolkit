@@ -1,7 +1,7 @@
 package com.github.hoshinofw.buildstonetoolkit.foundation.common.registries.unstable;
 
 import com.github.hoshinofw.buildstonetoolkit.foundation.common.blocks.entity.unstable.ProxyBlockEntity;
-import com.github.hoshinofw.buildstonetoolkit.foundation.networking.unstable.SetProxyTargetPacket;
+import com.github.hoshinofw.buildstonetoolkit.foundation.common.networking.unstable.SetProxyTargetPacket;
 import dev.architectury.networking.NetworkManager;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;

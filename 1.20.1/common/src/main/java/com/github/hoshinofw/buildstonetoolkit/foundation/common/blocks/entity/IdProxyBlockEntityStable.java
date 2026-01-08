@@ -2,9 +2,9 @@ package com.github.hoshinofw.buildstonetoolkit.foundation.common.blocks.entity;
 
 import com.github.hoshinofw.buildstonetoolkit.foundation.common.blocks.entity.unstable.IdProxyBlockEntity;
 import com.github.hoshinofw.buildstonetoolkit.foundation.common.blocks.entity.unstable.ProxyBlockEntity;
-import com.github.hoshinofw.buildstonetoolkit.foundation.storage.unstable.ProxyIdStorage;
-import com.github.hoshinofw.buildstonetoolkit.foundation.util.registries.IdObject;
-import com.github.hoshinofw.buildstonetoolkit.foundation.util.registries.IdRegistry;
+import com.github.hoshinofw.buildstonetoolkit.foundation.common.storage.unstable.ProxyIdStorage;
+import com.github.hoshinofw.buildstonetoolkit.foundation.common.util.registries.IdObject;
+import com.github.hoshinofw.buildstonetoolkit.foundation.common.util.registries.IdRegistry;
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.level.Level;

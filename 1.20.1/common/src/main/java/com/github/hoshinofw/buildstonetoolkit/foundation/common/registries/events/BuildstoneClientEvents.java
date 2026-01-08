@@ -4,11 +4,11 @@ import com.github.hoshinofw.buildstonetoolkit.content.common.blocks.entity.Inter
 import com.github.hoshinofw.buildstonetoolkit.content.common.blocks.entity.VisionProxyBlockEntity;
 import com.github.hoshinofw.buildstonetoolkit.foundation.common.blocks.ProxyBlock;
 import com.github.hoshinofw.buildstonetoolkit.foundation.common.registries.BuildstoneItems;
-import com.github.hoshinofw.buildstonetoolkit.foundation.networking.unstable.PlayerProxyInteractionPacket;
-import com.github.hoshinofw.buildstonetoolkit.foundation.networking.unstable.ProxyInteractionType;
+import com.github.hoshinofw.buildstonetoolkit.foundation.common.networking.unstable.PlayerProxyInteractionPacket;
+import com.github.hoshinofw.buildstonetoolkit.foundation.common.networking.unstable.ProxyInteractionType;
 import com.github.hoshinofw.buildstonetoolkit.foundation.client.util.ParticleUtil;
-import com.github.hoshinofw.buildstonetoolkit.foundation.util.PlayerUtil;
-import com.github.hoshinofw.buildstonetoolkit.foundation.util.Util;
+import com.github.hoshinofw.buildstonetoolkit.foundation.common.util.PlayerUtil;
+import com.github.hoshinofw.buildstonetoolkit.foundation.common.util.Util;
 import dev.architectury.event.events.client.ClientTickEvent;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;

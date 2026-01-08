@@ -1,7 +1,7 @@
 package com.github.hoshinofw.buildstonetoolkit.foundation.common.registries.unstable;
 
 import com.github.hoshinofw.buildstonetoolkit.foundation.common.blocks.InteractiveProxyBlock;
-import com.github.hoshinofw.buildstonetoolkit.foundation.networking.unstable.PlayerProxyInteractionPacket;
+import com.github.hoshinofw.buildstonetoolkit.foundation.common.networking.unstable.PlayerProxyInteractionPacket;
 import dev.architectury.networking.NetworkManager;
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerLevel;

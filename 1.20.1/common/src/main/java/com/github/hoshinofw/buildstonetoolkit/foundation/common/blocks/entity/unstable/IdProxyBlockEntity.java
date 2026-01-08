@@ -1,7 +1,7 @@
 package com.github.hoshinofw.buildstonetoolkit.foundation.common.blocks.entity.unstable;
 
 import com.github.hoshinofw.buildstonetoolkit.foundation.common.blocks.entity.IdProxyBlockEntityStable;
-import com.github.hoshinofw.buildstonetoolkit.foundation.util.NBTUtil;
+import com.github.hoshinofw.buildstonetoolkit.foundation.common.util.NBTUtil;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.level.block.entity.BlockEntityType;

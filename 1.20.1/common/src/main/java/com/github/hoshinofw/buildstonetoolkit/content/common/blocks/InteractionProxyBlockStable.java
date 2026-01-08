@@ -5,9 +5,9 @@ import com.github.hoshinofw.buildstonetoolkit.content.common.blocks.unstable.Int
 import com.github.hoshinofw.buildstonetoolkit.foundation.common.blocks.InteractiveProxyBlock;
 import com.github.hoshinofw.buildstonetoolkit.foundation.common.blocks.RegisteredProxyBlock;
 import com.github.hoshinofw.buildstonetoolkit.foundation.common.registries.BuildstoneBlocks;
-import com.github.hoshinofw.buildstonetoolkit.foundation.networking.unstable.ProxyInteractionType;
-import com.github.hoshinofw.buildstonetoolkit.foundation.util.Util;
-import com.github.hoshinofw.buildstonetoolkit.foundation.util.registries.ProxyRegistry;
+import com.github.hoshinofw.buildstonetoolkit.foundation.common.networking.unstable.ProxyInteractionType;
+import com.github.hoshinofw.buildstonetoolkit.foundation.common.util.Util;
+import com.github.hoshinofw.buildstonetoolkit.foundation.common.util.registries.ProxyRegistry;
 import it.unimi.dsi.fastutil.objects.Object2ObjectOpenHashMap;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -77,6 +77,7 @@ public abstract class InteractionProxyBlockStable extends RegisteredProxyBlock<I
         }
         return state;
     }
+    
 
     public static void startTicking(Level level, BlockPos proxyPos, BlockState proxyState, Vec3 playerPosition) {;
         level.setBlock(proxyPos, setSignal(refreshTicking(proxyState), Util.calculateSignal(playerPosition.distanceTo(proxyPos.getCenter()))), Block.UPDATE_ALL);
@@ -91,14 +92,6 @@ public abstract class InteractionProxyBlockStable extends RegisteredProxyBlock<I
             return state.setValue(TICK, newTick);
         }
         return state;
-    }
-
-    public static void tickDown(Level level, BlockPos proxyPos) {
-        level.setBlock(proxyPos, tickDown(level.getBlockState(proxyPos)), Block.UPDATE_NONE);
-    }
-
-    public static void endTicking(Level level, BlockPos proxyPos, BlockState proxyState) {
-        setSignal(level, proxyState, proxyPos, 0);
     }
 
     @Override

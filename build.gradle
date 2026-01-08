@@ -3,6 +3,7 @@ plugins {
     id 'dev.architectury.loom' version '1.11-SNAPSHOT' apply false
     id 'architectury-plugin' version '3.4-SNAPSHOT' apply false
     id 'com.gradleup.shadow' version '8.3.6' apply false
+    id "org.jetbrains.gradle.plugin.idea-ext" version "1.3"
 
     id "me.modmuss50.mod-publish-plugin" version "1.1.0"
 }
@@ -285,7 +286,6 @@ tasks.register("collectBuildsAll") {
     dependsOn("collectBuilds120", "collectBuilds121")
 }
 
-
 import groovy.io.FileType
 import groovy.json.JsonSlurper
 
@@ -349,6 +349,8 @@ def normalizeExcludePatterns = { Collection<String> rels ->
 gradle.projectsEvaluated {
     def sharedJava = rootProject.file("common/src/main/java")
     def sharedRes  = rootProject.file("common/src/main/resources")
+
+    def patchedGenTasks = []
 
     def commons = rootProject.subprojects.findAll { isVersionCommon(it) }
     if (commons.size() <= 1) {
@@ -455,6 +457,9 @@ gradle.projectsEvaluated {
             doFirst { delete(destinationDir) }
         }
 
+        patchedGenTasks << genJava
+        patchedGenTasks << genRes
+
         patchP.plugins.withId("java") {
             patchP.extensions.configure(org.gradle.api.tasks.SourceSetContainer) { ss ->
                 ss.named("main") { main ->
@@ -482,6 +487,21 @@ gradle.projectsEvaluated {
 
     }
 
+
+    def genAll = rootProject.tasks.register("generateAllPatchedSrc") {
+        group = "build setup"
+        description = "Generates all patchedSrc trees for IDE sync/import."
+        dependsOn(patchedGenTasks)
+    }
+
+    // Hook into IntelliJ Gradle sync
+    rootProject.plugins.withId("org.jetbrains.gradle.plugin.idea-ext") {
+        rootProject.idea.project.settings {
+            taskTriggers {
+                afterSync(genAll)
+            }
+        }
+    }
 
 }
 

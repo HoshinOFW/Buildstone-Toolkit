@@ -1,1 +1,2 @@
-- Observer Proxy acts more like a vanilla observer now. Before it didn't 'strongly' power blocks like the observer does.
+- ...
+- Fixed another crash with allay

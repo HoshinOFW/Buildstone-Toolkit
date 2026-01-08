@@ -5,9 +5,9 @@ import com.github.hoshinofw.buildstonetoolkit.content.common.blocks.unstable.Vis
 import com.github.hoshinofw.buildstonetoolkit.foundation.common.blocks.InteractiveProxyBlock;
 import com.github.hoshinofw.buildstonetoolkit.foundation.common.blocks.RegisteredProxyBlock;
 import com.github.hoshinofw.buildstonetoolkit.foundation.common.registries.BuildstoneBlocks;
-import com.github.hoshinofw.buildstonetoolkit.foundation.networking.unstable.ProxyInteractionType;
-import com.github.hoshinofw.buildstonetoolkit.foundation.util.Util;
-import com.github.hoshinofw.buildstonetoolkit.foundation.util.registries.ProxyRegistry;
+import com.github.hoshinofw.buildstonetoolkit.foundation.common.networking.unstable.ProxyInteractionType;
+import com.github.hoshinofw.buildstonetoolkit.foundation.common.util.Util;
+import com.github.hoshinofw.buildstonetoolkit.foundation.common.util.registries.ProxyRegistry;
 import it.unimi.dsi.fastutil.objects.Object2ObjectOpenHashMap;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
