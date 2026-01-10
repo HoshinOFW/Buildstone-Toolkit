@@ -35,7 +35,11 @@ public class BuildstonePacketsRegisterAllayTargetPacket {
                                 || !player.getUUID().equals(optional.get())
                                 || (((Allay)allay).distanceToSqr(player) > 32)) {return;}
 
-                        allay.buildstonetoolkit$setSearchOrigin(payload.targetPos().getCenter());
+                        if (!payload.nullify()) {
+                            allay.buildstonetoolkit$setSearchOrigin(payload.targetPos().getCenter());
+                        } else {
+                            allay.buildstonetoolkit$setSearchOrigin(null);
+                        }
                     });
                 }
         );

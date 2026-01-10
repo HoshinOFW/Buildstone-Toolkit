@@ -12,7 +12,7 @@ import net.minecraft.resources.ResourceLocation;
 import org.jetbrains.annotations.NotNull;
 
 
-public record SetAllayTargetPacket(int allayId, BlockPos targetPos) implements CustomPacketPayload{
+public record SetAllayTargetPacket(int allayId, BlockPos targetPos, boolean nullify) implements CustomPacketPayload{
 
     public static final ResourceLocation ID =
             ResourceLocation.fromNamespaceAndPath(BuildstoneToolkit.MOD_ID, "set_allay_target");
@@ -23,11 +23,12 @@ public record SetAllayTargetPacket(int allayId, BlockPos targetPos) implements C
             StreamCodec.composite(
                     ByteBufCodecs.INT, SetAllayTargetPacket::allayId,
                     BlockPos.STREAM_CODEC, SetAllayTargetPacket::targetPos,
+                    ByteBufCodecs.BOOL, SetAllayTargetPacket::nullify,
                     SetAllayTargetPacket::new
             );
 
-    public static void sendToServer(int allayId, BlockPos targetPos) {
-        NetworkManager.sendToServer(new SetAllayTargetPacket(allayId, targetPos));
+    public static void sendToServer(int allayId, BlockPos targetPos, boolean nullify) {
+        NetworkManager.sendToServer(new SetAllayTargetPacket(allayId, targetPos, nullify));
     }
 
     @Override

@@ -3,7 +3,6 @@ package com.github.hoshinofw.buildstonetoolkit.foundation.common.registries.unst
 import com.github.hoshinofw.buildstonetoolkit.foundation.common.networking.unstable.SetAllayTargetPacket;
 import com.github.hoshinofw.buildstonetoolkit.foundation.common.util.mixin.AllayMixinInterface;
 import dev.architectury.networking.NetworkManager;
-import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.world.entity.ai.memory.MemoryModuleType;
 import net.minecraft.world.entity.animal.allay.Allay;
 import net.minecraft.world.entity.player.Player;
@@ -33,7 +32,11 @@ public class BuildstonePacketsRegisterAllayTargetPacket {
                             || !player.getUUID().equals(optional.get())
                             || (((Allay)allay).distanceToSqr(player) > 32)) {return;}
 
-                    allay.buildstonetoolkit$setSearchOrigin(payload.targetPos().getCenter());
+                    if (!payload.nullify()) {
+                        allay.buildstonetoolkit$setSearchOrigin(payload.targetPos().getCenter());
+                    } else {
+                        allay.buildstonetoolkit$setSearchOrigin(null);
+                    }
                 });
 
     }

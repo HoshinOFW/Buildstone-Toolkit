@@ -9,20 +9,33 @@ pluginManagement {
 
 rootProject.name = 'buildstonetoolkit'
 
-include(
-        "1.20.1:common",
-        "1.20.1:fabric",
-        "1.20.1:forge",
+// autoinclude modules
 
-        "1.21.1:common",
-        "1.21.1:fabric",
-        "1.21.1:neoforge"
-)
+def versionDirRegex = ~/^\d+(\.\d+){1,3}$/  // 1.20.1, 1.21.1, 1.21.1.1 etc
+def knownModules = ["common", "fabric", "forge", "neoforge"] as Set
 
-project(":1.20.1:common").projectDir = file("1.20.1/common")
-project(":1.20.1:fabric").projectDir = file("1.20.1/fabric")
-project(":1.20.1:forge").projectDir = file("1.20.1/forge")
+def root = settingsDir
 
-project(":1.21.1:common").projectDir = file("1.21.1/common")
-project(":1.21.1:fabric").projectDir = file("1.21.1/fabric")
-project(":1.21.1:neoforge").projectDir = file("1.21.1/neoforge")
+def versionDirs = root.listFiles()
+        ?.findAll { it.isDirectory() && (it.name ==~ versionDirRegex) }
+        ?.sort { a, b -> a.name <=> b.name } ?: []
+
+versionDirs.each { verDir ->
+    def ver = verDir.name
+
+    def moduleDirs = verDir.listFiles()
+            ?.findAll { it.isDirectory() && knownModules.contains(it.name) }
+            ?.sort { it.name } ?: []
+
+    moduleDirs.each { modDir ->
+        def module = modDir.name
+
+        def path = ":${ver}:${module}"
+        include(path)
+        project(path).projectDir = modDir
+    }
+}
+
+if (versionDirs.isEmpty()) {
+    logger.lifecycle("[settings] No version directories found (expected e.g. 1.20.1/1.21.1).")
+}

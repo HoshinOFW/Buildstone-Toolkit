@@ -89,9 +89,9 @@ public class AllayMixin extends PathfinderMob implements AllayMixinInterface {
                     BlockPos selectedPos = PlayerUtil.getSelectedPos(player);
                     buildstonetoolkit$setAllaySearchOrigin(player, selectedPos);
                     if (selectedPos != null) {
-                        SetAllayTargetPacket.sendToServer(this.getId(), selectedPos);
+                        SetAllayTargetPacket.sendToServer(this.getId(), selectedPos, false);
                     } else {
-                        SetAllayTargetPacket.sendToServer(this.getId(), BlockPos.containing(this.position()));
+                        SetAllayTargetPacket.sendToServer(this.getId(), BlockPos.containing(this.position()), true);
                     }
                 }
             } else {

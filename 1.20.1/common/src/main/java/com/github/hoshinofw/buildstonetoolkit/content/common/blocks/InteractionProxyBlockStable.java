@@ -146,4 +146,6 @@ public abstract class InteractionProxyBlockStable extends RegisteredProxyBlock<I
     public int getSignal(BlockState blockState, BlockGetter blockGetter, BlockPos blockPos, Direction direction) {
         return getSignal(blockState);
     }
+
+
 }

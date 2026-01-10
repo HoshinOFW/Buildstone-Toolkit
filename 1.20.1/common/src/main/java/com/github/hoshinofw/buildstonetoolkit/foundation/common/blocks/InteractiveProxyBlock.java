@@ -8,7 +8,7 @@ import net.minecraft.world.phys.Vec3;
 
 public interface InteractiveProxyBlock<T extends ProxyBlock> {
 
-    public void handleInteraction(ServerLevel level, BlockPos proxyPos, BlockState proxyState,
+     void handleInteraction(ServerLevel level, BlockPos proxyPos, BlockState proxyState,
                                   Vec3 playerPosition, ProxyInteractionType interactionType);
 
 }

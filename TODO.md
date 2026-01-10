@@ -38,7 +38,11 @@
       Client and server synching fixes:
         Ensure flickering is fixed
         Keep a registry on the server synched with the client to allow piston proxies outside render distance to visualize correctly
-
+      
+    Mix into vanilla code to fix light flickering on piston push.
+      I have to add an extra blockstate property to MovingPistonBlock, 
+      then make sure it is set to the light of the block being moved by the piston logic
+      
     Proxy tuner upgrades:
       Selection clearing switch to left click
       

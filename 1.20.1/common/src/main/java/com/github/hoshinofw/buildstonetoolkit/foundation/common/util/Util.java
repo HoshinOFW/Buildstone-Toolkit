@@ -3,11 +3,11 @@ package com.github.hoshinofw.buildstonetoolkit.foundation.common.util;
 import com.github.hoshinofw.buildstonetoolkit.content.common.blocks.unstable.PistonProxyBlock;
 import com.github.hoshinofw.buildstonetoolkit.foundation.common.util.mixin.PistonMovingBlockEntityMixinInterface;
 import net.minecraft.ChatFormatting;
-import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.ClipContext;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.piston.PistonMovingBlockEntity;
@@ -48,7 +48,7 @@ public class Util {
         return result;
     }
 
-    public static BlockHitResult raycastBlockIgnoringReach(LocalPlayer player, Level level, double maxDistance) {
+    public static BlockHitResult raycastBlockIgnoringReach(Player player, Level level, double maxDistance) {
         float partialTick = 1.0f;
 
         Vec3 eye = player.getEyePosition(partialTick);
