@@ -14,7 +14,7 @@ public abstract class UpdateListenerProxyBlock extends RegisteredProxyBlock<Upda
         super(properties, UpdateListenerProxyBlockEntity.class);
     }
 
-    private static final Map<ServerLevel, ProxyRegistry<UpdateListenerProxyBlockEntity>> serverRegistryMap = new Object2ObjectOpenHashMap<>();
+    private static final Map<Level, ProxyRegistry<UpdateListenerProxyBlockEntity>> serverRegistryMap = new Object2ObjectOpenHashMap<>();
     private static final Map<Level, ProxyRegistry<UpdateListenerProxyBlockEntity>> clientRegistryMap = new Object2ObjectOpenHashMap<>();
 
     @Override
@@ -25,7 +25,7 @@ public abstract class UpdateListenerProxyBlock extends RegisteredProxyBlock<Upda
 
     @Override
     @NotNull
-    protected Map<ServerLevel, ProxyRegistry<UpdateListenerProxyBlockEntity>> getServerRegistryMap() {
+    protected Map<Level, ProxyRegistry<UpdateListenerProxyBlockEntity>> getServerRegistryMap() {
         return serverRegistryMap;
     }
 

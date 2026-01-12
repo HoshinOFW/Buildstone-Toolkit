@@ -17,6 +17,7 @@
         The desync actually happens naturally even without manual setTargetAbsPos()
 
 ### Debt:
+- Have saving target to nbt by relative or by absolute be toggleable via a boolean field and the tuner. Should probably be relative by default to improve mod compat.
 - Datagen (unavoidable for proxy colors...)
 - Write common class code for serverside packet handling. Right now each overwrite needs to rewrite it.
 - Redstone Proxy works via tick scheduling to avoid lag.
@@ -79,6 +80,7 @@
 
     Create compat for ponders and better tooltips
       Part of CBT
+      When creating a schematic, if the target of the proxy is in the schematic, save by relative target pos, else by absolute.
 
     Storage Proxy, redirects storage access.
 

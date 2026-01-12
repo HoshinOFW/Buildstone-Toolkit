@@ -17,16 +17,15 @@ public abstract class RegisteredProxyBlock<T extends RegisteredProxyBlockEntity<
     }
 
     protected abstract @NotNull Map<Level, ProxyRegistry<T>> getClientRegistryMap();
-    protected abstract @NotNull Map<ServerLevel, ProxyRegistry<T>> getServerRegistryMap();
+    protected abstract @NotNull Map<Level, ProxyRegistry<T>> getServerRegistryMap();
 
     @Nullable
     public ProxyRegistry<T> getRegistry(Level level) {
-        if (level instanceof ServerLevel serverLevel)
-            return getServerRegistryMap().computeIfAbsent(serverLevel, (serverLevelKey) -> new ProxyRegistry<>(ProxyIdStorage.getIdRegistry(serverLevelKey), beclass));
-        else if (level.isClientSide()) {
+        if (!level.isClientSide())
+            return getServerRegistryMap().computeIfAbsent(level, (serverLevelKey) -> new ProxyRegistry<>(ProxyIdStorage.getIdRegistry(serverLevelKey), beclass));
+        else {
             return getClientRegistryMap().computeIfAbsent(level, (clientLevelKey) -> new ProxyRegistry<>(ProxyIdStorage.getIdRegistry(clientLevelKey), beclass));
         }
-        return null;
     }
 
 }

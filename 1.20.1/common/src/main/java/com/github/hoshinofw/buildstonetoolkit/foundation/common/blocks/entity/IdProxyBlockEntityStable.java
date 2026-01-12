@@ -29,10 +29,13 @@ public abstract class IdProxyBlockEntityStable<T extends IdProxyBlockEntity<T>> 
             if (id < 0) {
                 this.id = ProxyIdStorage.getServerIdRegistry(serverLevel).registerNew(this);
                 this.notifyUpdate();
-                //BuildstoneToolkit.LOGGER.info("Registered NEW Id on the serverIdRegistry: {}, id: {}", ProxyIdStorage.getServerIdRegistry(serverLevel).getName(), this.id);
             } else {
-                ProxyIdStorage.getServerIdRegistry(serverLevel).ensureEntry(this);
-                //BuildstoneToolkit.LOGGER.info("Registered EXISTING Id on the serverIdRegistry: {}, id: {}", ProxyIdStorage.getServerIdRegistry(serverLevel).getName(), this.id);
+                if (ProxyIdStorage.getServerIdRegistry(serverLevel).hasEntry(this)) {
+                    this.id = ProxyIdStorage.getServerIdRegistry(serverLevel).registerNew(this);
+                    this.notifyUpdate();
+                } else {
+                    ProxyIdStorage.getServerIdRegistry(serverLevel).ensureEntry(this);
+                }
             }
         }
     }

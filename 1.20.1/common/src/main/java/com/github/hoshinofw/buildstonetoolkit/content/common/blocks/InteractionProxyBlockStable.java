@@ -32,7 +32,7 @@ public abstract class InteractionProxyBlockStable extends RegisteredProxyBlock<I
     public static final IntegerProperty POWER_LEVEL = IntegerProperty.create("power_level", 0, 15);
     public static final IntegerProperty TICK = IntegerProperty.create("tick", 0, maxTick);
 
-    private static final Map<ServerLevel, ProxyRegistry<InteractionProxyBlockEntity>> serverRegistryMap = new Object2ObjectOpenHashMap<>();
+    private static final Map<Level, ProxyRegistry<InteractionProxyBlockEntity>> serverRegistryMap = new Object2ObjectOpenHashMap<>();
     private static final Map<Level, ProxyRegistry<InteractionProxyBlockEntity>> clientRegistryMap = new Object2ObjectOpenHashMap<>();
 
     public InteractionProxyBlockStable(Properties properties) {
@@ -128,7 +128,7 @@ public abstract class InteractionProxyBlockStable extends RegisteredProxyBlock<I
     }
 
     @Override
-    protected @NotNull Map<ServerLevel, ProxyRegistry<InteractionProxyBlockEntity>> getServerRegistryMap() {
+    protected @NotNull Map<Level, ProxyRegistry<InteractionProxyBlockEntity>> getServerRegistryMap() {
         return serverRegistryMap;
     }
 

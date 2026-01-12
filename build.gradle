@@ -80,7 +80,7 @@ subprojects { p ->
     }
 
     base {
-        archivesName = "${rootProject.archives_name}-${project.name}-${project.minecraft_version}"
+        archivesName = "${project.archives_name}-${project.name}-${project.minecraft_version}"
     }
 
     if (!isCommon(p)) {

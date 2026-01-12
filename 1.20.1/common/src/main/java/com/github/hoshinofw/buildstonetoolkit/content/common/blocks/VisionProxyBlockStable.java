@@ -32,7 +32,7 @@ public class VisionProxyBlockStable extends RegisteredProxyBlock<VisionProxyBloc
     public static final IntegerProperty POWER_LEVEL = IntegerProperty.create("power_level", 0, 15);
     public static final IntegerProperty TICK = IntegerProperty.create("tick", 0, maxTick);
 
-    private static final Map<ServerLevel, ProxyRegistry<VisionProxyBlockEntity>> serverRegistryMap = new Object2ObjectOpenHashMap<>();
+    private static final Map<Level, ProxyRegistry<VisionProxyBlockEntity>> serverRegistryMap = new Object2ObjectOpenHashMap<>();
     private static final Map<Level, ProxyRegistry<VisionProxyBlockEntity>> clientRegistryMap = new Object2ObjectOpenHashMap<>();
 
     public VisionProxyBlockStable(Properties properties) {
@@ -123,7 +123,7 @@ public class VisionProxyBlockStable extends RegisteredProxyBlock<VisionProxyBloc
     }
 
     @Override
-    protected @NotNull Map<ServerLevel, ProxyRegistry<VisionProxyBlockEntity>> getServerRegistryMap() {
+    protected @NotNull Map<Level, ProxyRegistry<VisionProxyBlockEntity>> getServerRegistryMap() {
         return serverRegistryMap;
     }
 
