@@ -1,2 +1,3 @@
-- ...
-- Fixed another crash with allay
+- Not included in previous changelog:
+  - Fixed create schematics not working.
+  - Known issue persists: proxies placed by schematics lose their target. Will be fixed in future update.
