@@ -40,6 +40,10 @@
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel target="17">
+      <module name="buildstonetoolkit.1.20.1.main" target="21" />
+      <module name="buildstonetoolkit.1.20.1.test" target="21" />
+      <module name="buildstonetoolkit.1.21.1.main" target="21" />
+      <module name="buildstonetoolkit.1.21.1.test" target="21" />
       <module name="buildstonetoolkit.common" target="21" />
       <module name="buildstonetoolkit.common.main" target="21" />
       <module name="buildstonetoolkit.common.test" target="21" />
