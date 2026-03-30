@@ -22,7 +22,7 @@ public class BuildstonePacketsRegisterPlayerProxyInteraction {
                     for (BlockPos proxyPos : payload.proxyPos()) {
                         BlockState proxyState = serverLevel.getBlockState(proxyPos);
                         if (proxyState.getBlock() instanceof InteractiveProxyBlock<?> interactiveProxyBlock) {
-                            interactiveProxyBlock.handleInteraction(serverLevel, proxyPos, proxyState, payload.playerPosition(), payload.interactionType());
+                            interactiveProxyBlock.handleInteraction(serverLevel, proxyPos, proxyState, context.getPlayer().position(), payload.interactionType());
                         }
                     }
                 }

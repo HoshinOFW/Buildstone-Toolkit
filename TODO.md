@@ -8,7 +8,6 @@
 - Allay configurable searchOrigin, maxDistance, and general player tracking
 
 ## BUGS:
-    I need to make a packet for allay target setting.
     Also selected position should never be accessed on server...
       Switch it to ClientPlayer to ensure.
 
@@ -20,8 +19,7 @@
 - Have saving target to nbt by relative or by absolute be toggleable via a boolean field and the tuner. Should probably be relative by default to improve mod compat.
 - Datagen (unavoidable for proxy colors...)
 - Write common class code for serverside packet handling. Right now each overwrite needs to rewrite it.
-- Redstone Proxy works via tick scheduling to avoid lag.
-- Join the ObserverBlockEntity and RedstoneBlockEntity proxy registries into 1 common one for efficiency.
+- Redstone Proxy works via tick scheduling to avoid lag in edgecases.
 - Test everything in multiplayer
 
 # TODO FOR NEXT RELEASE:
@@ -30,8 +28,6 @@
       A proper redstone level display block.
         No read or write, and more verbose than the Redstone Proxy
         Does conduct redstone, useful RP target block
-    Possibly also:
-      Timer block.
     
     Color coding for proxies?
     
@@ -85,12 +81,15 @@
     Storage Proxy, redirects storage access.
 
     Piston Proxy pushing blocks larger distances at a time.
+
+    CC:Tweaked compat:
+      Who triggered an interactionproxy last?
   
 
 # Planned features (Possibly made a different mod):
 - Glasses that you can put on an allay. Bigger glasses = bigger radius. Essentially a fun way to set maxDistance.
 
-- Ponder optional dependency.
+- Ponder scenes
 
 - Make it possible for allays to detect other entities apart from just players. 
   - Spawn eggs could be used to set it.
