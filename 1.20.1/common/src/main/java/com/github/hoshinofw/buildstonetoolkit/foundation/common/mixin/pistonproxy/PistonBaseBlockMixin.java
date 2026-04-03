@@ -1,8 +1,8 @@
 package com.github.hoshinofw.buildstonetoolkit.foundation.common.mixin.pistonproxy;
 
+import com.github.hoshinofw.buildstonetoolkit.foundation.common.util.NBTUtil;
 import com.github.hoshinofw.buildstonetoolkit.foundation.common.util.Util;
 import com.github.hoshinofw.buildstonetoolkit.foundation.common.util.mixin.PistonMovingBlockEntityMixinInterface;
-import com.github.hoshinofw.buildstonetoolkit.foundation.common.util.unstable.BlockEntitySaveWithoutMetadataAbstraction;
 import com.llamalad7.mixinextras.injector.ModifyReturnValue;
 import com.llamalad7.mixinextras.sugar.Local;
 import net.minecraft.core.BlockPos;
@@ -37,7 +37,7 @@ public class PistonBaseBlockMixin {
         CompoundTag nbt = null;
 
         if (originalBE != null) {
-            nbt = BlockEntitySaveWithoutMetadataAbstraction.saveWithoutMetadata(originalBE, level);
+            nbt = NBTUtil.saveWithoutMetadata(originalBE, level);
         }
 
         BlockEntity newBE = level.getBlockEntity(currentFinalPos);

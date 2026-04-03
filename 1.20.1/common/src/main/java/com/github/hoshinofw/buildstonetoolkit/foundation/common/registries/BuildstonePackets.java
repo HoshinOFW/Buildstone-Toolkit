@@ -1,15 +1,15 @@
 package com.github.hoshinofw.buildstonetoolkit.foundation.common.registries;
 
-import com.github.hoshinofw.buildstonetoolkit.foundation.common.registries.unstable.BuildstonePacketsRegisterAllayTargetPacket;
-import com.github.hoshinofw.buildstonetoolkit.foundation.common.registries.unstable.BuildstonePacketsRegisterPlayerProxyInteraction;
-import com.github.hoshinofw.buildstonetoolkit.foundation.common.registries.unstable.BuildstonePacketsRegisterSetProxyTarget;
+import com.github.hoshinofw.buildstonetoolkit.foundation.common.networking.PlayerProxyInteractionPacket;
+import com.github.hoshinofw.buildstonetoolkit.foundation.common.networking.SetAllayTargetPacket;
+import com.github.hoshinofw.buildstonetoolkit.foundation.common.networking.SetProxyTargetPacket;
 
 public class BuildstonePackets {
 
     public static void register() {
-        BuildstonePacketsRegisterSetProxyTarget.register();
-        BuildstonePacketsRegisterPlayerProxyInteraction.register();
-        BuildstonePacketsRegisterAllayTargetPacket.register();
+        SetProxyTargetPacket.register();
+        PlayerProxyInteractionPacket.register();
+        SetAllayTargetPacket.register();
     }
 
 }

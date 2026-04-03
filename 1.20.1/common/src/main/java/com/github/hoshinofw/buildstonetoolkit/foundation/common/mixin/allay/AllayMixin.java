@@ -1,7 +1,7 @@
 package com.github.hoshinofw.buildstonetoolkit.foundation.common.mixin.allay;
 
-import com.github.hoshinofw.buildstonetoolkit.content.common.items.unstable.ModWand;
-import com.github.hoshinofw.buildstonetoolkit.foundation.common.networking.unstable.SetAllayTargetPacket;
+import com.github.hoshinofw.buildstonetoolkit.content.common.items.ModWand;
+import com.github.hoshinofw.buildstonetoolkit.foundation.common.networking.SetAllayTargetPacket;
 import com.github.hoshinofw.buildstonetoolkit.foundation.common.util.NBTUtil;
 import com.github.hoshinofw.buildstonetoolkit.foundation.common.util.PlayerUtil;
 import com.github.hoshinofw.buildstonetoolkit.foundation.common.util.Util;

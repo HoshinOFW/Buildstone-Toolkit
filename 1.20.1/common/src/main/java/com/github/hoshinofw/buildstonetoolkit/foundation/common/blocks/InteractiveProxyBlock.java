@@ -1,6 +1,6 @@
 package com.github.hoshinofw.buildstonetoolkit.foundation.common.blocks;
 
-import com.github.hoshinofw.buildstonetoolkit.foundation.common.networking.unstable.ProxyInteractionType;
+import com.github.hoshinofw.buildstonetoolkit.foundation.common.networking.ProxyInteractionType;
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.level.block.state.BlockState;

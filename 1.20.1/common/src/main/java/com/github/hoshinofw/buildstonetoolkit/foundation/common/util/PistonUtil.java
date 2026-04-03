@@ -1,7 +1,6 @@
 package com.github.hoshinofw.buildstonetoolkit.foundation.common.util;
 
-import com.github.hoshinofw.buildstonetoolkit.content.common.blocks.unstable.PistonProxyBlock;
-import com.github.hoshinofw.buildstonetoolkit.foundation.common.util.unstable.BlockEntityLoadCustomOnlyAbstraction;
+import com.github.hoshinofw.buildstonetoolkit.content.common.blocks.PistonProxyBlock;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
@@ -24,7 +23,7 @@ public class PistonUtil {
                 if (!pistonProxyBlock.shouldPreserveTargetAbsPos(level, mbe, originalPos, finalPos, moveDirection)) {
                     pistonProxyBlock.saveShiftedTargetAbsPosToNBT(level, finalPos, mbe.getMovedState(), savedTag, moveDirection);
                 }
-                BlockEntityLoadCustomOnlyAbstraction.loadCustomOnly(blockEntity, savedTag, level);
+                NBTUtil.loadCustomOnly(blockEntity, savedTag, level);
                 blockEntity.setChanged();
             }
         }

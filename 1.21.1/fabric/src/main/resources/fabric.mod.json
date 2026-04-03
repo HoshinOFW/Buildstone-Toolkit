@@ -16,10 +16,10 @@
   "environment": "*",
   "entrypoints": {
     "main": [
-      "com.hoshin.buildstonetoolkit.fabric.core.BuildstoneToolkitFabric"
+      "com.github.hoshinofw.buildstonetoolkit.fabric.core.BuildstoneToolkitFabric"
     ],
     "client": [
-      "com.hoshin.buildstonetoolkit.fabric.core.BuildstoneToolkitFabricClient"
+      "com.github.hoshinofw.buildstonetoolkit.fabric.core.BuildstoneToolkitFabricClient"
     ]
   },
   "mixins": [

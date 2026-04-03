@@ -2,11 +2,11 @@ package com.github.hoshinofw.buildstonetoolkit.foundation.common.registries.even
 
 import com.github.hoshinofw.buildstonetoolkit.content.common.blocks.entity.InteractionProxyBlockEntity;
 import com.github.hoshinofw.buildstonetoolkit.content.common.blocks.entity.VisionProxyBlockEntity;
-import com.github.hoshinofw.buildstonetoolkit.foundation.common.blocks.ProxyBlock;
-import com.github.hoshinofw.buildstonetoolkit.foundation.common.registries.BuildstoneItems;
-import com.github.hoshinofw.buildstonetoolkit.foundation.common.networking.unstable.PlayerProxyInteractionPacket;
-import com.github.hoshinofw.buildstonetoolkit.foundation.common.networking.unstable.ProxyInteractionType;
 import com.github.hoshinofw.buildstonetoolkit.foundation.client.util.ParticleUtil;
+import com.github.hoshinofw.buildstonetoolkit.foundation.common.blocks.ProxyBlock;
+import com.github.hoshinofw.buildstonetoolkit.foundation.common.networking.PlayerProxyInteractionPacket;
+import com.github.hoshinofw.buildstonetoolkit.foundation.common.networking.ProxyInteractionType;
+import com.github.hoshinofw.buildstonetoolkit.foundation.common.registries.BuildstoneItems;
 import com.github.hoshinofw.buildstonetoolkit.foundation.common.util.PlayerUtil;
 import com.github.hoshinofw.buildstonetoolkit.foundation.common.util.Util;
 import dev.architectury.event.events.client.ClientTickEvent;
@@ -52,7 +52,6 @@ public class BuildstoneClientEvents {
                     player.position(), ProxyInteractionType.LookedAtLookingAtProxy);
         }
     }
-
     private static void tunerHoverLogic(Minecraft client, @NotNull LocalPlayer player, ClientLevel level) {
         boolean isHovered = player.getMainHandItem().is(BuildstoneItems.MOD_WAND.get());
 

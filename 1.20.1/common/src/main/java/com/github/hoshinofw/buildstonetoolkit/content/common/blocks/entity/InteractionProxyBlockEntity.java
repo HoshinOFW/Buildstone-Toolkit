@@ -1,6 +1,6 @@
 package com.github.hoshinofw.buildstonetoolkit.content.common.blocks.entity;
 
-import com.github.hoshinofw.buildstonetoolkit.content.common.blocks.unstable.InteractionProxyBlock;
+import com.github.hoshinofw.buildstonetoolkit.content.common.blocks.InteractionProxyBlock;
 import com.github.hoshinofw.buildstonetoolkit.foundation.common.blocks.entity.RegisteredProxyBlockEntity;
 import com.github.hoshinofw.buildstonetoolkit.foundation.common.registries.BuildstoneBlockEntities;
 import com.github.hoshinofw.buildstonetoolkit.foundation.common.util.registries.ProxyRegistry;

@@ -1,6 +1,5 @@
 package com.github.hoshinofw.buildstonetoolkit.foundation.common.blocks.entity;
 
-import com.github.hoshinofw.buildstonetoolkit.foundation.common.blocks.entity.unstable.IdProxyBlockEntity;
 import com.github.hoshinofw.buildstonetoolkit.foundation.common.util.registries.ProxyRegistry;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.Level;
@@ -38,7 +37,7 @@ public abstract class RegisteredProxyBlockEntity<T extends RegisteredProxyBlockE
     }
 
     @Override
-    public void setLinkedAbsPos(BlockPos value) {
+    public void setLinkedAbsPos(@NotNull BlockPos value) {
         super.setLinkedAbsPos(value);
         if (this.getLevel() == null) return;
         getRegistry().replaceLink(self(), value);
@@ -52,7 +51,7 @@ public abstract class RegisteredProxyBlockEntity<T extends RegisteredProxyBlockE
     }
 
     @Override
-    public void setLinkedRelPos(BlockPos value) {
+    public void setLinkedRelPos(@NotNull BlockPos value) {
         super.setLinkedRelPos(value);
         if (this.getLevel() == null) return;
         getRegistry().replaceLink(self(), this.worldPosition.offset(value));

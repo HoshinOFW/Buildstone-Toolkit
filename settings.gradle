@@ -2,12 +2,14 @@ pluginManagement {
     repositories {
         gradlePluginPortal()
         mavenCentral()
-        maven {url = uri("$rootDir/libs/m2")}
+        maven {
+            url = uri("https://maven.hoshinofw.net/releases")
+        }
     }
 }
 
 plugins {
-    id "com.github.hoshinofw.multiversion.multiversion-settings" version "0.1.0"
+    id "com.github.hoshinofw.multiversion.multiversion-settings" version "0.4.4"
 }
 rootProject.name = 'buildstonetoolkit'
 

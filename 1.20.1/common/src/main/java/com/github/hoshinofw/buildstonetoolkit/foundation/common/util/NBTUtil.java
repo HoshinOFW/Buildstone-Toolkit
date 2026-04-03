@@ -1,12 +1,13 @@
 package com.github.hoshinofw.buildstonetoolkit.foundation.common.util;
 
-import com.github.hoshinofw.buildstonetoolkit.foundation.common.blocks.entity.unstable.IdProxyBlockEntity;
-import com.github.hoshinofw.buildstonetoolkit.foundation.common.blocks.entity.unstable.ProxyBlockEntity;
+import com.github.hoshinofw.buildstonetoolkit.foundation.common.blocks.entity.IdProxyBlockEntity;
+import com.github.hoshinofw.buildstonetoolkit.foundation.common.blocks.entity.ProxyBlockEntity;
 import com.github.hoshinofw.buildstonetoolkit.foundation.common.util.registries.IdObject;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.Tag;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.Nullable;
 
@@ -88,4 +89,13 @@ public class NBTUtil {
         else {return null;
         }
     }
+
+    public static void loadCustomOnly(BlockEntity be, CompoundTag tag, Level level) {
+        be.load(tag);
+    }
+
+    public static CompoundTag saveWithoutMetadata(BlockEntity be, Level level) {
+        return be.saveWithoutMetadata();
+    }
+
 }

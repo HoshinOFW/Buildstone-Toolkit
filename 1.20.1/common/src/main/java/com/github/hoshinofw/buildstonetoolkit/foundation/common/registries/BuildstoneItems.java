@@ -1,6 +1,6 @@
 package com.github.hoshinofw.buildstonetoolkit.foundation.common.registries;
 
-import com.github.hoshinofw.buildstonetoolkit.content.common.items.unstable.ModWand;
+import com.github.hoshinofw.buildstonetoolkit.content.common.items.ModWand;
 import com.github.hoshinofw.buildstonetoolkit.foundation.common.core.BuildstoneToolkit;
 import dev.architectury.registry.registries.DeferredRegister;
 import dev.architectury.registry.registries.DeferredSupplier;

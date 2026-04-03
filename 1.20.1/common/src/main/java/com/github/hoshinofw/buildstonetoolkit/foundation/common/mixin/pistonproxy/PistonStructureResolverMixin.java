@@ -1,6 +1,6 @@
 package com.github.hoshinofw.buildstonetoolkit.foundation.common.mixin.pistonproxy;
 
-import com.github.hoshinofw.buildstonetoolkit.content.common.blocks.unstable.PistonProxyBlock;
+import com.github.hoshinofw.buildstonetoolkit.content.common.blocks.PistonProxyBlock;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.world.level.Level;

@@ -9,9 +9,9 @@
     "allay.GoAndGiveItemsToTargetMixin",
     "pistonproxy.BlockEntityAccessor",
     "pistonproxy.PistonBaseBlockMixin",
+    "pistonproxy.PistonMovingBlockEntityMixin",
     "pistonproxy.PistonMovingBlockEntityMixinStable",
     "pistonproxy.PistonStructureResolverMixin",
-    "pistonproxy.unstable.PistonMovingBlockEntityMixin",
     "updatelistenerproxy.LevelMixin",
     "updatelistenerproxy.ServerLevelMixin",
     "updatelistenerproxy.SignalGetterMixin"
