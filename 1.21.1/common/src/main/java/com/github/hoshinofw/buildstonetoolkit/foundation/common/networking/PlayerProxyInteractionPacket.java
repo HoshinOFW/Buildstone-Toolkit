@@ -4,6 +4,7 @@ import com.github.hoshinofw.buildstonetoolkit.foundation.common.blocks.Interacti
 import com.github.hoshinofw.buildstonetoolkit.foundation.common.core.BuildstoneToolkit;
 import com.github.hoshinofw.buildstonetoolkit.foundation.common.util.CodecUtil;
 import com.github.hoshinofw.multiversion.DeleteMethodsAndFields;
+import com.github.hoshinofw.multiversion.OverwriteInheritance;
 import com.github.hoshinofw.multiversion.OverwriteVersion;
 import dev.architectury.networking.NetworkManager;
 import net.minecraft.core.BlockPos;
@@ -19,12 +20,14 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.Collection;
 
+@OverwriteInheritance
 @DeleteMethodsAndFields({"read", "write"})
 public record PlayerProxyInteractionPacket(Collection<BlockPos> proxyPos, Vec3 playerPosition, ProxyInteractionType interactionType) implements CustomPacketPayload{
 
     @OverwriteVersion
     public static final ResourceLocation ID =
             ResourceLocation.fromNamespaceAndPath(BuildstoneToolkit.MOD_ID, "proxy_interaction");
+
 
     public static final CustomPacketPayload.Type<PlayerProxyInteractionPacket> TYPE = new CustomPacketPayload.Type<>(ID);
 

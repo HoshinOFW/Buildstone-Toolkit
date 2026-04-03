@@ -3,6 +3,7 @@ package com.github.hoshinofw.buildstonetoolkit.foundation.common.networking;
 import com.github.hoshinofw.buildstonetoolkit.foundation.common.blocks.entity.ProxyBlockEntity;
 import com.github.hoshinofw.buildstonetoolkit.foundation.common.core.BuildstoneToolkit;
 import com.github.hoshinofw.multiversion.DeleteMethodsAndFields;
+import com.github.hoshinofw.multiversion.OverwriteInheritance;
 import com.github.hoshinofw.multiversion.OverwriteVersion;
 import dev.architectury.networking.NetworkManager;
 import net.minecraft.core.BlockPos;
@@ -16,7 +17,7 @@ import net.minecraft.world.level.block.entity.BlockEntity;
 import org.jetbrains.annotations.NotNull;
 
 @DeleteMethodsAndFields({"read", "write"})
-
+@OverwriteInheritance
 public record SetProxyTargetPacket(BlockPos proxyPos, BlockPos targetPos)
         implements CustomPacketPayload {
 

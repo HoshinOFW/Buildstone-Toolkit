@@ -3,6 +3,7 @@ package com.github.hoshinofw.buildstonetoolkit.foundation.common.networking;
 import com.github.hoshinofw.buildstonetoolkit.foundation.common.core.BuildstoneToolkit;
 import com.github.hoshinofw.buildstonetoolkit.foundation.common.util.mixin.AllayMixinInterface;
 import com.github.hoshinofw.multiversion.DeleteMethodsAndFields;
+import com.github.hoshinofw.multiversion.OverwriteInheritance;
 import com.github.hoshinofw.multiversion.OverwriteVersion;
 import dev.architectury.networking.NetworkManager;
 import net.minecraft.core.BlockPos;
@@ -14,10 +15,12 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.ai.memory.MemoryModuleType;
 import net.minecraft.world.entity.animal.allay.Allay;
 import net.minecraft.world.entity.player.Player;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.Optional;
 import java.util.UUID;
 
+@OverwriteInheritance
 @DeleteMethodsAndFields({"read", "write"})
 public record SetAllayTargetPacket(int allayId, BlockPos targetPos, boolean nullify) implements CustomPacketPayload{
 
@@ -41,7 +44,7 @@ public record SetAllayTargetPacket(int allayId, BlockPos targetPos, boolean null
     }
 
     @Override
-    public Type<? extends CustomPacketPayload> type() {
+    public @NotNull CustomPacketPayload.Type<? extends CustomPacketPayload> type() {
         return TYPE;
     }
 

@@ -10,7 +10,6 @@ import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 
 @Mod(BuildstoneToolkit.MOD_ID)
 public final class BuildstoneToolkitForge {
-
     public static IEventBus MOD_BUS;
 
     public BuildstoneToolkitForge() {
