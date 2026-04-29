@@ -10,6 +10,7 @@ import net.minecraft.core.HolderLookup;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
+import org.jetbrains.annotations.NotNull;
 
 public abstract class ProxyBlockEntity<T extends ProxyBlockEntity<T>> extends SyncedBlockEntity {
 
@@ -19,7 +20,10 @@ public abstract class ProxyBlockEntity<T extends ProxyBlockEntity<T>> extends Sy
     }
 
     @ShadowVersion
-    public native Long setLinkedAbsPos(Long value);
+    public void setLinkedAbsPos(Long value);
+
+    @ShadowVersion
+    public void setLinkedAbsPos(@NotNull BlockPos value);
 
     @OverwriteVersion
     @ModifySignature("saveAdditional")
