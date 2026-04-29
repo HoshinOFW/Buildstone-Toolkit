@@ -1,19 +1,25 @@
 {
-  "block.buildstonetoolkit.guided_proxy": "Guided Proxy",
-  "block.buildstonetoolkit.piston_proxy": "Piston Proxy",
-  "block.buildstonetoolkit.redstone_proxy": "Redstone Proxy",
-  "block.buildstonetoolkit.observer_proxy": "Observer Proxy",
-  "block.buildstonetoolkit.vision_proxy": "Vision Proxy",
-  "block.buildstonetoolkit.interaction_proxy": "Interaction Proxy",
-  "item.buildstonetoolkit.proxy_tuner": "Proxy Tuner",
+
   "tooltip.buildstonetoolkit.hold_shift":  "§7Hold Shift to see details",
-  "tooltip.buildstonetoolkit.proxy_tuner.details": "Used to set all target positions in the mod",
-  "tooltip.buildstonetoolkit.guided_proxy.details": "Can link to any block in the placed axis",
-  "tooltip.buildstonetoolkit.redstone_proxy.details": "Can write redstone to its target position! A comparator can read the target's redstone signal",
-  "tooltip.buildstonetoolkit.observer_proxy.details": "Will read updates at the target position",
-  "tooltip.buildstonetoolkit.interaction_proxy.details": "Outputs a signal if a player is right clicking the target block",
-  "tooltip.buildstonetoolkit.vision_proxy.details": "Outputs a signal if a player is looking at the target block",
+
+  "block.buildstonetoolkit.piston_proxy": "Piston Proxy",
   "tooltip.buildstonetoolkit.piston_proxy.details": "Passes on its piston movement when moved by piston",
+
+  "block.buildstonetoolkit.redstone_proxy": "Redstone Proxy",
+  "tooltip.buildstonetoolkit.redstone_proxy.details": "Can write redstone to its target position! A comparator can read the target's redstone signal",
+
+  "block.buildstonetoolkit.observer_proxy": "Observer Proxy",
+  "tooltip.buildstonetoolkit.observer_proxy.details": "Will read updates at the target position",
+
+  "block.buildstonetoolkit.vision_proxy": "Vision Proxy",
+  "tooltip.buildstonetoolkit.vision_proxy.details": "Outputs a signal if a player is looking at the target block",
+
+  "block.buildstonetoolkit.interaction_proxy": "Interaction Proxy",
+  "tooltip.buildstonetoolkit.interaction_proxy.details": "Outputs a signal if a player is right clicking the target block",
+
+  "item.buildstonetoolkit.proxy_tuner": "Proxy Tuner",
+  "tooltip.buildstonetoolkit.proxy_tuner.details": "Used to set all target positions in the mod",
+
   "message.buildstonetoolkit.allay_distance_set": "Set allay search distance to: %f",
   "message.buildstonetoolkit.link_success": "Linked proxy to: %s at %s",
   "message.buildstonetoolkit.link_fail": "Failed link to: %s at %s, linked to valid position",
