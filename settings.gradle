@@ -2,6 +2,7 @@ pluginManagement {
     repositories {
         gradlePluginPortal()
         mavenCentral()
+        mavenLocal()
         maven {
             url = uri("https://maven.hoshinofw.net/releases")
         }
@@ -9,7 +10,19 @@ pluginManagement {
 }
 
 plugins {
-    id "com.github.hoshinofw.multiversion.multiversion-settings" version "0.4.4"
+    id "com.github.hoshinofw.multiversion.multiversion-settings" version "0.6.0"
 }
+
 rootProject.name = 'buildstonetoolkit'
+
+multiversionModules {
+    architecturyCommon = ['common']
+    architecturyFabric = ['fabric']
+    architecturyForge = ['forge']
+    architecturyNeoforge = ['neoforge']
+
+    patchModules = ['forge', 'fabric', 'neoforge', 'common']
+}
+
+
 

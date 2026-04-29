@@ -2,6 +2,9 @@ package com.github.hoshinofw.buildstonetoolkit.foundation.common.mixin.pistonpro
 
 import com.github.hoshinofw.buildstonetoolkit.foundation.common.util.mixin.PistonMovingBlockEntityMixinInterface;
 import com.github.hoshinofw.multiversion.DeleteMethodsAndFields;
+import com.github.hoshinofw.multiversion.ModifyClass;
+import com.github.hoshinofw.multiversion.ModifySignature;
+import com.github.hoshinofw.multiversion.OverwriteVersion;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.level.block.piston.PistonMovingBlockEntity;
@@ -10,11 +13,12 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
-@DeleteMethodsAndFields({"buildstonetoolkit$saveAdditional", "buildstonetoolkit$load"})
+@ModifyClass
 @Mixin(PistonMovingBlockEntity.class)
 public abstract class PistonMovingBlockEntityMixin implements PistonMovingBlockEntityMixinInterface{
 
-    //Proxy tag persistence over reloading.
+    @OverwriteVersion
+    @ModifySignature("buildstonetoolkit$saveAdditional")
     @Inject(method = "saveAdditional", at = @At("TAIL"))
     private void buildstonetoolkit$saveAdditional(CompoundTag tag, HolderLookup.Provider provider, CallbackInfo ci) {
         if (this.buildstonetoolkit$getProxyTag() != null) {
@@ -22,8 +26,10 @@ public abstract class PistonMovingBlockEntityMixin implements PistonMovingBlockE
         }
     }
 
+    @OverwriteVersion
+    @ModifySignature("buildstonetoolkit$load")
     @Inject(method = "loadAdditional", at = @At("TAIL"))
-    private void buildstonetoolkit$load(CompoundTag tag, HolderLookup.Provider provider, CallbackInfo ci) {
+    private void buildstonetoolkit$loadAdditional(CompoundTag tag, HolderLookup.Provider provider, CallbackInfo ci) {
         if (tag.contains("BuildstoneProxyTag", CompoundTag.TAG_COMPOUND)) {
             this.buildstonetoolkit$setProxyTag(tag.getCompound("BuildstoneProxyTag").copy());
         } else {

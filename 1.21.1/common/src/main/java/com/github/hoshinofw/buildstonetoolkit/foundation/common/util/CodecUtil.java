@@ -11,7 +11,8 @@ import java.util.ArrayList;
 import java.util.Collection;
 
 public class CodecUtil {
-    public static StreamCodec<FriendlyByteBuf, Collection<BlockPos>> POSCOLLECTION_STREAM_CODEC = new StreamCodec<FriendlyByteBuf, Collection<BlockPos>>() {
+
+    public static StreamCodec<FriendlyByteBuf, Collection<BlockPos>> POSCOLLECTION_STREAM_CODEC = new StreamCodec<>() {
         @Override
         public @NotNull Collection<BlockPos> decode(FriendlyByteBuf buf) {
             ArrayList<BlockPos> array = new ArrayList<>();
@@ -32,7 +33,8 @@ public class CodecUtil {
             buf.writeLongArray(array);
         }
     };
-    public static StreamCodec<ByteBuf, Vec3> VEC3_STREAM_CODEC = new StreamCodec<ByteBuf, Vec3>() {
+
+    public static StreamCodec<ByteBuf, Vec3> VEC3_STREAM_CODEC = new StreamCodec<>() {
         @Override
         public @NotNull Vec3 decode(ByteBuf buf) {
             return new Vec3(buf.readDouble(), buf.readDouble(), buf.readDouble());

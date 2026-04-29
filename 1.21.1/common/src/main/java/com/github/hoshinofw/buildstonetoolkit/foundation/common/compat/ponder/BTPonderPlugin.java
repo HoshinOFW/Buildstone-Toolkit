@@ -21,7 +21,5 @@ public abstract class BTPonderPlugin implements PonderPlugin {
 
     @ShadowVersion
     @Override
-    public @NotNull String getModId() {
-        return BuildstoneToolkit.MOD_ID;
-    }
+    public native @NotNull String getModId();
 }

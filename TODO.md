@@ -23,6 +23,18 @@
 - Test everything in multiplayer
 
 # TODO FOR NEXT RELEASE:
+    
+    Fix bugs.
+
+
+    Create compat:
+      Schematics fully work.
+
+    Sable compat: 
+      Proxies can target into/out of sublevels.
+      Requirement: Cross-dimensionality support for proxies.
+        Problems: Race conditions, level access, etc.
+      
 
     Redstone utility blocks:
       A proper redstone level display block.

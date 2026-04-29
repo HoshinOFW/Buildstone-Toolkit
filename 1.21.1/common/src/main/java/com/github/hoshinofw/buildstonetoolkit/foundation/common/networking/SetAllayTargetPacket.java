@@ -3,7 +3,7 @@ package com.github.hoshinofw.buildstonetoolkit.foundation.common.networking;
 import com.github.hoshinofw.buildstonetoolkit.foundation.common.core.BuildstoneToolkit;
 import com.github.hoshinofw.buildstonetoolkit.foundation.common.util.mixin.AllayMixinInterface;
 import com.github.hoshinofw.multiversion.DeleteMethodsAndFields;
-import com.github.hoshinofw.multiversion.OverwriteInheritance;
+import com.github.hoshinofw.multiversion.OverwriteTypeDeclaration;
 import com.github.hoshinofw.multiversion.OverwriteVersion;
 import dev.architectury.networking.NetworkManager;
 import net.minecraft.core.BlockPos;
@@ -20,7 +20,7 @@ import org.jetbrains.annotations.NotNull;
 import java.util.Optional;
 import java.util.UUID;
 
-@OverwriteInheritance
+@OverwriteTypeDeclaration
 @DeleteMethodsAndFields({"read", "write"})
 public record SetAllayTargetPacket(int allayId, BlockPos targetPos, boolean nullify) implements CustomPacketPayload{
 

@@ -14,17 +14,10 @@ import org.jetbrains.annotations.Nullable;
 public class NBTUtil {
     public static final String NBTIdKey = "buildstonetoolkit$id";
     public static final String NBTTargetPosKey = "buildstonetoolkit$target";
-    public static final String OLDNBTTargetPosKey = "relativeTargetPos";
 
     public static Long getTargetPosFromNBT(CompoundTag nbt) {
         //Handle tag missing
         if (!nbt.contains(NBTTargetPosKey, Tag.TAG_LONG)) {
-            //BuildstoneToolkit.LOGGER.info("NBTUtil very very sad!");
-            //Try defaulting to the old NBT
-            long oldTagPos = OLDgetTargetPosFromNBT(nbt).asLong();
-            if (oldTagPos != 0) {
-                return oldTagPos;
-            }
 
             //Try defaulting to the block's position
             if (nbt.contains("x") && nbt.contains("y") && nbt.contains("z")) {
@@ -51,15 +44,6 @@ public class NBTUtil {
         savePosToNBT(nbt, proxy.getLinkedAbsLongPos());
     }
 
-    @Deprecated
-    public static BlockPos OLDgetTargetPosFromNBT(CompoundTag nbt) {
-        int[] array = nbt.getIntArray(OLDNBTTargetPosKey);
-
-        if (!nbt.contains(OLDNBTTargetPosKey, Tag.TAG_INT_ARRAY) || (array.length < 3)) {return BlockPos.ZERO;}
-
-        return new BlockPos(array[0], array[1], array[2]);
-    }
-
     public static void saveId(CompoundTag nbt, IdObject object) {
         nbt.putLong(NBTIdKey, object.getId());
     }
@@ -69,14 +53,6 @@ public class NBTUtil {
             return nbt.getLong(NBTIdKey);
         } else {
             return -1L;
-        }
-    }
-
-    public static void IdBlockEntityLoadLogic(IdProxyBlockEntity<?> be, CompoundTag nbt) {
-        be.setId(NBTUtil.getId(nbt));
-        Level level = be.getLevel();
-        if (level != null) {
-            IdProxyBlockEntity.getIdRegistry(level).ensureEntry(be);
         }
     }
 

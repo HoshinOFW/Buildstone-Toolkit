@@ -2,6 +2,7 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/buildstonetoolkit.iml" filepath="$PROJECT_DIR$/.idea/modules/buildstonetoolkit.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/1.20.1/common/buildstonetoolkit.1.20.1.common.iml" filepath="$PROJECT_DIR$/.idea/modules/1.20.1/common/buildstonetoolkit.1.20.1.common.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/1.20.1/common/buildstonetoolkit.1.20.1.common.main.iml" filepath="$PROJECT_DIR$/.idea/modules/1.20.1/common/buildstonetoolkit.1.20.1.common.main.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/1.20.1/common/buildstonetoolkit.1.20.1.common.test.iml" filepath="$PROJECT_DIR$/.idea/modules/1.20.1/common/buildstonetoolkit.1.20.1.common.test.iml" />
@@ -12,8 +13,10 @@
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/1.21.1/common/buildstonetoolkit.1.21.1.common.iml" filepath="$PROJECT_DIR$/.idea/modules/1.21.1/common/buildstonetoolkit.1.21.1.common.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/1.21.1/common/buildstonetoolkit.1.21.1.common.main.iml" filepath="$PROJECT_DIR$/.idea/modules/1.21.1/common/buildstonetoolkit.1.21.1.common.main.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/1.21.1/common/buildstonetoolkit.1.21.1.common.test.iml" filepath="$PROJECT_DIR$/.idea/modules/1.21.1/common/buildstonetoolkit.1.21.1.common.test.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/1.21.1/common/buildstonetoolkit.1.21.1.common.trueSrc.iml" filepath="$PROJECT_DIR$/.idea/modules/1.21.1/common/buildstonetoolkit.1.21.1.common.trueSrc.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/1.21.1/fabric/buildstonetoolkit.1.21.1.fabric.main.iml" filepath="$PROJECT_DIR$/.idea/modules/1.21.1/fabric/buildstonetoolkit.1.21.1.fabric.main.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/1.21.1/fabric/buildstonetoolkit.1.21.1.fabric.test.iml" filepath="$PROJECT_DIR$/.idea/modules/1.21.1/fabric/buildstonetoolkit.1.21.1.fabric.test.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/1.21.1/fabric/buildstonetoolkit.1.21.1.fabric.trueSrc.iml" filepath="$PROJECT_DIR$/.idea/modules/1.21.1/fabric/buildstonetoolkit.1.21.1.fabric.trueSrc.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/1.21.1/neoforge/buildstonetoolkit.1.21.1.neoforge.main.iml" filepath="$PROJECT_DIR$/.idea/modules/1.21.1/neoforge/buildstonetoolkit.1.21.1.neoforge.main.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/1.21.1/neoforge/buildstonetoolkit.1.21.1.neoforge.test.iml" filepath="$PROJECT_DIR$/.idea/modules/1.21.1/neoforge/buildstonetoolkit.1.21.1.neoforge.test.iml" />
     </modules>

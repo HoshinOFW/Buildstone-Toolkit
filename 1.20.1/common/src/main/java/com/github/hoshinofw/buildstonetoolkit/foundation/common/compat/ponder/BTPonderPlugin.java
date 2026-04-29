@@ -33,8 +33,8 @@ public class BTPonderPlugin implements PonderPlugin {
     public void registerTags(PonderTagRegistrationHelper<ResourceLocation> helper) {
         helper.registerTag(BUILDSTONE_TOOLKIT)
                 .item(Items.REDSTONE_TORCH, true, false)
-                .title(Component.translatable("ponder.tag.main.title").toString())
-                .description(Component.translatable("ponder.tag.main.description").toString())
+                .title(Component.translatable("buildstonetoolkit.ponder.tag.main.title").toString())
+                .description(Component.translatable("buildstonetoolkit.ponder.tag.main.description").toString())
                 .addToIndex()
                 .register();
 

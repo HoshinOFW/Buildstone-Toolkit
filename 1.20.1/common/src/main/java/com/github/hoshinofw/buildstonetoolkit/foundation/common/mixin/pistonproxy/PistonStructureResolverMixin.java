@@ -1,6 +1,7 @@
 package com.github.hoshinofw.buildstonetoolkit.foundation.common.mixin.pistonproxy;
 
 import com.github.hoshinofw.buildstonetoolkit.content.common.blocks.PistonProxyBlock;
+import com.llamalad7.mixinextras.sugar.Local;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.world.level.Level;
@@ -29,24 +30,23 @@ public abstract class PistonStructureResolverMixin {
     @Shadow
     protected abstract boolean addBlockLine(BlockPos blockPos, Direction direction);
 
+    //TODO Try to capture the blockState as a local, I tried a couple times but the local won't resolve.
     @Inject(method = "addBlockLine", at = @At(
                     value = "INVOKE",
-                    target = "Lnet/minecraft/world/level/block/state/BlockState;isAir()Z",
-                    shift = At.Shift.BEFORE ),
+                    target = "Lnet/minecraft/world/level/Level;getBlockState(Lnet/minecraft/core/BlockPos;)Lnet/minecraft/world/level/block/state/BlockState;",
+                    ordinal = 3,
+                    shift = At.Shift.AFTER ),
             cancellable = true)
-
     private void onAddBlockLine(BlockPos blockPos, Direction direction, CallbackInfoReturnable<Boolean> cir) {
         BlockState blockState = this.level.getBlockState(blockPos);
 
         if ((blockState.getBlock() instanceof PistonProxyBlock pistonProxy)) {
             if (pistonProxy.shouldTransferMovement(blockPos, blockState, direction)) {
                 BlockPos linkPos = pistonProxy.getLinkedAbsPos(this.level, blockPos);
-                if (linkPos != null) {
-                    if (linkPos.asLong() != blockPos.asLong()) {
-                        if (!this.addBlockLine(linkPos, direction)) {
-                            cir.setReturnValue(false);
-                            cir.cancel();
-                        }
+                if (linkPos.asLong() != blockPos.asLong()) {
+                    if (!this.addBlockLine(linkPos, direction)) {
+                        cir.setReturnValue(false);
+                        cir.cancel();
                     }
                 }
 

@@ -1,33 +1,41 @@
 plugins {
-    id "com.github.hoshinofw.multiversion.multiversion" version "0.4.12"
+    id "com.github.hoshinofw.multiversion.multiversion" version "0.7.6"
     id "groovy"
     id "groovy-gradle-plugin"
     id "com.gradle.plugin-publish" version "1.3.1"
 
     id "idea"
     id 'com.gradleup.shadow' version '8.3.6' apply false
+}
 
+idea {
+    module {
+        downloadSources = true
+        downloadJavadoc = true
+    }
 }
 
 multiversionResources {
-    replaceProperties = [
+    replaceWithString = [
             "mod_license" : mod_license.toString(),
             "mod_description" : mod_description.toString(),
-            "mod_author" : mod_author.toString()
+            "mod_author" : mod_author.toString(),
+    ]
+
+    replaceWithProperty = [
+            "fabric_loader_version": "fabric_loader_version",
+            "fabric_api_version": "fabric_api_version",
+            "forge_version": "forge_version",
+            "neoforge_version": "neoforge_version",
+            "architectury_api_version": "architectury_api_version"
     ]
 }
 
-multiversionModules {
-    common = ['common']
-    fabric = ['fabric']
-    forge = ['forge']
-    neoforge = ['neoforge']
-
-    patchModules = [
-            'forge', 'fabric', 'neoforge',
-                    'common']
+multiversionConfiguration {
+    automaticArchApi = true
 }
 
+multiversion.configureAll()
 
 subprojects {p ->
     if (!multiversion.isVersionedModule()) return
@@ -64,43 +72,39 @@ subprojects {p ->
     }
 
     dependencies {
-
-        compileOnly("mezz.jei:jei-${p.minecraft_version}-${multiversion.moduleType()}-api:${p.jei_version}")
-        runtimeOnly("mezz.jei:jei-${p.minecraft_version}-${multiversion.moduleType()}:${p.jei_version}")
+        modRuntimeOnly("mezz.jei:jei-${multiversion.mcVersion()}-${multiversion.moduleType()}:${p.jei_version}")
 
         //Bundle ponder and provide create classes only for versions where it exists
         //TODO Pick the right create versions, not just the latest in the maven.
         if (multiversion.mcVersion() in ["1.20.1", "1.21.1"]) {
+            //Create needs JEI classes.
+            modCompileOnly("mezz.jei:jei-${multiversion.mcVersion()}-${multiversion.moduleType()}-api:${p.jei_version}")
 
-            implementation("net.createmod.ponder:Ponder-${multiversion.moduleTypeCapitalized()}-${p.minecraft_version}:${p.ponder_version}") {
+            modImplementation("net.createmod.ponder:Ponder-${multiversion.moduleTypeCapitalized()}-${multiversion.mcVersion()}:${p.ponder_version}") {
                 exclude group: "io.github.fabricators_of_create.Porting-Lib"
                 transitive = false
             }
 
             if (!multiversion.isCommon()) {
-                shadowBundle("net.createmod.ponder:Ponder-${multiversion.moduleTypeCapitalized()}-${p.minecraft_version}:${p.ponder_version}") {
-                    exclude group: "io.github.fabricators_of_create.Porting-Lib"
-                    transitive = false
-                }
+                include ("net.createmod.ponder:Ponder-${multiversion.moduleTypeCapitalized()}-${multiversion.mcVersion()}:${p.ponder_version}")
             }
 
             if (multiversion.isNeoForge() || multiversion.isForge() || multiversion.isCommon()) {
                 //Giving common access to forge classes is not a good idea overall, but 1.21.1 fabric has not been released yet
-                implementation("com.simibubi.create:create-${p.minecraft_version}:${p.create_version}:slim") {
+                modImplementation("com.simibubi.create:create-${multiversion.mcVersion()}:${p.create_version}") {
                     transitive = false
                 }
                 String flywheelModule = multiversion.isMcVersion("1.20.1") ? "forge" : "neoforge"
-                compileOnly("dev.engine-room.flywheel:flywheel-$flywheelModule-api-${p.minecraft_version}:${p.flywheel_version}")
-                runtimeOnly("dev.engine-room.flywheel:flywheel-$flywheelModule-${p.minecraft_version}:${p.flywheel_version}")
-                implementation("com.tterrag.registrate:Registrate:${p.registrate_version}")
+                modCompileOnly("dev.engine-room.flywheel:flywheel-$flywheelModule-api-${multiversion.mcVersion()}:${p.flywheel_version}")
+                modRuntimeOnly("dev.engine-room.flywheel:flywheel-$flywheelModule-${multiversion.mcVersion()}:${p.flywheel_version}")
+                modImplementation("com.tterrag.registrate:Registrate:${p.registrate_version}")
             }
 
             if (multiversion.isFabric() && multiversion.isMcVersion("1.20.1")) {
-                implementation("com.simibubi.create:create-fabric-$p.minecraft_version:$p.create_version") {
-                    exclude group: "io.github.fabricators_of_create.Porting-Lib"
+                modImplementation("com.simibubi.create:create-fabric-${multiversion.mcVersion()}:$p.create_version") {
+                    //exclude group: "io.github.fabricators_of_create.Porting-Lib"
                 }
             }
         }
     }
-
 }

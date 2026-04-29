@@ -20,7 +20,11 @@ public final class BuildstoneToolkit {
         BuildstonePackets.register();
 
         LOGGER.info("Finished registries");
-        LOGGER.info("Common version 1.20.1");
+        logVersion();
 
+    }
+
+    public static void logVersion() {
+        LOGGER.info("Common version 1.20.1");
     }
 }

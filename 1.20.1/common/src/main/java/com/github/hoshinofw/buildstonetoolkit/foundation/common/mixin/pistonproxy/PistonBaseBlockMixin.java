@@ -4,6 +4,8 @@ import com.github.hoshinofw.buildstonetoolkit.foundation.common.util.NBTUtil;
 import com.github.hoshinofw.buildstonetoolkit.foundation.common.util.Util;
 import com.github.hoshinofw.buildstonetoolkit.foundation.common.util.mixin.PistonMovingBlockEntityMixinInterface;
 import com.llamalad7.mixinextras.injector.ModifyReturnValue;
+import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
+import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
 import com.llamalad7.mixinextras.sugar.Local;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -22,30 +24,6 @@ import org.spongepowered.asm.mixin.injection.callback.LocalCapture;
 @Mixin(PistonBaseBlock.class)
 public class PistonBaseBlockMixin {
 
-    @Inject(method = "moveBlocks",
-            at = @At(value = "INVOKE", target = "Lnet/minecraft/world/level/Level;setBlockEntity(Lnet/minecraft/world/level/block/entity/BlockEntity;)V",
-                    ordinal = 0,
-                    shift = At.Shift.AFTER),
-    locals = LocalCapture.CAPTURE_FAILHARD)
-    private void buildstonetoolkit$afterSetBlockEntity(Level level, BlockPos blockPos, Direction direction, boolean extending,
-            CallbackInfoReturnable<Boolean> cir,
-            @Local(ordinal = 2) BlockPos currentFinalPos) {
-
-        // Inside the MBE creation loop.
-        BlockPos originalPos = currentFinalPos.relative(Util.resolveDirection(direction, extending).getOpposite());
-        BlockEntity originalBE = level.getBlockEntity(originalPos);
-        CompoundTag nbt = null;
-
-        if (originalBE != null) {
-            nbt = NBTUtil.saveWithoutMetadata(originalBE, level);
-        }
-
-        BlockEntity newBE = level.getBlockEntity(currentFinalPos);
-        if (newBE instanceof PistonMovingBlockEntity mbe && nbt != null) {
-            ((PistonMovingBlockEntityMixinInterface) mbe).buildstonetoolkit$setProxyTag(nbt);
-        }
-    }
-
     @ModifyReturnValue(
             method = "isPushable(Lnet/minecraft/world/level/block/state/BlockState;" +
                     "Lnet/minecraft/world/level/Level;" +
@@ -56,6 +34,38 @@ public class PistonBaseBlockMixin {
     )
     private static boolean modifyPushableVar(boolean original, BlockState state) {
         return original || Util.isPushableBlockEntity(state);
+    }
+
+    @WrapOperation(
+            method = "moveBlocks",
+            at = @At(value = "INVOKE",
+                    target = "Lnet/minecraft/world/level/block/piston/MovingPistonBlock;" +
+                            "newMovingBlockEntity(Lnet/minecraft/core/BlockPos;" +
+                            "Lnet/minecraft/world/level/block/state/BlockState;" +
+                            "Lnet/minecraft/world/level/block/state/BlockState;" +
+                            "Lnet/minecraft/core/Direction;ZZ)" +
+                            "Lnet/minecraft/world/level/block/entity/BlockEntity;",
+                    ordinal = 0)
+    )
+    private BlockEntity buildstonetoolkit$tagMovedMBE(
+            BlockPos newPosition, BlockState movingPistonBlockState, BlockState originalState,
+            Direction movementDirection, boolean extending, boolean isSourcePiston,
+            Operation<BlockEntity> original,
+            Level level, BlockPos pistonPosition, Direction pistonDirection, boolean pushing) {
+
+        BlockEntity mbe = original.call(newPosition, movingPistonBlockState, originalState, movementDirection, extending, isSourcePiston);
+
+        if (!isSourcePiston && mbe instanceof PistonMovingBlockEntity pistonMBE) {
+            Direction effective = Util.resolveDirection(pistonDirection, pushing);
+            BlockPos originalPos = newPosition.relative(effective.getOpposite());
+            BlockEntity originalBE = level.getBlockEntity(originalPos);
+            if (originalBE != null) {
+                CompoundTag nbt = NBTUtil.saveWithoutMetadata(originalBE, level);
+                ((PistonMovingBlockEntityMixinInterface) pistonMBE).buildstonetoolkit$setProxyTag(nbt);
+            }
+        }
+
+        return mbe;
     }
 
 }

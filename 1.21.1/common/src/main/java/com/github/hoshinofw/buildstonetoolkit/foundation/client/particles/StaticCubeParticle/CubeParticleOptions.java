@@ -1,6 +1,7 @@
 package com.github.hoshinofw.buildstonetoolkit.foundation.client.particles.StaticCubeParticle;
 
 import com.github.hoshinofw.multiversion.DeleteMethodsAndFields;
+import com.github.hoshinofw.multiversion.ModifySignature;
 import com.github.hoshinofw.multiversion.OverwriteVersion;
 import com.github.hoshinofw.multiversion.ShadowVersion;
 import com.mojang.serialization.MapCodec;
@@ -10,13 +11,15 @@ import net.minecraft.core.particles.ParticleType;
 import net.minecraft.network.codec.StreamCodec;
 import org.jetbrains.annotations.NotNull;
 
-@DeleteMethodsAndFields({"writeToNetwork", "writeToString", "CODEC"})
+@DeleteMethodsAndFields({"writeToNetwork", "writeToString"})
 public abstract class CubeParticleOptions implements ParticleOptions {
     // Read and write information, typically for use in commands
     // Since there is no information in this type, this will be an empty string
     @ShadowVersion
     public static final CubeParticleOptions INSTANCE;
 
+    @OverwriteVersion
+    @ModifySignature("CODEC")
     public static final MapCodec<CubeParticleOptions> CODEC = MapCodec.unit(INSTANCE);
 
     // Read and write information to the network buffer.

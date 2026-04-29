@@ -6,6 +6,7 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.block.state.BlockState;
 
 public class ObserverProxyBlockEntity extends UpdateListenerProxyBlockEntity {
+
     public ObserverProxyBlockEntity(BlockPos pos, BlockState state) {
         super(BuildstoneBlockEntities.OBSERVER_PROXY.get(), pos, state);
     }

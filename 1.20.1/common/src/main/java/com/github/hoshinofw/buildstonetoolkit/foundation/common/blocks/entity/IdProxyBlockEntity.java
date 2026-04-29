@@ -64,8 +64,16 @@ public abstract class IdProxyBlockEntity<T extends IdProxyBlockEntity<T>> extend
 
     @Override
     public void load(CompoundTag nbt) {
-        NBTUtil.IdBlockEntityLoadLogic(this, nbt);
+        loadLogic(this, nbt);
         super.load(nbt);
         //BuildstoneToolkit.LOGGER.info("loadAdditional called and ensureEntry called on idRegistry: {} for id: {}", getIdRegistry(this.getLevel()).getName(), this.getId());
+    }
+
+    public static void loadLogic(IdProxyBlockEntity<?> be, CompoundTag nbt) {
+        be.setId(NBTUtil.getId(nbt));
+        Level level = be.getLevel();
+        if (level != null) {
+            IdProxyBlockEntity.getIdRegistry(level).ensureEntry(be);
+        }
     }
 }

@@ -35,16 +35,12 @@ public class ModWand extends Item {
         CLIENT_MODE = mode;
     }
 
-    private static void buildHoverText(List<Component> list) {
+    @Override
+    public void appendHoverText(ItemStack itemStack, @Nullable Level level, List<Component> list, TooltipFlag tooltipFlag) {
         if (Screen.hasShiftDown()) {
             list.add(Component.translatable("tooltip.buildstonetoolkit.proxy_tuner.details"));
         } else {
             list.add(Component.translatable("tooltip.buildstonetoolkit.hold_shift"));
         }
-    }
-
-    @Override
-    public void appendHoverText(ItemStack itemStack, @Nullable Level level, List<Component> list, TooltipFlag tooltipFlag) {
-        buildHoverText(list);
     }
 }

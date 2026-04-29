@@ -10,7 +10,6 @@
     "pistonproxy.BlockEntityAccessor",
     "pistonproxy.PistonBaseBlockMixin",
     "pistonproxy.PistonMovingBlockEntityMixin",
-    "pistonproxy.PistonMovingBlockEntityMixinStable",
     "pistonproxy.PistonStructureResolverMixin",
     "updatelistenerproxy.LevelMixin",
     "updatelistenerproxy.ServerLevelMixin",
