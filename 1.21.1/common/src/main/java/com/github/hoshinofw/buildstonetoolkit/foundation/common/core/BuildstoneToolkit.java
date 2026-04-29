@@ -11,8 +11,12 @@ import org.slf4j.LoggerFactory;
 
 @ModifyClass
 public final class BuildstoneToolkit {
+
     @ShadowVersion
     public static final Logger LOGGER;
+
+    @ShadowVersion
+    public static final String MOD_ID;
 
     @OverwriteVersion
     public static void logVersion() {
