@@ -32,7 +32,7 @@ public class BuildstoneCommonEvents {
     }
 
     private static void onServerJoin(ServerPlayer serverPlayer) {
-        ConfigSyncPacket.sendToPlayer(serverPlayer);
+        ConfigSyncPacket.HANDLER.sendToPlayer(serverPlayer);
     }
 
     //TODO MAKE A packet

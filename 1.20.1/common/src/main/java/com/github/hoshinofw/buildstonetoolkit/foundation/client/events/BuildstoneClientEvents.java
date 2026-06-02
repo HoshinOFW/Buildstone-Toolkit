@@ -25,7 +25,6 @@ import dev.architectury.event.events.common.InteractionEvent;
 import it.unimi.dsi.fastutil.booleans.BooleanObjectPair;
 import it.unimi.dsi.fastutil.longs.LongArrayList;
 import it.unimi.dsi.fastutil.longs.LongCollection;
-import net.createmod.catnip.config.ConfigBase;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.player.LocalPlayer;
@@ -154,11 +153,11 @@ public class BuildstoneClientEvents {
         });
 
         if (client.options.keyUse.isDown()) {
-            PlayerProxyInteractionPacket.sendToServer(ipbs.toLongArray(), player.position(),
-                    new ProxyInteractionType[]{ProxyInteractionType.RightClickedRightClickProxy, ProxyInteractionType.LookedAtLookingAtProxy});
+            PlayerProxyInteractionPacket.HANDLER.sendToServer(new PlayerProxyInteractionPacket(ipbs.toLongArray(), player.position(),
+                    new ProxyInteractionType[]{ProxyInteractionType.RightClickedRightClickProxy, ProxyInteractionType.LookedAtLookingAtProxy}));
         } else {
-            PlayerProxyInteractionPacket.sendToServer(ipbs.toLongArray(), player.position(),
-                    ProxyInteractionType.LookedAtLookingAtProxy);
+            PlayerProxyInteractionPacket.HANDLER.sendToServer(new PlayerProxyInteractionPacket(ipbs.toLongArray(), player.position(),
+                    new ProxyInteractionType[]{ProxyInteractionType.LookedAtLookingAtProxy}));
         }
     }
 
@@ -280,7 +279,7 @@ public class BuildstoneClientEvents {
 
         if (targetPos != null) {
             //Server will call setLinkedAbsPos and update the client.
-            SetProxyTargetPacket.sendToServer(hitPos, targetPos, holder.getSelectedFace());
+            SetProxyTargetPacket.HANDLER.sendToServer(new SetProxyTargetPacket(hitPos, targetPos, holder.getSelectedFace()));
 
             SoundUtil.playLinkSuccessSound(player);
             player.displayClientMessage(Component.translatable("message.buildstonetoolkit.link_success",

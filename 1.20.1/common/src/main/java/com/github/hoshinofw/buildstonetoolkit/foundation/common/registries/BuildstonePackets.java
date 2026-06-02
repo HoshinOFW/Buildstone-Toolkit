@@ -7,9 +7,9 @@ import com.github.hoshinofw.buildstonetoolkit.foundation.common.networking.SetPr
 public class BuildstonePackets {
 
     public static void register() {
-        SetProxyTargetPacket.register();
-        PlayerProxyInteractionPacket.register();
-        ConfigSyncPacket.register();
+        SetProxyTargetPacket.HANDLER.register();
+        PlayerProxyInteractionPacket.HANDLER.register();
+        ConfigSyncPacket.HANDLER.register();
     }
 
 }
