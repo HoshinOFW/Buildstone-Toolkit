@@ -80,7 +80,6 @@ public class ClientUtil {
         BlockPos immutablePos = pos.immutable();
         BlockHitResult hit = Shapes.block().clip(from, to, pos);
         if (hit != null) return hit.withPosition(immutablePos);
-        // Corner/epsilon edge case: synthesize the dominant-axis entry face.
         Vec3 d = from.subtract(to);
         return new BlockHitResult(Vec3.atCenterOf(immutablePos), Direction.getNearest(d.x, d.y, d.z), immutablePos, true);
     }
@@ -134,7 +133,7 @@ public class ClientUtil {
                     ctx.collected.add(packed);
                     return null;
                 }
-                if (includeExit) ctx.collected.add(packed);
+                if (ctx.includeExit) ctx.collected.add(packed);
                 return Boolean.TRUE;
             }, list -> Boolean.FALSE);
 

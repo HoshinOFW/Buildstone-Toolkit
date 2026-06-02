@@ -1,10 +1,7 @@
 package com.github.hoshinofw.buildstonetoolkit.foundation.common.blocks;
 
 import com.github.hoshinofw.buildstonetoolkit.foundation.common.blocks.entity.ProxyBlockEntity;
-import com.github.hoshinofw.buildstonetoolkit.foundation.common.storage.registries.ProxyRegistry;
-import it.unimi.dsi.fastutil.objects.Object2ObjectOpenHashMap;
 import net.minecraft.core.BlockPos;
-import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.EntityBlock;
@@ -13,7 +10,6 @@ import net.minecraft.world.level.block.state.BlockState;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.Map;
 import java.util.Objects;
 
 public abstract class ProxyBlock<B extends ProxyBlock<B, BE>, BE extends ProxyBlockEntity<B, BE>> extends Block implements EntityBlock {

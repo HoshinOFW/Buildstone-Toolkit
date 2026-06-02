@@ -14,7 +14,6 @@ public class BuildstoneClientEvents {
     @OverwriteVersion
     private static void registerMouseScrolled() {
         ClientRawInputEvent.MOUSE_SCROLLED.register(BuildstoneClientEvents::mouseScrolled);
-        BuildstoneToolkit.LOGGER.info("mouseScrolled Registered");
     }
 
     @ShadowVersion

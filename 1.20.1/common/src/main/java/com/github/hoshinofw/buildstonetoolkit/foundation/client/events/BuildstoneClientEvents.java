@@ -45,6 +45,7 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.Arrays;
 import java.util.Set;
+import java.util.function.BiPredicate;
 
 import static com.github.hoshinofw.buildstonetoolkit.foundation.common.util.Util.blockPosToArray;
 import static com.github.hoshinofw.buildstonetoolkit.foundation.common.util.Util.blueComponent;
@@ -64,7 +65,7 @@ public class BuildstoneClientEvents {
         ClientRawInputEvent.MOUSE_SCROLLED.register((minecraft, y) -> mouseScrolled(minecraft, 0, y));
     }
 
-    private static EventResult mouseScrolled(Minecraft minecraft, double x, double y) {
+    private static EventResult mouseScrolled(Minecraft minecraft, final double x, final double y) {
         LocalPlayer player = minecraft.player;
         if (player == null) return EventResult.pass();
         if ((player.getMainHandItem().getItem() instanceof ModWand || player.getOffhandItem().getItem() instanceof ModWand)
@@ -132,15 +133,12 @@ public class BuildstoneClientEvents {
         //TODO Implement my own BlockGetter#traverseBlocks so I can do one iteration and avoid a big array.
 
         BooleanObjectPair<long[]> pair;
-        if (BTConfig.getInteractionProxyRaySkipIsEmpty()) {
-            pair = ClientUtil.raycastAndCollectBlocksUntilOccluded(player, level, BTConfig.getInteractionProxyRayReach(),
-                    (state, pos) -> state.isAir() || !state.canOcclude(), true);
-        } else {
-            Set<Block> skipBlocks = BTConfig.getInteractionProxyRaySkipBlocks();
-            pair = ClientUtil.raycastAndCollectBlocksUntilOccluded(player, level, BTConfig.getInteractionProxyRayReach(),
-                    (state, pos) -> state.isAir() || !state.canOcclude() || skipBlocks.contains(state.getBlock()), true);
-        }
+        Set<Block> skipBlocks = BTConfig.getInteractionProxyRaySkipBlocks();
+        BiPredicate<BlockState, BlockPos> check = BTConfig.getInteractionProxyRaySkipIsEmpty() ?
+                (state, pos) -> state.isAir() || !state.canOcclude() :
+                (state, pos) -> state.isAir() || !state.canOcclude() || skipBlocks.contains(state.getBlock());
 
+        pair = ClientUtil.raycastAndCollectBlocksUntilOccluded(player, level, BTConfig.getInteractionProxyRayReach(), check, true);
 
         long[] blocks = pair.right();
 
@@ -218,7 +216,7 @@ public class BuildstoneClientEvents {
                     //If aimed at the sky
                     holder.clearSelection();
 
-                } else if (state.getBlock() instanceof ProxyBlock proxyBlock) {
+                } else if (state.getBlock() instanceof ProxyBlock<?, ?> proxyBlock) {
                     if (!player.isShiftKeyDown()) {
                         //When not shifting, set proxy link to selection
                         sendSetProxyTargetPacket(holder, player, level, hitPos);
