@@ -20,7 +20,7 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
-@Mixin(PistonMovingBlockEntity.class)
+@Mixin(value = PistonMovingBlockEntity.class)
 public abstract class PistonMovingBlockEntityMixin implements PistonMovingBlockEntityMixinInterface{
 
     @Inject(method = "saveAdditional", at = @At("TAIL"))

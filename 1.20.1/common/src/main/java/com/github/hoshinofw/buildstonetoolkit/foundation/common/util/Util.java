@@ -1,17 +1,17 @@
 package com.github.hoshinofw.buildstonetoolkit.foundation.common.util;
 
-import com.github.hoshinofw.buildstonetoolkit.content.common.blocks.PistonProxyBlock;
 import com.github.hoshinofw.buildstonetoolkit.foundation.common.util.mixin.PistonMovingBlockEntityMixinInterface;
+import it.unimi.dsi.fastutil.objects.ObjectLinkedOpenHashSet;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.core.Position;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.ClipContext;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.piston.PistonMovingBlockEntity;
-import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.Nullable;
@@ -22,11 +22,71 @@ import java.util.function.Supplier;
 
 public class Util {
 
+    public static BlockPos[] getAllAdjacent(BlockPos pos) {
+        BlockPos[] posArray = new BlockPos[6];
+        int index = 0;
+        for (Direction direction : Direction.values()) {
+            posArray[index] = (pos.relative(direction));
+            index++;
+        }
+        return posArray;
+    }
+
+    public static BlockPos[] getAllAdjacentExcept(BlockPos pos, Direction direction) {
+        BlockPos[] posArray = new BlockPos[5];
+        int index = 0;
+        for (Direction direction2 : Direction.values()) {
+            if (direction2 == direction) continue;
+            posArray[index] = (pos.relative(direction2));
+            index++;
+        }
+        return posArray;
+    }
+
+    public static boolean isVirtualRenderWorld(Level level) {
+        if (level == null) return false;
+        return level.getClass().getName().equals("com.simibubi.create.foundation.virtualWorld.VirtualRenderWorld");
+    }
+
+    public static class PositionImpl implements Position {
+        private final Vec3 vec3;
+
+        public PositionImpl(Vec3 vec3) {
+            this.vec3 = vec3;
+        }
+
+        @Override
+        public double x() {
+            return vec3.x();
+        }
+
+        @Override
+        public double y() {
+            return vec3.y();
+        }
+
+        @Override
+        public double z() {
+            return vec3.z();
+        }
+    }
+
     public static long[] buildLongArray(Collection<BlockPos> blockPosCollection) {
         ArrayList<Long> array = new ArrayList<>();
         blockPosCollection.forEach((pos) -> array.add(pos.asLong()));
         Long[] array2 = new Long[array.size()];
         return toPrimitive(array.toArray(array2));
+    }
+
+    public static <T, V extends T> Collection<V> filterCollection(Collection<T> collection, Class<V> type) {
+        ObjectLinkedOpenHashSet<V> set = new ObjectLinkedOpenHashSet<>();
+        collection.forEach((T entry) -> {
+            if (type.isInstance(entry)) {
+                set.add(type.cast(entry));
+            }
+        });
+        return set;
+
     }
 
     public static ArrayList<BlockPos> buildBlockPosList(long[] array) {
@@ -55,13 +115,7 @@ public class Util {
         Vec3 look = player.getViewVector(partialTick);
         Vec3 end = eye.add(look.scale(maxDistance));
 
-        ClipContext ctx = new ClipContext(
-                eye,
-                end,
-                ClipContext.Block.OUTLINE,
-                ClipContext.Fluid.NONE,
-                player
-        );
+        ClipContext ctx = new ClipContext(eye, end, ClipContext.Block.OUTLINE, ClipContext.Fluid.NONE, player);
 
         return level.clip(ctx);
     }
@@ -84,12 +138,21 @@ public class Util {
         return ((a.getX() == b.getX()) && (a.getY() == b.getY()) && (a.getZ() == b.getZ()));
     }
 
-    public static boolean isPushableBlockEntity(BlockState state) {
-        return (state.hasBlockEntity() && (state.getBlock() instanceof PistonProxyBlock));
-    }
-
     public static Direction resolveDirection(Direction direction, boolean isExtending) {
         return isExtending ? direction : direction.getOpposite();
+    }
+
+    /**
+     *
+     * @param packedPos long-packed vanilla minecraft BlockPos. Other encodings will probably not work.
+     * @param direction exactly what you think it is
+     * @return
+     */
+    public static long fastRelative(long packedPos, Direction direction) {
+        return BlockPos.asLong(
+                BlockPos.getX(packedPos) + direction.getStepX(),
+                BlockPos.getY(packedPos) + direction.getStepY(),
+                BlockPos.getZ(packedPos) + direction.getStepZ());
     }
 
     public static int[] blockPosToArray(BlockPos pos) {

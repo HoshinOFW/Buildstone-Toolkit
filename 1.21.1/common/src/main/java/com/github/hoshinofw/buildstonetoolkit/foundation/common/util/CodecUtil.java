@@ -47,4 +47,16 @@ public class CodecUtil {
             buf.writeDouble(vec3.z);
         }
     };
+
+    public static StreamCodec<FriendlyByteBuf, long[]> LONG_ARRAY_STREAM_CODEC = new StreamCodec<FriendlyByteBuf, long[]>() {
+        @Override
+        public long[] decode(FriendlyByteBuf buf) {
+            return buf.readLongArray();
+        }
+
+        @Override
+        public void encode(FriendlyByteBuf buf, long[] array) {
+            buf.writeLongArray(array);
+        }
+    };
 }

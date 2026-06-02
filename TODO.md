@@ -8,39 +8,35 @@
 - Allay configurable searchOrigin, maxDistance, and general player tracking
 
 ## BUGS:
-    Also selected position should never be accessed on server...
-      Switch it to ClientPlayer to ensure.
-
-    Observer proxy south texture is inverted for on and off
-    I discovered that the synchronization is fragile in more complex proxy applications. Tested the 3x3 door.
-        The desync actually happens naturally even without manual setTargetAbsPos()
+    Redstone proxies don't visually update next to interactive proxies. Seems update ordering is weird in general.
 
 ### Debt:
-- Have saving target to nbt by relative or by absolute be toggleable via a boolean field and the tuner. Should probably be relative by default to improve mod compat.
+- Split access transformers instead of overriding. Same with mixin configs.
 - Datagen (unavoidable for proxy colors...)
-- Write common class code for serverside packet handling. Right now each overwrite needs to rewrite it.
-- Redstone Proxy works via tick scheduling to avoid lag in edgecases.
 - Test everything in multiplayer
+ 
+# TODO FOR RELEASES:
+    PLANNED FOR THIS RELEASE:
 
-# TODO FOR NEXT RELEASE:
+    Enable debug for logging
     
-    Fix bugs.
+    mods.toml or equivalents have the mod dependency version ranges actually set by a separate gradle property that is more flexible than whatever BT is compiled against
 
+    Separate access transformers and mixin configs so that I don't have to update every one and inheritance via multiversion works.
 
-    Create compat:
-      Schematics fully work.
+-------------------
+    
+    Piston proxy modification extension. END FIXER. 
+      Its a separate button-like block (turns on w redstone also) that enables one of the parallel controls of the piston proxy
+      Neko sent concept art.
 
-    Sable compat: 
-      Proxies can target into/out of sublevels.
-      Requirement: Cross-dimensionality support for proxies.
-        Problems: Race conditions, level access, etc.
-      
-
+    Ponders
+    
     Redstone utility blocks:
       A proper redstone level display block.
         No read or write, and more verbose than the Redstone Proxy
         Does conduct redstone, useful RP target block
-    
+
     Color coding for proxies?
     
     Piston proxy target field is modified before the base proxy setter to fix flickering.

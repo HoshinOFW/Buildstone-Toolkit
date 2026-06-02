@@ -2,13 +2,12 @@ package com.github.hoshinofw.buildstonetoolkit.foundation.client.particles.Stati
 
 import com.github.hoshinofw.buildstonetoolkit.content.common.items.ModWand;
 import com.github.hoshinofw.buildstonetoolkit.foundation.client.Sprites;
-import com.github.hoshinofw.buildstonetoolkit.foundation.common.util.BlockPosSupplier;
+import com.github.hoshinofw.buildstonetoolkit.foundation.common.util.Vec3Supplier;
 import com.github.hoshinofw.buildstonetoolkit.foundation.common.util.render.BlockParticleTexture;
+import com.github.hoshinofw.buildstonetoolkit.foundation.common.util.render.RenderTransformSupplier;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import dev.architectury.platform.Platform;
-import net.fabricmc.api.EnvType;
-import net.fabricmc.api.Environment;
 import net.minecraft.client.Camera;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.particle.*;
@@ -20,7 +19,8 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.function.BooleanSupplier;
 
-@Environment(EnvType.CLIENT)
+//TODO Add face filtering option
+//TODO Add different textures for different faces option.
 public class CubeParticle extends TextureSheetParticle {
 
     public static final Vec3[] CUBE = {
@@ -45,6 +45,8 @@ public class CubeParticle extends TextureSheetParticle {
 
     private SpriteSet sprites;
     private static final CubeParticleRenderProvider renderer = (Platform.isFabric() ? new FabricRenderer() : new NFRenderer());
+    private boolean doCull = false;
+    public ParticleRenderType render_type = (Platform.isFabric()) ? ParticleRenderType.PARTICLE_SHEET_TRANSLUCENT : CubeParticleParticleRenderTypeHolder.NO_DEPTH;
 
     public float minU;
     public float maxU;
@@ -58,16 +60,26 @@ public class CubeParticle extends TextureSheetParticle {
         this.updateUVValues();
     }
 
+    protected CubeParticle(ClientLevel clientLevel, Vec3 pos, SpriteSet spriteSet) {
+        super(clientLevel, pos.x(), pos.y(), pos.y());
+        this.sprites = spriteSet;
+        this.setTextureSprite(spriteSet);
+        this.updateUVValues();
+    }
+
     public float r, g, b, a = 1;
     public float alpha;
-    public float size = 1;
+    public Vec3 size = new Vec3(1, 1, 1);
+    public float scale = 1;
+    public Vec3 renderOffset = new Vec3(0, 0, 0);
 
     private BooleanSupplier shouldPersist = () -> false;
-    private BlockPosSupplier posSupplier = null;
+    private Vec3Supplier posSupplier = null;
+    private RenderTransformSupplier renderTransformContextSupplier = null;
 
     private boolean fading = false;
     private int fadeTicks = 0;
-    private static final int fadeDuration = 5;
+    private int fadeDuration = 5;
 
     public double getX() {
         return this.x;
@@ -91,6 +103,11 @@ public class CubeParticle extends TextureSheetParticle {
         return new CubeParticle(clientLevel, pos, Sprites.BLOCK_PARTICLE_SPRITES);
     }
 
+    public static CubeParticle create(ClientLevel clientLevel, Vec3 pos) {
+        ModWand.setClientMode(ModWand.Mode.ON);
+        return new CubeParticle(clientLevel, pos, Sprites.BLOCK_PARTICLE_SPRITES);
+    }
+
     public CubeParticle setRGBATint(float r, float g, float b, float a) {
         this.r = r;
         this.g = g;
@@ -100,8 +117,18 @@ public class CubeParticle extends TextureSheetParticle {
         return this;
     }
 
-    public CubeParticle setSize(float size) {
+    public CubeParticle setScale(Vec3 size) {
         this.size = size;
+        return this;
+    }
+
+    public CubeParticle setSize(float scale) {
+        this.scale = scale;
+        return this;
+    }
+
+    public CubeParticle setRenderOffset(Vec3 offset) {
+        this.renderOffset = offset;
         return this;
     }
 
@@ -110,8 +137,23 @@ public class CubeParticle extends TextureSheetParticle {
         return this;
     }
 
-    public CubeParticle setPosSupplier(BlockPosSupplier supplier) {
+    public CubeParticle setPosSupplier(Vec3Supplier supplier) {
         this.posSupplier = supplier;
+        return this;
+    }
+
+    public CubeParticle setCull(boolean cull) {
+        this.doCull = cull;
+
+        if (doCull) {
+            this.render_type = ParticleRenderType.PARTICLE_SHEET_TRANSLUCENT;
+        }
+
+        return this;
+    }
+
+    public CubeParticle setRenderTransformContextSupplier(RenderTransformSupplier supplier) {
+        this.renderTransformContextSupplier = supplier;
         return this;
     }
 
@@ -123,8 +165,13 @@ public class CubeParticle extends TextureSheetParticle {
     }
 
     public CubeParticle setTextureIndex(BlockParticleTexture texture) {
-        this.setSprite(sprites.get(texture.index(), 2));
+        this.setSprite(sprites.get(texture.index(), BlockParticleTexture.values().length - 1));
         this.updateUVValues();
+        return this;
+    }
+
+    public CubeParticle setFadeDuration(int fadeDuration) {
+        this.fadeDuration = fadeDuration;
         return this;
     }
 
@@ -136,17 +183,15 @@ public class CubeParticle extends TextureSheetParticle {
     }
 
     @Override
-    @Environment(EnvType.CLIENT)
-    public void render(VertexConsumer consumer, @NotNull Camera camera, float partialTicks) {
-        renderer.render(consumer, camera, partialTicks, this);
+    public void render(@NotNull VertexConsumer consumer, @NotNull Camera camera, float partialTicks) {
+        renderer.render(consumer, camera, partialTicks, this, renderTransformContextSupplier);
     }
 
     @Override
     public void tick() {
         if (posSupplier != null) {
-            BlockPos pos = posSupplier.getAsBlockPos();
-            if (pos != null) {
-                Vec3 vector = pos.getCenter();
+            Vec3 vector = posSupplier.asVec3();
+            if (vector != null) {
                 this.x = vector.x();
                 this.y = vector.y();
                 this.z = vector.z();
@@ -173,15 +218,10 @@ public class CubeParticle extends TextureSheetParticle {
         }
     }
 
-    public static final ParticleRenderType RENDER_TYPE;
-
-    static {
-        RENDER_TYPE = (Platform.isFabric()) ? ParticleRenderType.PARTICLE_SHEET_TRANSLUCENT : CubeParticleParticleRenderTypeHolder.NO_DEPTH;
-    }
 
     @Override
     public @NotNull ParticleRenderType getRenderType() {
-        return RENDER_TYPE;
+        return render_type;
     }
 
     public static class Provider implements ParticleProvider<CubeParticleOptions> {
@@ -193,7 +233,7 @@ public class CubeParticle extends TextureSheetParticle {
         }
 
         @Override
-        public @Nullable Particle createParticle(CubeParticleOptions particleOptions, ClientLevel clientLevel, double x, double y, double z, double dx, double dy, double dz) {
+        public @Nullable Particle createParticle(@NotNull CubeParticleOptions particleOptions, @NotNull ClientLevel clientLevel, double x, double y, double z, double dx, double dy, double dz) {
 
             return CubeParticle.create(clientLevel, new BlockPos((int)x, (int)y, (int)z), this.sprite)
                     .setRGBATint(1F, 1F, 1F, 0.8F)
@@ -203,23 +243,22 @@ public class CubeParticle extends TextureSheetParticle {
         }
     }
 
-    @Environment(EnvType.CLIENT)
     public static class NFRenderer implements CubeParticleRenderProvider {
 
-        public void render(VertexConsumer consumer, @NotNull Camera camera, float partialTicks, CubeParticle particle) {
-            CubeParticleRenderProvider.super.render(consumer, camera, partialTicks, particle);
+        @Override
+        public void preRender(VertexConsumer consumer, @NotNull Camera camera, float partialTicks, CubeParticle particle) {
         }
     }
 
-    @Environment(EnvType.CLIENT)
     public static class FabricRenderer implements CubeParticleRenderProvider {
 
-        public void render(VertexConsumer consumer, @NotNull Camera camera, float partialTicks, CubeParticle particle) {
-            RenderSystem.disableDepthTest();
-            RenderSystem.disableCull();
-            RenderSystem.depthMask(false);
-
-            CubeParticleRenderProvider.super.render(consumer, camera, partialTicks, particle);
+        @Override
+        public void preRender(VertexConsumer consumer, @NotNull Camera camera, float partialTicks, CubeParticle particle) {
+            if (!particle.doCull) {
+                RenderSystem.disableDepthTest();
+                RenderSystem.disableCull();
+                RenderSystem.depthMask(false);
+            }
         }
     }
 

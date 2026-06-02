@@ -1,7 +1,9 @@
 package com.github.hoshinofw.buildstonetoolkit.foundation.common.networking;
 
-import com.github.hoshinofw.buildstonetoolkit.foundation.common.blocks.entity.ProxyBlockEntity;
+import com.github.hoshinofw.buildstonetoolkit.foundation.common.blocks.FaceTargetingProxyBlock;
+import com.github.hoshinofw.buildstonetoolkit.foundation.common.blocks.ProxyBlock;
 import com.github.hoshinofw.buildstonetoolkit.foundation.common.core.BuildstoneToolkit;
+import com.github.hoshinofw.buildstonetoolkit.foundation.common.data.TargetFace;
 import dev.architectury.networking.NetworkManager;
 import io.netty.buffer.Unpooled;
 import net.minecraft.core.BlockPos;
@@ -9,31 +11,34 @@ import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
-import net.minecraft.world.level.block.entity.BlockEntity;
-import org.jetbrains.annotations.NotNull;
+import net.minecraft.world.level.block.state.BlockState;
 
-public record SetProxyTargetPacket(BlockPos proxyPos, BlockPos targetPos) {
+
+public record SetProxyTargetPacket(BlockPos proxyPos, BlockPos targetPos, TargetFace face) {
 
     public static final ResourceLocation ID =
             new ResourceLocation(BuildstoneToolkit.MOD_ID, "set_proxy_target");
 
-    // Encode to buffer
-    public static void write(FriendlyByteBuf buf, @NotNull BlockPos proxyPos, @NotNull BlockPos targetPos) {
+    public static void write(FriendlyByteBuf buf, BlockPos proxyPos, BlockPos targetPos, TargetFace face) {
         buf.writeBlockPos(proxyPos);
         buf.writeBlockPos(targetPos);
+        buf.writeInt(face.getIndex());
     }
 
-    // Decode from buffer
     public static SetProxyTargetPacket read(FriendlyByteBuf buf) {
         BlockPos proxyPos = buf.readBlockPos();
         BlockPos targetPos = buf.readBlockPos();
-        return new SetProxyTargetPacket(proxyPos, targetPos);
+        TargetFace face = TargetFace.fromIndex(buf.readInt());
+        return new SetProxyTargetPacket(proxyPos, targetPos, face);
     }
 
-    // Optional helper for client-side sending
     public static void sendToServer(BlockPos proxyPos, BlockPos targetPos) {
+        sendToServer(proxyPos, targetPos, TargetFace.ALL);
+    }
+
+    public static void sendToServer(BlockPos proxyPos, BlockPos targetPos, TargetFace face) {
         FriendlyByteBuf buf = new FriendlyByteBuf(Unpooled.buffer());
-        write(buf, proxyPos, targetPos);
+        write(buf, proxyPos, targetPos, face);
         NetworkManager.sendToServer(ID, buf);
     }
 
@@ -43,18 +48,22 @@ public record SetProxyTargetPacket(BlockPos proxyPos, BlockPos targetPos) {
                 SetProxyTargetPacket.ID,
                 (FriendlyByteBuf buf, NetworkManager.PacketContext context) -> {
                     SetProxyTargetPacket payload = SetProxyTargetPacket.read(buf);
-
-                    context.queue(() -> {
-                        if (!(context.getPlayer() instanceof ServerPlayer player)) return;
-                        if (!(player.level() instanceof ServerLevel serverLevel)) return;
-
-                        BlockEntity be = serverLevel.getBlockEntity(payload.proxyPos());
-                        if (be instanceof ProxyBlockEntity<?> proxyBE) {
-                            proxyBE.setLinkedAbsPos(payload.targetPos());
-                        }
-                    });
+                    context.queue(() -> SetProxyTargetPacket.handlePacket(payload, context));
                 }
         );
+    }
+
+    public static void handlePacket(SetProxyTargetPacket payload, NetworkManager.PacketContext context) {
+        if (!(context.getPlayer() instanceof ServerPlayer player)) return;
+        if (!(player.level() instanceof ServerLevel serverLevel)) return;
+
+        BlockState state = serverLevel.getBlockState(payload.proxyPos);
+        if (state.getBlock() instanceof ProxyBlock<?,?> pb) {
+            pb.setLinkedAbsPos(serverLevel, payload.proxyPos, payload.targetPos);
+        }
+        if (state.getBlock() instanceof FaceTargetingProxyBlock ftpb) {
+            ftpb.setTargetFace(serverLevel, payload.proxyPos, state, payload.face);
+        }
     }
 
 }

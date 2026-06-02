@@ -1,11 +1,9 @@
 package com.github.hoshinofw.buildstonetoolkit.content.common.blocks;
 
 import com.github.hoshinofw.buildstonetoolkit.content.common.blocks.entity.PistonProxyBlockEntity;
-import com.github.hoshinofw.buildstonetoolkit.foundation.common.blocks.IdProxyBlock;
-import com.github.hoshinofw.multiversion.DeleteMethodsAndFields;
+import com.github.hoshinofw.buildstonetoolkit.foundation.common.blocks.ProxyBlock;
 import com.github.hoshinofw.multiversion.ModifySignature;
 import com.github.hoshinofw.multiversion.ShadowVersion;
-import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
@@ -13,7 +11,7 @@ import net.minecraft.world.item.TooltipFlag;
 
 import java.util.List;
 
-public abstract class PistonProxyBlock extends IdProxyBlock<PistonProxyBlockEntity> {
+public abstract class PistonProxyBlock extends ProxyBlock<PistonProxyBlock, PistonProxyBlockEntity> {
 
     @ShadowVersion
     public PistonProxyBlock(Properties properties) {

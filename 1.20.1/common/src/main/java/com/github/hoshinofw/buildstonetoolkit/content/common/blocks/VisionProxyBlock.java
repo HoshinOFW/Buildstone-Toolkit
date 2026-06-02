@@ -2,12 +2,10 @@ package com.github.hoshinofw.buildstonetoolkit.content.common.blocks;
 
 import com.github.hoshinofw.buildstonetoolkit.content.common.blocks.entity.VisionProxyBlockEntity;
 import com.github.hoshinofw.buildstonetoolkit.foundation.common.blocks.InteractiveProxyBlock;
-import com.github.hoshinofw.buildstonetoolkit.foundation.common.blocks.RegisteredProxyBlock;
-import com.github.hoshinofw.buildstonetoolkit.foundation.common.networking.ProxyInteractionType;
+import com.github.hoshinofw.buildstonetoolkit.foundation.common.blocks.ProxyBlock;
+import com.github.hoshinofw.buildstonetoolkit.foundation.common.data.ProxyInteractionType;
 import com.github.hoshinofw.buildstonetoolkit.foundation.common.registries.BuildstoneBlocks;
 import com.github.hoshinofw.buildstonetoolkit.foundation.common.util.Util;
-import com.github.hoshinofw.buildstonetoolkit.foundation.common.util.registries.ProxyRegistry;
-import it.unimi.dsi.fastutil.objects.Object2ObjectOpenHashMap;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -24,20 +22,15 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.IntegerProperty;
 import net.minecraft.world.phys.Vec3;
-import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
-import java.util.Map;
 
-public class VisionProxyBlock extends RegisteredProxyBlock<VisionProxyBlockEntity> implements InteractiveProxyBlock<VisionProxyBlock> {
+public class VisionProxyBlock extends ProxyBlock<VisionProxyBlock, VisionProxyBlockEntity> implements InteractiveProxyBlock {
     public static final int maxTick = 2;
 
     public static final IntegerProperty POWER_LEVEL = IntegerProperty.create("power_level", 0, 15);
     public static final IntegerProperty TICK = IntegerProperty.create("tick", 0, maxTick);
-
-    private static final Map<Level, ProxyRegistry<VisionProxyBlockEntity>> serverRegistryMap = new Object2ObjectOpenHashMap<>();
-    private static final Map<Level, ProxyRegistry<VisionProxyBlockEntity>> clientRegistryMap = new Object2ObjectOpenHashMap<>();
 
     public VisionProxyBlock(Properties properties) {
         super(properties, VisionProxyBlockEntity.class);
@@ -104,11 +97,14 @@ public class VisionProxyBlock extends RegisteredProxyBlock<VisionProxyBlockEntit
     }
 
     @Override
-    public void handleInteraction(ServerLevel level, BlockPos proxyPos, BlockState proxyState, Vec3 playerPosition, ProxyInteractionType interactionType) {
-        switch (interactionType) {
-            case LookedAtLookingAtProxy -> startTicking(level, proxyPos, proxyState, playerPosition);
-            case StoppedLookingAtLookingAtProxy -> setSignal(level, proxyState, proxyPos, 0);
-            default -> {}
+    public void handleInteraction(ServerLevel level, BlockPos proxyPos, BlockState proxyState, Vec3 playerPosition, ProxyInteractionType[] interactionTypes) {
+        for (ProxyInteractionType interactionType : interactionTypes) {
+            switch (interactionType) {
+                case LookedAtLookingAtProxy -> startTicking(level, proxyPos, proxyState, playerPosition);
+                case StoppedLookingAtLookingAtProxy -> setSignal(level, proxyState, proxyPos, 0);
+                default -> {
+                }
+            }
         }
     }
 
@@ -119,16 +115,6 @@ public class VisionProxyBlock extends RegisteredProxyBlock<VisionProxyBlockEntit
 
     public static VisionProxyBlock getBlock() {
         return BuildstoneBlocks.VISION_PROXY.get();
-    }
-
-    @Override
-    protected @NotNull Map<Level, ProxyRegistry<VisionProxyBlockEntity>> getClientRegistryMap() {
-        return clientRegistryMap;
-    }
-
-    @Override
-    protected @NotNull Map<Level, ProxyRegistry<VisionProxyBlockEntity>> getServerRegistryMap() {
-        return serverRegistryMap;
     }
 
     @Override

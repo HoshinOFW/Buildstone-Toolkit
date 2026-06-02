@@ -1,11 +1,11 @@
 package com.github.hoshinofw.buildstonetoolkit.foundation.common.blocks;
 
-import com.github.hoshinofw.buildstonetoolkit.foundation.common.blocks.entity.IdProxyBlockEntity;
+import com.github.hoshinofw.buildstonetoolkit.foundation.common.blocks.entity.UpdateListenerProxyBlockEntity;
 import net.minecraft.world.level.Level;
 import org.jetbrains.annotations.NotNull;
 
-public interface UpdateListener<T extends IdProxyBlockEntity<T>> {
+public interface UpdateListener {
 
-    public void targetUpdated(T idProxyBlockEntity, @NotNull Level level);
+     void targetUpdated(UpdateListenerProxyBlockEntity<?, ?> proxyBlockEntity, @NotNull Level level);
 
 }

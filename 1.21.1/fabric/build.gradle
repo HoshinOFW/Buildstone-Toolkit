@@ -1,0 +1,6 @@
+plugins {
+    id 'buildstonetoolkit-repositories'
+    id "multiloader-configuration-alias"
+    id "multiloader-fabric-module-setup"
+    id "buildstonetoolkit-dependencies"
+}

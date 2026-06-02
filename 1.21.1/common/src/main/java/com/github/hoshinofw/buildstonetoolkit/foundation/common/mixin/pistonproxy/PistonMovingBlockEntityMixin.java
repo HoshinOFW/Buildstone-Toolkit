@@ -1,7 +1,6 @@
 package com.github.hoshinofw.buildstonetoolkit.foundation.common.mixin.pistonproxy;
 
 import com.github.hoshinofw.buildstonetoolkit.foundation.common.util.mixin.PistonMovingBlockEntityMixinInterface;
-import com.github.hoshinofw.multiversion.DeleteMethodsAndFields;
 import com.github.hoshinofw.multiversion.ModifyClass;
 import com.github.hoshinofw.multiversion.ModifySignature;
 import com.github.hoshinofw.multiversion.OverwriteVersion;

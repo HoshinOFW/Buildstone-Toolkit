@@ -1,7 +1,6 @@
 package com.github.hoshinofw.buildstonetoolkit.content.common.items;
 
 import com.github.hoshinofw.buildstonetoolkit.foundation.common.core.BuildstoneToolkit;
-import com.github.hoshinofw.multiversion.DeleteMethodsAndFields;
 import com.github.hoshinofw.multiversion.ModifySignature;
 import com.github.hoshinofw.multiversion.OverwriteVersion;
 import com.github.hoshinofw.multiversion.ShadowVersion;

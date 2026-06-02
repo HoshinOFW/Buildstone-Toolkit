@@ -9,7 +9,6 @@ import net.createmod.ponder.api.registration.PonderTagRegistrationHelper;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.Item;
-import net.minecraft.world.item.Items;
 import org.jetbrains.annotations.NotNull;
 
 public class BTPonderPlugin implements PonderPlugin {
@@ -32,7 +31,7 @@ public class BTPonderPlugin implements PonderPlugin {
     @Override
     public void registerTags(PonderTagRegistrationHelper<ResourceLocation> helper) {
         helper.registerTag(BUILDSTONE_TOOLKIT)
-                .item(Items.REDSTONE_TORCH, true, false)
+                .item(BuildstoneItems.MOD_WAND.get(), true, false)
                 .title(Component.translatable("buildstonetoolkit.ponder.tag.main.title").toString())
                 .description(Component.translatable("buildstonetoolkit.ponder.tag.main.description").toString())
                 .addToIndex()

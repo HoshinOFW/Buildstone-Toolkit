@@ -1,0 +1,15 @@
+def aliasConfiguration = { String aliasName, String targetName ->
+    if (configurations.findByName(targetName) != null && configurations.findByName(aliasName) == null) {
+        configurations.register(aliasName)
+        configurations.getByName(targetName).extendsFrom(configurations.getByName(aliasName))
+    }
+}
+
+// mod* configuration aliasing for 1.21.1 to make dependencies cleaner
+if ((multiversion.isNeoForge() || multiversion.isCommon()) && multiversion.isMcVersion("1.21.1")) {
+    aliasConfiguration('modCompileOnly', 'compileOnly')
+    aliasConfiguration('modRuntimeOnly', 'runtimeOnly')
+    aliasConfiguration('modImplementation', 'implementation')
+    aliasConfiguration('modApi', 'api')
+}
+aliasConfiguration('include', 'jarJar')

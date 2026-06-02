@@ -1,7 +1,7 @@
 package com.github.hoshinofw.buildstonetoolkit.content.common.blocks;
 
 import com.github.hoshinofw.buildstonetoolkit.content.common.blocks.entity.PistonProxyBlockEntity;
-import com.github.hoshinofw.buildstonetoolkit.foundation.common.blocks.IdProxyBlock;
+import com.github.hoshinofw.buildstonetoolkit.foundation.common.blocks.ProxyBlock;
 import com.github.hoshinofw.buildstonetoolkit.foundation.common.registries.BuildstoneBlocks;
 import com.github.hoshinofw.buildstonetoolkit.foundation.common.util.NBTUtil;
 import net.minecraft.client.gui.screens.Screen;
@@ -23,11 +23,11 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
-import java.util.Objects;
 
-public class PistonProxyBlock extends IdProxyBlock<PistonProxyBlockEntity> {
+public class PistonProxyBlock extends ProxyBlock<PistonProxyBlock, PistonProxyBlockEntity> {
 
     public static final IntegerProperty POWER_LEVEL = IntegerProperty.create("power_level", 0, 2);
+
 
     public PistonProxyBlock(Properties properties) {
         super(properties, PistonProxyBlockEntity.class);
@@ -35,17 +35,8 @@ public class PistonProxyBlock extends IdProxyBlock<PistonProxyBlockEntity> {
                 .setValue(POWER_LEVEL, 0));
     }
 
-    @Override
-    public long getId(@NotNull Level level, BlockPos proxyPos) {
-        return getBlockEntity(level, proxyPos).getId();
-    }
-
-    public static RedstoneProxyBlock getBlock() {
-        return BuildstoneBlocks.REDSTONE_PROXY.get();
-    }
-
-    public @NotNull PistonProxyBlockEntity getBlockEntity(Level level, BlockPos proxyPos) {
-        return Objects.requireNonNull(getBlockEntity(level, proxyPos, PistonProxyBlockEntity.class));
+    public static PistonProxyBlock getBlock() {
+        return BuildstoneBlocks.PISTON_PROXY.get();
     }
 
     @Override
@@ -61,7 +52,7 @@ public class PistonProxyBlock extends IdProxyBlock<PistonProxyBlockEntity> {
     /**
      * Gets from the level, not the block's cache.
      */
-    public boolean isStronglyPowered(@NotNull Level level, BlockPos pos) {
+    public boolean isStronglyPowered(Level level, BlockPos pos) {
         return parseRedstoneToPowerLevel(level.getBestNeighborSignal(pos)) == 2;
     }
 
@@ -74,7 +65,7 @@ public class PistonProxyBlock extends IdProxyBlock<PistonProxyBlockEntity> {
         return state.getValue(POWER_LEVEL);
     }
 
-    public void setPowerLevel(@NotNull Level level, BlockPos pos, int value) {
+    public void setPowerLevel(Level level, BlockPos pos, int value) {
         BlockState state = level.getBlockState(pos);
         assert(state.getBlock() instanceof PistonProxyBlock);
         level.setBlock(pos, state.setValue(POWER_LEVEL, value), 3);
@@ -88,14 +79,13 @@ public class PistonProxyBlock extends IdProxyBlock<PistonProxyBlockEntity> {
     /**
      * This parses the incoming [0, 15] redstone signal into whatever your power level cache measures. Used heavily by the public methods.
      */
-
     public int parseRedstoneToPowerLevel(int inputSignal) {
         if (inputSignal == 0) {return 0;}
         if (inputSignal > 7) {return 2;}
         return 1;
     }
 
-    public boolean shouldPreserveTargetAbsPos(@NotNull Level level, @NotNull PistonMovingBlockEntity mbe, BlockPos originalPos, BlockPos finalPos, Direction moveDirection) {
+    public boolean shouldPreserveTargetAbsPos(Level level, PistonMovingBlockEntity mbe, BlockPos originalPos, BlockPos finalPos, Direction moveDirection) {
         if (isStronglyPowered(mbe.getMovedState())) {return true;}
         return parseRedstoneToPowerLevel(level.getBestNeighborSignal(finalPos)) == 1;
     }
@@ -106,24 +96,12 @@ public class PistonProxyBlock extends IdProxyBlock<PistonProxyBlockEntity> {
     }
 
     @Override
-    public @NotNull BlockPos getLinkedAbsPos(@NotNull Level level, BlockPos blockPos) {
-        PistonProxyBlockEntity be =  getBlockEntity(level, blockPos);
-        return be.getLinkedAbsPos();
-    }
-
-    @Override
-    public @NotNull BlockPos getLinkedRelPos(@NotNull Level level, BlockPos pos) {
-        PistonProxyBlockEntity be =  getBlockEntity(level, pos);
-        return be.getLinkedRelPos();
-    }
-
-    @Override
     public @Nullable BlockEntity newBlockEntity(BlockPos blockPos, BlockState blockState) {
         return new PistonProxyBlockEntity(blockPos, blockState);
     }
 
     public void saveShiftedTargetAbsPosToNBT(Level level, BlockPos pos, BlockState state, @NotNull CompoundTag nbt, Direction moveDirection) {
-        NBTUtil.savePosToNBT(nbt, BlockPos.of(NBTUtil.getTargetPosFromNBT(nbt)).relative(moveDirection));
+        NBTUtil.saveAbsPosToNBT(nbt, BlockPos.of(NBTUtil.getAbsoluteTargetPosFromNBT(nbt)).relative(moveDirection));
     }
 
     @Override

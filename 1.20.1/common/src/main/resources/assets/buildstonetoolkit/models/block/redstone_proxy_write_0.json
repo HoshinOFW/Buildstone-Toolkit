@@ -1,0 +1,21 @@
+{
+  "parent": "minecraft:block/block",
+  "textures": {
+    "atlas": "buildstonetoolkit:block/redstone_proxy",
+    "particle": "buildstonetoolkit:block/redstone_proxy_particle"
+  },
+  "elements": [
+    {
+      "from": [0, 0, 0],
+      "to": [16, 16, 16],
+      "faces": {
+        "down":  { "uv": [0, 8, 2.66667, 16], "texture": "#atlas", "cullface": "down" },
+        "up":    { "uv": [0, 8, 2.66667, 16], "texture": "#atlas", "cullface": "up" },
+        "north": { "uv": [0, 8, 2.66667, 16], "texture": "#atlas", "cullface": "north" },
+        "south": { "uv": [0, 8, 2.66667, 16], "texture": "#atlas", "cullface": "south" },
+        "west":  { "uv": [0, 8, 2.66667, 16], "texture": "#atlas", "cullface": "west" },
+        "east":  { "uv": [0, 8, 2.66667, 16], "texture": "#atlas", "cullface": "east" }
+      }
+    }
+  ]
+}

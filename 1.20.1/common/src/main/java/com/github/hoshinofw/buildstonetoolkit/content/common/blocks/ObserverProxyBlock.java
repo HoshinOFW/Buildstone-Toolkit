@@ -3,6 +3,7 @@ package com.github.hoshinofw.buildstonetoolkit.content.common.blocks;
 import com.github.hoshinofw.buildstonetoolkit.content.common.blocks.entity.ObserverProxyBlockEntity;
 import com.github.hoshinofw.buildstonetoolkit.foundation.common.blocks.UpdateListenerProxyBlock;
 import com.github.hoshinofw.buildstonetoolkit.foundation.common.blocks.entity.UpdateListenerProxyBlockEntity;
+import com.github.hoshinofw.buildstonetoolkit.foundation.common.registries.BuildstoneBlocks;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -26,13 +27,17 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
 
-public class ObserverProxyBlock extends UpdateListenerProxyBlock {
+public class ObserverProxyBlock extends UpdateListenerProxyBlock<ObserverProxyBlock, ObserverProxyBlockEntity> {
 
     public static final BooleanProperty POWERED = BooleanProperty.create("powered");
     public static final DirectionProperty FACING = DirectionProperty.create("facing");
 
+    public static ObserverProxyBlock getBlock() {
+        return BuildstoneBlocks.OBSERVER_PROXY.get();
+    }
+
     public ObserverProxyBlock(Properties properties) {
-        super(properties);
+        super(properties, ObserverProxyBlockEntity.class);
         this.registerDefaultState(this.defaultBlockState().setValue(POWERED, false).setValue(FACING, Direction.NORTH));
     }
 
@@ -47,7 +52,7 @@ public class ObserverProxyBlock extends UpdateListenerProxyBlock {
     }
 
     @Override
-    public void targetUpdated(UpdateListenerProxyBlockEntity be, @NotNull Level level) {
+    public void targetUpdated(UpdateListenerProxyBlockEntity<?, ?> be, @NotNull Level level) {
         if (!be.getBlockState().getValue(POWERED)) {
             this.startSignal(level, be.getBlockPos());
         }

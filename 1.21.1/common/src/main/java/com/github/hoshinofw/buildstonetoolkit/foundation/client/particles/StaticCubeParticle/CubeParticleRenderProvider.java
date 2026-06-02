@@ -2,43 +2,15 @@ package com.github.hoshinofw.buildstonetoolkit.foundation.client.particles.Stati
 
 import com.github.hoshinofw.multiversion.OverwriteVersion;
 import com.mojang.blaze3d.vertex.VertexConsumer;
-import net.minecraft.client.Camera;
-import net.minecraft.client.renderer.LightTexture;
-import net.minecraft.world.phys.Vec3;
-import org.jetbrains.annotations.NotNull;
-
-import static com.github.hoshinofw.buildstonetoolkit.foundation.client.particles.StaticCubeParticle.CubeParticle.CUBE;
 
 
 public interface CubeParticleRenderProvider {
 
     @OverwriteVersion
-    default void render(VertexConsumer consumer, @NotNull Camera camera, float partialTicks, CubeParticle particle) {
-        Vec3 projectedView = camera.getPosition();
-
-        float x = (float) (particle.getX() - projectedView.x());
-        float y = (float) (particle.getY() - projectedView.y());
-        float z = (float) (particle.getZ() - projectedView.z());
-
-        int light = LightTexture.FULL_BRIGHT;
-
-        for (int i = 0; i < 6; i++) {
-            for (int j = 0; j < 4; j++) {
-                Vec3 vec = CUBE[i * 4 + j].scale(-1).scale((particle.size / 2) + 0.001F).add(x, y, z);
-
-                float u; float v;
-                switch (j) {
-                    case 0 -> { u = particle.maxU; v = particle.maxV; }
-                    case 1 -> { u = particle.maxU; v = particle.minV; }
-                    case 2 -> { u = particle.minU; v = particle.minV; }
-                    default -> { u = particle.minU; v = particle.maxV; } //Case 3
-                }
-
-                consumer.addVertex((float) vec.x, (float) vec.y, (float) vec.z)
-                        .setUv(u, v)
-                        .setColor(particle.r, particle.g, particle.b, particle.alpha)
-                        .setLight(light);
-            }
-        }
+    private void buildVertex(VertexConsumer consumer, double x, double y, double z, float u, float v, float r, float g, float b, float a, int light) {
+        consumer.addVertex((float) x, (float) y, (float) z)
+                .setUv(u, v)
+                .setColor(r, g, b, a)
+                .setLight(light);
     }
 }

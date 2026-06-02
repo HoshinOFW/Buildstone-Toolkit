@@ -2,6 +2,7 @@ package com.github.hoshinofw.buildstonetoolkit.foundation.common.registries;
 
 import com.github.hoshinofw.buildstonetoolkit.content.common.items.ModWand;
 import com.github.hoshinofw.buildstonetoolkit.foundation.common.core.BuildstoneToolkit;
+import dev.architectury.extensions.injected.InjectedItemPropertiesExtension;
 import dev.architectury.registry.registries.DeferredRegister;
 import dev.architectury.registry.registries.DeferredSupplier;
 import dev.architectury.registry.registries.RegistrySupplier;
@@ -16,7 +17,7 @@ public class BuildstoneItems {
     public static final DeferredRegister<Item> ITEMS = DeferredRegister.create(BuildstoneToolkit.MOD_ID, Registries.ITEM);
 
     public static final DeferredSupplier<ModWand> MOD_WAND = ITEMS.register("proxy_tuner",
-            () -> new ModWand(new Item.Properties()
+            () -> new ModWand(((InjectedItemPropertiesExtension) new Item.Properties())
                     .arch$tab(CreativeModeTabs.REDSTONE_BLOCKS)
                     .stacksTo(1)));
 
@@ -25,7 +26,7 @@ public class BuildstoneItems {
     }
 
     public static DeferredSupplier<Item> registerProxyItem(String registryName, RegistrySupplier<? extends Block> blockSupplier) {
-        return ITEMS.register(registryName, () -> new BlockItem(blockSupplier.get(), new Item.Properties().arch$tab(CreativeModeTabs.REDSTONE_BLOCKS)));
+        return ITEMS.register(registryName, () -> new BlockItem(blockSupplier.get(), ((InjectedItemPropertiesExtension) new Item.Properties()).arch$tab(CreativeModeTabs.REDSTONE_BLOCKS)));
     }
 
     public static final DeferredSupplier<Item> PISTON_PROXY = registerProxyItem("piston_proxy", BuildstoneBlocks.PISTON_PROXY);

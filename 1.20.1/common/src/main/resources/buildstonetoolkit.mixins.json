@@ -1,12 +1,13 @@
 {
   "required": true,
   "package": "com.github.hoshinofw.buildstonetoolkit.foundation.common.mixin",
+  "plugin": "com.github.hoshinofw.buildstonetoolkit.foundation.common.mixin.BTMixinPlugin",
   "compatibilityLevel": "JAVA_17",
   "minVersion": "0.8",
   "mixins": [
+    "LevelMixin",
     "PlayerMixin",
-    "allay.AllayMixin",
-    "allay.GoAndGiveItemsToTargetMixin",
+    "compat.schematic.StructureTemplateMixin",
     "pistonproxy.BlockEntityAccessor",
     "pistonproxy.PistonBaseBlockMixin",
     "pistonproxy.PistonMovingBlockEntityMixin",

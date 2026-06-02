@@ -1,0 +1,89 @@
+dependencies { d ->
+
+    modRuntimeOnly("mezz.jei:jei-${multiversion.mcVersion()}-${multiversion.moduleType()}:${project.jei_version}")
+
+    if (multiversion.isCommon()) {
+        String commonArchVersion = multiversion.isMcVersion("1.20.1") ? "forge" : "neoforge"
+        modCompileOnly "dev.architectury:architectury-$commonArchVersion:${project.architectury_api_version}"
+    } else {
+        modImplementation "dev.architectury:architectury-${multiversion.moduleType()}:${project.architectury_api_version}"
+    }
+
+    if (multiversion.isForge() && multiversion.isMcVersion("1.20.1")) {
+        modImplementation("maven.modrinth:mixinbooster:${project.mixin_booster_version}")
+    }
+
+    if (!multiversion.isCommon()) {
+        modRuntimeOnly("maven.modrinth:spark:${project.spark_version}-${multiversion.moduleType()}")
+    }
+
+    //Bundle ponder + create only in versions where they are available.
+    //TODO Pick the right create versions, not just the latest in the maven.
+    if (multiversion.mcVersion() in ["1.20.1", "1.21.1"]) {
+        //Create needs JEI classes.
+        modCompileOnly("mezz.jei:jei-${multiversion.mcVersion()}-${multiversion.moduleType()}-api:${project.jei_version}")
+
+        modImplementation("net.createmod.ponder:Ponder-${multiversion.moduleTypeCapitalized()}-${multiversion.mcVersion()}:${project.ponder_version}") {
+            exclude group: "io.github.fabricators_of_create.Porting-Lib"
+            transitive = false
+        }
+
+        if (!multiversion.isCommon()) {
+            include("net.createmod.ponder:Ponder-${multiversion.moduleTypeCapitalized()}-${multiversion.mcVersion()}:${project.ponder_version}")
+        }
+
+        if (multiversion.isNeoForge() || multiversion.isForge() || multiversion.isCommon()) {
+            //Giving common access to forge/neoforge classes is not a good idea overall, but 1.21.1 fabric has not been released yet
+
+            modCompileOnly("com.simibubi.create:create-${multiversion.mcVersion()}:${project.create_version}:slim") { transitive = false }
+            modRuntimeOnly("com.simibubi.create:create-${multiversion.mcVersion()}:${project.create_version}:slim") { transitive = false }
+
+            String flywheelModule = multiversion.isMcVersion("1.20.1") ? "forge" : "neoforge"
+            modCompileOnly("dev.engine-room.flywheel:flywheel-$flywheelModule-api-${multiversion.mcVersion()}:${project.flywheel_version}")
+            modRuntimeOnly("dev.engine-room.flywheel:flywheel-$flywheelModule-${multiversion.mcVersion()}:${project.flywheel_version}")
+            modImplementation("com.tterrag.registrate:Registrate:${project.registrate_version}")
+        }
+
+        if ((create_fabric == 'true') && multiversion.isFabric() && multiversion.isMcVersion("1.20.1")) {
+            modImplementation("com.simibubi.create:create-fabric-${multiversion.mcVersion()}:$project.create_version")
+        }
+        if ((create_fabric == 'true') && multiversion.isFabric() && multiversion.isMcVersion("1.21.1")) {
+            modCompileOnly("com.simibubi.create:create-${multiversion.mcVersion()}:$project.create_version:slim")
+        }
+    }
+
+
+    // Implement sable + aero + offroad when available
+    if (multiversion.isMcVersion("1.21.1")) {
+
+        modImplementation("dev.ryanhcode.sable:sable-${multiversion.moduleType()}-${multiversion.mcVersion()}:${project.sable_version}")
+
+
+        if (!multiversion.isFabric()) {
+            modImplementation("dev.simulated_team.simulated:simulated-${multiversion.moduleType()}-${multiversion.mcVersion()}:${project.create_simulated_version}")
+            modImplementation("dev.eriksonn.aeronautics:aeronautics-${multiversion.moduleType()}-${multiversion.mcVersion()}:${project.create_aeronautics_version}")
+            modImplementation("dev.ryanhcode.offroad:offroad-${multiversion.moduleType()}-${multiversion.mcVersion()}:${project.create_offroad_version}")
+        } else {
+            String module = multiversion.mcVersion() == '1.20.1' ? 'forge' : 'neoforge'
+            modCompileOnly("dev.simulated_team.simulated:simulated-${module}-${multiversion.mcVersion()}:${project.create_simulated_version}")
+            modCompileOnly("dev.eriksonn.aeronautics:aeronautics-${module}-${multiversion.mcVersion()}:${project.create_aeronautics_version}")
+            modCompileOnly("dev.ryanhcode.offroad:offroad-${module}-${multiversion.mcVersion()}:${project.create_offroad_version}")
+        }
+    }
+
+    // Mixinextras
+    // TODO bundle it
+    if (multiversion.isForge()) {
+        implementation("io.github.llamalad7:mixinextras-forge:${mixin_extras_version}")
+        compileOnly(annotationProcessor("io.github.llamalad7:mixinextras-common:${mixin_extras_version}"))
+    }
+
+    if (!multiversion.isCommon()) {
+
+        //include(implementation(annotationProcessor("io.github.llamalad7:mixinextras-${multiversion.moduleType()}:${mixin_extras_version}")))
+
+    } else {
+        implementation(annotationProcessor("io.github.llamalad7:mixinextras-common:${mixin_extras_version}"))
+
+    }
+}

@@ -2,12 +2,10 @@ package com.github.hoshinofw.buildstonetoolkit.content.common.blocks;
 
 import com.github.hoshinofw.buildstonetoolkit.content.common.blocks.entity.InteractionProxyBlockEntity;
 import com.github.hoshinofw.buildstonetoolkit.foundation.common.blocks.InteractiveProxyBlock;
-import com.github.hoshinofw.buildstonetoolkit.foundation.common.blocks.RegisteredProxyBlock;
-import com.github.hoshinofw.buildstonetoolkit.foundation.common.networking.ProxyInteractionType;
+import com.github.hoshinofw.buildstonetoolkit.foundation.common.blocks.ProxyBlock;
+import com.github.hoshinofw.buildstonetoolkit.foundation.common.data.ProxyInteractionType;
 import com.github.hoshinofw.buildstonetoolkit.foundation.common.registries.BuildstoneBlocks;
 import com.github.hoshinofw.buildstonetoolkit.foundation.common.util.Util;
-import com.github.hoshinofw.buildstonetoolkit.foundation.common.util.registries.ProxyRegistry;
-import it.unimi.dsi.fastutil.objects.Object2ObjectOpenHashMap;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -24,20 +22,15 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.IntegerProperty;
 import net.minecraft.world.phys.Vec3;
-import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
-import java.util.Map;
 
-public class InteractionProxyBlock extends RegisteredProxyBlock<InteractionProxyBlockEntity> implements InteractiveProxyBlock<InteractionProxyBlock> {
+public class InteractionProxyBlock extends ProxyBlock<InteractionProxyBlock, InteractionProxyBlockEntity> implements InteractiveProxyBlock {
     public static final int maxTick = 2;
 
     public static final IntegerProperty POWER_LEVEL = IntegerProperty.create("power_level", 0, 15);
     public static final IntegerProperty TICK = IntegerProperty.create("tick", 0, maxTick);
-
-    private static final Map<Level, ProxyRegistry<InteractionProxyBlockEntity>> serverRegistryMap = new Object2ObjectOpenHashMap<>();
-    private static final Map<Level, ProxyRegistry<InteractionProxyBlockEntity>> clientRegistryMap = new Object2ObjectOpenHashMap<>();
 
     public InteractionProxyBlock(Properties properties) {
         super(properties, InteractionProxyBlockEntity.class);
@@ -109,11 +102,13 @@ public class InteractionProxyBlock extends RegisteredProxyBlock<InteractionProxy
     }
 
     @Override
-    public void handleInteraction(ServerLevel level, BlockPos proxyPos, BlockState proxyState, Vec3 playerPosition, ProxyInteractionType interactionType) {
-        switch (interactionType) {
-            case RightClickedRightClickProxy -> startTicking(level, proxyPos, proxyState, playerPosition);
-            case StoppedRightClickingRightClockProxy -> setSignal(level, proxyState, proxyPos, 0);
-            default -> {}
+    public void handleInteraction(ServerLevel level, BlockPos proxyPos, BlockState proxyState, Vec3 playerPosition, ProxyInteractionType[] interactionTypes) {
+        for (ProxyInteractionType interactionType : interactionTypes) {
+            switch (interactionType) {
+                case RightClickedRightClickProxy -> startTicking(level, proxyPos, proxyState, playerPosition);
+                case StoppedRightClickingRightClockProxy -> setSignal(level, proxyState, proxyPos, 0);
+                default -> {}
+            }
         }
     }
 
@@ -124,16 +119,6 @@ public class InteractionProxyBlock extends RegisteredProxyBlock<InteractionProxy
 
     public static InteractionProxyBlock getBlock() {
         return BuildstoneBlocks.INTERACTION_PROXY.get();
-    }
-
-    @Override
-    protected @NotNull Map<Level, ProxyRegistry<InteractionProxyBlockEntity>> getClientRegistryMap() {
-        return clientRegistryMap;
-    }
-
-    @Override
-    protected @NotNull Map<Level, ProxyRegistry<InteractionProxyBlockEntity>> getServerRegistryMap() {
-        return serverRegistryMap;
     }
 
     @Override

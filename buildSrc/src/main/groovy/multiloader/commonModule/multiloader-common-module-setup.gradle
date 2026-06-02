@@ -1,0 +1,67 @@
+plugins {
+    id "multiloader-common"
+}
+
+if (multiversion.isMcVersion("1.20.1")) {
+    plugins.apply('net.neoforged.moddev.legacyforge')
+
+    legacyForge {
+        mcpVersion = minecraft_version
+        def at = new File(sourceSets.main.resources.srcDirs.first(), 'META-INF/accesstransformer.cfg')
+        if (at.exists()) {
+            accessTransformers = [at.absolutePath]
+        }
+        parchment {
+            minecraftVersion = parchment_minecraft
+            mappingsVersion = parchment_version
+        }
+    }
+
+}
+if (multiversion.isMcVersion("1.21.1")) {
+    plugins.apply('net.neoforged.moddev')
+
+    neoForge {
+        neoFormVersion = neo_form_version
+        // Automatically enable AccessTransformers if the file exists
+        def at = new File(sourceSets.main.resources.srcDirs.first(), 'META-INF/accesstransformer.cfg')
+        if (at.exists()) {
+            accessTransformers.from(at.absolutePath)
+        }
+        parchment {
+            minecraftVersion = parchment_minecraft
+            mappingsVersion = parchment_version
+        }
+    }
+}
+
+dependencies {
+    compileOnly group: 'org.spongepowered', name: 'mixin', version: '0.8.5'
+
+    compileOnly group: 'io.github.llamalad7', name: 'mixinextras-common', version: mixin_extras_version
+    annotationProcessor group: 'io.github.llamalad7', name: 'mixinextras-common', version: mixin_extras_version
+
+    implementation group: 'com.google.code.findbugs', name: 'jsr305', version: '3.0.1'
+
+    compileOnly "org.ow2.asm:asm:9.9"
+    compileOnly "org.ow2.asm:asm-tree:9.9"
+
+}
+
+configurations {
+    commonJava {
+        canBeResolved = false
+        canBeConsumed = true
+    }
+    commonResources {
+        canBeResolved = false
+        canBeConsumed = true
+    }
+}
+
+artifacts {
+    commonJava(provider { sourceSets.main.java.srcDirs.first() })
+    commonResources(provider { sourceSets.main.resources.srcDirs.first() }) {
+        builtBy 'generatePatchedResources'
+    }
+}

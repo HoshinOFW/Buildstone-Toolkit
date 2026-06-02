@@ -6,22 +6,36 @@ pluginManagement {
         maven {
             url = uri("https://maven.hoshinofw.net/releases")
         }
+        maven {
+            name = 'Forge'
+            url = 'https://maven.minecraftforge.net/'
+        }
+        maven {
+            name = 'Fabric'
+            url = 'https://maven.fabricmc.net/'
+        }
+        maven {
+            name = 'Sponge Snapshots'
+            url = 'https://repo.spongepowered.org/repository/maven-public/'
+        }
     }
 }
 
 plugins {
-    id "com.github.hoshinofw.multiversion.multiversion-settings" version "0.6.0"
+    id "com.github.hoshinofw.multiversion.multiversion-settings" version "0.6.1"
 }
 
 rootProject.name = 'buildstonetoolkit'
 
 multiversionModules {
-    architecturyCommon = ['common']
-    architecturyFabric = ['fabric']
-    architecturyForge = ['forge']
-    architecturyNeoforge = ['neoforge']
+    common = ['common']
+    //fabric = ['fabric']
+    forge = ['forge']
+    neoforge = ['neoforge']
 
-    patchModules = ['forge', 'fabric', 'neoforge', 'common']
+    patchModules = ['forge',
+                    //'fabric',
+                    'neoforge', 'common']
 }
 
 

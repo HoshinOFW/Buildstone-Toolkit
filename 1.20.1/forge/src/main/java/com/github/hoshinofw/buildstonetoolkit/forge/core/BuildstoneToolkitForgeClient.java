@@ -3,6 +3,7 @@ package com.github.hoshinofw.buildstonetoolkit.forge.core;
 import com.github.hoshinofw.buildstonetoolkit.forge.registries.BuildstoneForgeClientEvents;
 import com.github.hoshinofw.buildstonetoolkit.foundation.client.core.BuildstoneToolkitClient;
 import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
+import net.minecraftforge.fml.event.lifecycle.ModLifecycleEvent;
 
 import static com.github.hoshinofw.buildstonetoolkit.forge.core.BuildstoneToolkitForge.MOD_BUS;
 

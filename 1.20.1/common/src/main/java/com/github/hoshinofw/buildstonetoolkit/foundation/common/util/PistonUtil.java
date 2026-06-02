@@ -8,6 +8,7 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.piston.PistonMovingBlockEntity;
+import net.minecraft.world.level.block.state.BlockState;
 import org.jetbrains.annotations.NotNull;
 
 public class PistonUtil {
@@ -29,4 +30,7 @@ public class PistonUtil {
         }
     }
 
+    public static boolean isPushableBlockEntity(BlockState state) {
+        return (state.hasBlockEntity() && (state.getBlock() instanceof PistonProxyBlock));
+    }
 }

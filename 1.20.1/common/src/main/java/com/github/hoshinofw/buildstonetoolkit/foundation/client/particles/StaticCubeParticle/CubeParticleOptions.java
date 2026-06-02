@@ -23,7 +23,7 @@ public class CubeParticleOptions implements ParticleOptions {
     }
 
     @Override
-    public void writeToNetwork(FriendlyByteBuf friendlyByteBuf) {
+    public void writeToNetwork(@NotNull FriendlyByteBuf friendlyByteBuf) {
 
     }
 

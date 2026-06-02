@@ -1,0 +1,99 @@
+plugins {
+    id 'buildstonetoolkit-repositories'
+
+    id 'multiloader-loader'
+    id 'net.neoforged.moddev.legacyforge'
+
+    id "multiloader-configuration-alias"
+
+    id "buildstonetoolkit-dependencies"
+}
+
+evaluationDependsOn(":${multiversion.mcVersion()}:common")
+
+curseforge_dependencies = "${rootProject.findProperty('curseforge_dependencies')},mixinbooster"
+modrinth_dependencies = "${rootProject.findProperty('modrinth_dependencies')},mixinbooster"
+
+mixin {
+    add(sourceSets.main, "${mod_id}.refmap.json")
+
+    config("${mod_id}.mixins.json")
+}
+
+repositories {
+    maven {
+        name = 'Sinytra'
+        url = 'https://maven.su5ed.dev/releases/'
+    }
+}
+
+legacyForge {
+    version = "${minecraft_version}-${forge_version}"
+
+    validateAccessTransformers = true
+
+    def commonResources = project(":${multiversion.mcVersion()}:common").sourceSets.main.resources.srcDirs.first()
+    def at = new File(commonResources, 'META-INF/accesstransformer.cfg')
+    if (at.exists()) {
+        accessTransformers = [at.absolutePath]
+    }
+
+    parchment {
+        minecraftVersion = parchment_minecraft
+        mappingsVersion = parchment_version
+    }
+    runs {
+        configureEach {
+            systemProperty('neoforge.enabledGameTestNamespaces', mod_id)
+            ideName = "Forge ${it.name.capitalize()} (${project.path})" // Unify the run config names with fabric
+
+            systemProperty("forge.logging.markers", "")
+            systemProperty("forge.logging.console.level", "debug")
+            jvmArguments = ["-XX:+IgnoreUnrecognizedVMOptions", "-XX:+AllowEnhancedClassRedefinition"]
+            //jvmArgs("-XX:-OmitStackTraceInFastThrow") // uncomment when you get exceptions with null messages etc
+            //jvmArgs "-XX:+UnlockCommercialFeatures" // uncomment for profiling
+
+            systemProperty("mixin.debug.export", "true")
+            systemProperty("mixin.debug.verbose", "true")
+
+            programArgument("-mixin.config=create.mixins.json")
+            programArgument("-mixin.config=ponder.mixins.json")
+        }
+
+
+        client {
+            client()
+        }
+        data {
+            data()
+            programArguments.addAll '--mod', project.mod_id, '--all', '--output', file('src/generated/resources/').getAbsolutePath(), '--existing', sourceSets.main.resources.srcDirs.first().absolutePath
+        }
+        server {
+            server()
+        }
+    }
+
+    mods {
+        "${mod_id}" {
+            sourceSet sourceSets.main
+        }
+    }
+}
+
+sourceSets.main.resources.srcDir 'src/generated/resources'
+
+dependencies {
+    compileOnly(project(":${multiversion.mcVersion()}:common")) {
+        capabilities {
+            requireCapability "$group:$mod_id"
+        }
+    }
+    annotationProcessor("org.sinytra:sponge-mixin:${fabric_mixin_version}")
+}
+
+jar {
+    finalizedBy('reobfJar')
+    manifest.attributes([
+            "MixinConfigs": "${mod_id}.mixins.json"
+    ])
+}

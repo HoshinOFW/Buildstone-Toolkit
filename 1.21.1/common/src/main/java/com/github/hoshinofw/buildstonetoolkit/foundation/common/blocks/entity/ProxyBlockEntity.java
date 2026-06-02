@@ -1,18 +1,20 @@
 package com.github.hoshinofw.buildstonetoolkit.foundation.common.blocks.entity;
 
-import com.github.hoshinofw.buildstonetoolkit.foundation.common.util.NBTUtil;
-import com.github.hoshinofw.multiversion.DeleteMethodsAndFields;
+import com.github.hoshinofw.buildstonetoolkit.foundation.common.blocks.ProxyBlock;
+import com.github.hoshinofw.buildstonetoolkit.foundation.common.storage.registries.IdObject;
+import com.github.hoshinofw.buildstonetoolkit.foundation.common.storage.registries.IdRegistry;
+import com.github.hoshinofw.buildstonetoolkit.foundation.common.storage.registries.ProxyRegistry;
 import com.github.hoshinofw.multiversion.ModifySignature;
-import com.github.hoshinofw.multiversion.OverwriteVersion;
 import com.github.hoshinofw.multiversion.ShadowVersion;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import org.jetbrains.annotations.NotNull;
 
-public abstract class ProxyBlockEntity<T extends ProxyBlockEntity<T>> extends SyncedBlockEntity {
+public abstract class ProxyBlockEntity<B extends ProxyBlock<B, BE>, BE extends ProxyBlockEntity<B, BE>> extends SyncedBlockEntity implements IdObject {
 
     @ShadowVersion
     public ProxyBlockEntity(BlockEntityType<?> type, BlockPos pos, BlockState state) {
@@ -20,24 +22,33 @@ public abstract class ProxyBlockEntity<T extends ProxyBlockEntity<T>> extends Sy
     }
 
     @ShadowVersion
-    public void setLinkedAbsPos(Long value);
-
-    @ShadowVersion
     public void setLinkedAbsPos(@NotNull BlockPos value);
 
-    @OverwriteVersion
+    @ShadowVersion
+    public void relocateTargetPos(@NotNull BlockPos newAbsPos);
+
+    @ShadowVersion
+    public BlockPos getLinkedAbsPos();
+
+    @ShadowVersion
     @ModifySignature("saveAdditional")
     @Override
-    protected void saveAdditional(CompoundTag nbt, HolderLookup.Provider registries) {
-        super.saveAdditional(nbt, registries);
-        NBTUtil.saveTargetNBTFromProxy(nbt, this);
-    }
+    public void saveAdditional(@NotNull CompoundTag nbt, HolderLookup.@NotNull Provider registries);
 
-    @OverwriteVersion
+    @ShadowVersion
     @ModifySignature("load")
     @Override
-    public void loadAdditional(CompoundTag nbt, HolderLookup.Provider registries) {
-        super.loadAdditional(nbt, registries);
-        this.setLinkedAbsPos(NBTUtil.getTargetPosFromNBT(nbt));
-    }
+    public void loadAdditional(@NotNull CompoundTag nbt, HolderLookup.@NotNull Provider registries);
+
+    @ShadowVersion
+    public void adoptIdFrom(ProxyBlockEntity<?, ?> other);
+
+    @ShadowVersion
+    public static IdRegistry<ProxyBlockEntity<?, ?>> getIdRegistry(Level level);
+
+    @NotNull
+    @ShadowVersion
+    public static ProxyRegistry<ProxyBlockEntity<?, ?>> getRegistry(Level level);
+
+
 }

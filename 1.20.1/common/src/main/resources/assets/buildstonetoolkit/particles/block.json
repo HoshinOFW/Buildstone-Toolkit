@@ -2,6 +2,7 @@
   "textures": [
     "buildstonetoolkit:selection_block",
     "buildstonetoolkit:proxy_block",
-    "buildstonetoolkit:proxy_target_block"
+    "buildstonetoolkit:proxy_target_block",
+    "buildstonetoolkit:redstone_proxy_transition"
   ]
 }

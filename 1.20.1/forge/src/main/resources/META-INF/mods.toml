@@ -1,6 +1,5 @@
 modLoader = "javafml"
 loaderVersion = "[47,)"
-#issueTrackerURL = ""
 license = "${mod_license}"
 
 [[mods]]
@@ -29,5 +28,19 @@ side = "BOTH"
 modId = "architectury"
 mandatory = true
 versionRange = "[${architectury_api_version},)"
+ordering = "AFTER"
+side = "BOTH"
+
+[[dependencies.${mod_id}]]
+modId = "create"
+mandatory = false
+versionRange = "[${create_version},)"
+ordering = "AFTER"
+side = "BOTH"
+
+[[dependencies.${mod_id}]]
+modId = "mixinbooster"
+mandatory = true
+versionRange = "[${mixin_booster_version},)"
 ordering = "AFTER"
 side = "BOTH"

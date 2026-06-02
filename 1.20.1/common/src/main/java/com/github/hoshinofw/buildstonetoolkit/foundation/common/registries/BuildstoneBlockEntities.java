@@ -2,6 +2,7 @@ package com.github.hoshinofw.buildstonetoolkit.foundation.common.registries;
 
 import com.github.hoshinofw.buildstonetoolkit.content.common.blocks.entity.*;
 import com.github.hoshinofw.buildstonetoolkit.foundation.common.blocks.entity.DummyBE;
+import com.github.hoshinofw.buildstonetoolkit.foundation.common.blocks.entity.ProxyBlockEntity;
 import com.github.hoshinofw.buildstonetoolkit.foundation.common.core.BuildstoneToolkit;
 import dev.architectury.registry.registries.DeferredRegister;
 import dev.architectury.registry.registries.RegistrySupplier;
@@ -9,6 +10,8 @@ import net.minecraft.core.registries.Registries;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityType;
+
+import java.util.ArrayList;
 
 public class BuildstoneBlockEntities {
     public static final DeferredRegister<BlockEntityType<?>> BLOCK_ENTITIES =
@@ -22,11 +25,24 @@ public class BuildstoneBlockEntities {
         return BLOCK_ENTITIES.register(registryName, () ->
                 BlockEntityType.Builder.of(beSupplier, blockHolder.get()).build(null));
     }
+
     public static final RegistrySupplier<BlockEntityType<PistonProxyBlockEntity>> PISTON_PROXY = registerProxyBE("piston_proxy", PistonProxyBlockEntity::new, BuildstoneBlocks.PISTON_PROXY);
     public static final RegistrySupplier<BlockEntityType<RedstoneProxyBlockEntity>> REDSTONE_PROXY = registerProxyBE("redstone_proxy", RedstoneProxyBlockEntity::new, BuildstoneBlocks.REDSTONE_PROXY);
     public static final RegistrySupplier<BlockEntityType<ObserverProxyBlockEntity>> OBSERVER_PROXY = registerProxyBE("observer_proxy", ObserverProxyBlockEntity::new, BuildstoneBlocks.OBSERVER_PROXY);
     public static final RegistrySupplier<BlockEntityType<InteractionProxyBlockEntity>> INTERACTION_PROXY = registerProxyBE("interaction_proxy", InteractionProxyBlockEntity::new, BuildstoneBlocks.INTERACTION_PROXY);
     public static final RegistrySupplier<BlockEntityType<VisionProxyBlockEntity>> VISION_PROXY = registerProxyBE("vision_proxy", VisionProxyBlockEntity::new, BuildstoneBlocks.VISION_PROXY);
+
+    public static ArrayList<BlockEntityType<? extends ProxyBlockEntity<?, ?>>> getProxyTypes() {
+        ArrayList<BlockEntityType<? extends ProxyBlockEntity<?, ?>>> out = new ArrayList<>();
+        out.add(PISTON_PROXY.get());
+        out.add(REDSTONE_PROXY.get());
+        out.add(OBSERVER_PROXY.get());
+        out.add(INTERACTION_PROXY.get());
+        out.add(VISION_PROXY.get());
+        return out;
+    }
+
+
 
     //Block has been removed...
     public static final RegistrySupplier<BlockEntityType<DummyBE>> GUIDED_PROXY = registerProxyBE("directional_proxy", DummyBE::new, BuildstoneBlocks.GUIDED_PROXY);

@@ -1,12 +1,11 @@
 {
-
   "tooltip.buildstonetoolkit.hold_shift":  "§7Hold Shift to see details",
 
   "block.buildstonetoolkit.piston_proxy": "Piston Proxy",
-  "tooltip.buildstonetoolkit.piston_proxy.details": "Passes on its piston movement when moved by piston",
+  "tooltip.buildstonetoolkit.piston_proxy.details": "Will relay piston movement to its target",
 
   "block.buildstonetoolkit.redstone_proxy": "Redstone Proxy",
-  "tooltip.buildstonetoolkit.redstone_proxy.details": "Can write redstone to its target position! A comparator can read the target's redstone signal",
+  "tooltip.buildstonetoolkit.redstone_proxy.details": "Works like a wireless comparator. Hit it with the Proxy Tuner to switch between read/write",
 
   "block.buildstonetoolkit.observer_proxy": "Observer Proxy",
   "tooltip.buildstonetoolkit.observer_proxy.details": "Will read updates at the target position",
@@ -18,13 +17,5 @@
   "tooltip.buildstonetoolkit.interaction_proxy.details": "Outputs a signal if a player is right clicking the target block",
 
   "item.buildstonetoolkit.proxy_tuner": "Proxy Tuner",
-  "tooltip.buildstonetoolkit.proxy_tuner.details": "Used to set all target positions in the mod",
-
-  "message.buildstonetoolkit.allay_distance_set": "Set allay search distance to: %f",
-  "message.buildstonetoolkit.link_success": "Linked proxy to: %s at %s",
-  "message.buildstonetoolkit.link_fail": "Failed link to: %s at %s, linked to valid position",
-  "message.buildstonetoolkit.allay_link_success": "Allay searching at %s",
-  "message.buildstonetoolkit.allay_link_remove": "Allay searching %s",
-  "message.buildstonetoolkit.allay_link_remove_2": "near itself",
-  "message.buildstonetoolkit.allay_tracking": "Tracking Allay"
+  "tooltip.buildstonetoolkit.proxy_tuner.details": "Used to configure the mod's features"
 }

@@ -8,5 +8,6 @@ public final class BuildstoneToolkitNeoForge {
     public BuildstoneToolkitNeoForge() {
         // Run our common setup.
         BuildstoneToolkit.init();
+
     }
 }
