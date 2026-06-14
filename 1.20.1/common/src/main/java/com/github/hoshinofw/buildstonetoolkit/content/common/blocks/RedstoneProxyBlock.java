@@ -48,7 +48,8 @@ public class RedstoneProxyBlock extends UpdateListenerProxyBlock<RedstoneProxyBl
     }
 
     @Override
-    protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder) {
+    protected void createBlockStateDefinition(StateDefinition.@NotNull Builder<Block, BlockState> builder) {
+        super.createBlockStateDefinition(builder);
         builder.add(REDSTONE_LEVEL).add(MODE).add(TARGET_FACE);
     }
 
@@ -72,7 +73,7 @@ public class RedstoneProxyBlock extends UpdateListenerProxyBlock<RedstoneProxyBl
             getBlock().neighborChanged(newState, level, proxyPos, getBlock(), proxyPos, false);
         }
         //neighborChanged already updates target when the proxy is on write mode. However a switch to read requires an update
-        if (newState.hasProperty(MODE) && newState.getValue(MODE) == PROXY_MODE.READ) {
+        if (newState.hasProperty(MODE) && newState.getValue(MODE) == PROXY_MODE.READ && getBlock().isActive(newState)) {
             RedstoneProxyBlock block = getBlock();
             BlockPos targetPos = block.getLinkedAbsPos(level, proxyPos);
             level.neighborChanged(level.getBlockState(targetPos), targetPos, block, targetPos, false);
@@ -97,6 +98,12 @@ public class RedstoneProxyBlock extends UpdateListenerProxyBlock<RedstoneProxyBl
         return state.setValue(TARGET_FACE, targetFace);
     }
 
+    @Override
+    public void setTargetFaceQuietly(Level level, BlockPos pos, BlockState state, TargetFace targetFace) {
+        level.setBlock(pos, state.setValue(TARGET_FACE, targetFace),
+                Block.UPDATE_CLIENTS | Block.UPDATE_KNOWN_SHAPE);
+    }
+
     /**
      * Returns true if the signal was actually changed, false if not.
      */
@@ -115,7 +122,7 @@ public class RedstoneProxyBlock extends UpdateListenerProxyBlock<RedstoneProxyBl
     }
 
     public int transmittedSignal(BlockState proxyState, @Nullable Direction direction, boolean isQueryingPos) {
-        if (getMode(proxyState) != PROXY_MODE.WRITE) return 0;
+        if (getMode(proxyState) != PROXY_MODE.WRITE || !isActive(proxyState)) return 0;
         TargetFace face = proxyState.getValue(TARGET_FACE);
 
         if (face == TargetFace.ALL) return getSignal(proxyState);
@@ -127,7 +134,9 @@ public class RedstoneProxyBlock extends UpdateListenerProxyBlock<RedstoneProxyBl
     }
 
     public int computePowerLevel(Level level, BlockState proxyState ,BlockPos proxyPos, BlockState targetState, BlockPos targetPos) {
-        if (proxyState.hasProperty(MODE) && proxyState.getValue(MODE) == PROXY_MODE.WRITE) return level.getBestNeighborSignal(proxyPos);
+        if (!isActive(proxyState)) return 0;
+
+        if (getMode(proxyState) != PROXY_MODE.READ) return level.getBestNeighborSignal(proxyPos);
 
         if (proxyPos.asLong() == targetPos.asLong()) return level.getBestNeighborSignal(proxyPos);
 
@@ -171,7 +180,6 @@ public class RedstoneProxyBlock extends UpdateListenerProxyBlock<RedstoneProxyBl
     @Override
     public void neighborChanged(BlockState proxyState, Level level, BlockPos proxyPos, Block neighboringBlock, BlockPos pos2, boolean bl) {
         super.neighborChanged(proxyState, level, proxyPos, neighboringBlock, pos2, bl);
-
         if (!hasProxyBlockEntity(level, proxyPos)) return;
         BlockPos targetPos = getLinkedAbsPos(level, proxyPos);
         BlockState targetState = level.getBlockState(targetPos);
@@ -186,7 +194,7 @@ public class RedstoneProxyBlock extends UpdateListenerProxyBlock<RedstoneProxyBl
 
     @Override
     public void targetUpdated(UpdateListenerProxyBlockEntity<?, ?> be, Level level) {
-        BlockPos targetPos = be.getLinkedAbsPos();
+        BlockPos targetPos = be.getTargetPos();
         BlockState proxyState = be.getBlockState();
         //BuildstoneToolkit.LOGGER.info("RgetUpdated");
 
@@ -198,16 +206,19 @@ public class RedstoneProxyBlock extends UpdateListenerProxyBlock<RedstoneProxyBl
 
     @Override
     public void onRemove(BlockState proxyState, Level level, BlockPos pos, BlockState newState, boolean isMoving) {
+        if (level.isClientSide()) return;
+        if (!isActive(proxyState)) return;
+
         BlockPos oldTargetPos = null;
 
         if (!level.isClientSide() && proxyState.getBlock() != newState.getBlock() && hasProxyBlockEntity(level, pos)) {
             RedstoneProxyBlockEntity be = getProxyBlockEntity(level, pos);
-            oldTargetPos = be.getLinkedAbsPos();
+            oldTargetPos = be.getTargetPos();
         }
 
         super.onRemove(proxyState, level, pos, newState, isMoving);
 
-        if (level.isClientSide() || oldTargetPos == null) return;
+        if (oldTargetPos == null) return;
 
         BlockState targetState = level.getBlockState(oldTargetPos);
         if (proxyState.getValue(MODE) != PROXY_MODE.WRITE) return;
@@ -220,7 +231,7 @@ public class RedstoneProxyBlock extends UpdateListenerProxyBlock<RedstoneProxyBl
     public void onPlace(BlockState state, Level level, BlockPos pos, BlockState oldState, boolean isMoving) {
         super.onPlace(state, level, pos, oldState, isMoving);
         if (level.isClientSide()) return;
-
+        if (!isActive(state)) return;
         level.scheduleTick(pos, this, 1, TickPriority.HIGH);
     }
 

@@ -4,6 +4,7 @@ import com.github.hoshinofw.buildstonetoolkit.foundation.common.compat.create.Cr
 import com.github.hoshinofw.buildstonetoolkit.foundation.common.config.BTConfig;
 import com.github.hoshinofw.buildstonetoolkit.foundation.common.events.BuildstoneCommonEvents;
 import com.github.hoshinofw.buildstonetoolkit.foundation.common.registries.*;
+import com.github.hoshinofw.buildstonetoolkit.foundation.common.util.mixin.holders.ProxyRegistryHolder;
 import dev.architectury.platform.Platform;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
@@ -23,8 +24,8 @@ public final class BuildstoneToolkit {
     public static void init() {
         LOGGER.info("Debug enabled: {}", LOGGER.isDebugEnabled());
         BuildstoneBlocks.register();
-        BuildstoneBlockEntities.register();
         BuildstoneItems.register();
+        BuildstoneBlockEntities.register();
         BuildstoneParticles.register();
         //Events
         BuildstoneCommonEvents.register();
@@ -63,5 +64,9 @@ public final class BuildstoneToolkit {
 
     private static void simulatedCompatPostInit() {
 
+    }
+
+    public static void onServerUnload(ServerLevel serverLevel) {
+        ((ProxyRegistryHolder)serverLevel).getProxyRegistry().clear();
     }
 }

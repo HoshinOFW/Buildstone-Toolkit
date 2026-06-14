@@ -1,12 +1,12 @@
 plugins {
-    id 'buildstonetoolkit-repositories'
+    id 'repositories'
 
     id 'multiloader-loader'
     id 'net.neoforged.moddev.legacyforge'
 
     id "multiloader-configuration-alias"
 
-    id "buildstonetoolkit-dependencies"
+    id "dependencies"
 }
 
 evaluationDependsOn(":${multiversion.mcVersion()}:common")
@@ -42,6 +42,13 @@ legacyForge {
         minecraftVersion = parchment_minecraft
         mappingsVersion = parchment_version
     }
+
+    mods {
+        "${mod_id}" {
+            sourceSet sourceSets.main
+        }
+    }
+
     runs {
         configureEach {
             systemProperty('neoforge.enabledGameTestNamespaces', mod_id)
@@ -56,26 +63,24 @@ legacyForge {
             systemProperty("mixin.debug.export", "true")
             systemProperty("mixin.debug.verbose", "true")
 
-            programArgument("-mixin.config=create.mixins.json")
+            programArgument("-mixin.config=${mod_id}.mixins.json")
             programArgument("-mixin.config=ponder.mixins.json")
         }
-
 
         client {
             client()
         }
+
         data {
             data()
-            programArguments.addAll '--mod', project.mod_id, '--all', '--output', file('src/generated/resources/').getAbsolutePath(), '--existing', sourceSets.main.resources.srcDirs.first().absolutePath
+            programArguments.addAll(
+                    '--mod', project.mod_id,
+                    '--all',
+                    '--output', file('src/generated/resources/').getAbsolutePath(),
+                    '--existing', sourceSets.main.resources.srcDirs.first().absolutePath)
         }
         server {
             server()
-        }
-    }
-
-    mods {
-        "${mod_id}" {
-            sourceSet sourceSets.main
         }
     }
 }
@@ -85,7 +90,7 @@ sourceSets.main.resources.srcDir 'src/generated/resources'
 dependencies {
     compileOnly(project(":${multiversion.mcVersion()}:common")) {
         capabilities {
-            requireCapability "$group:$mod_id"
+            requireCapability "$maven_group:$mod_id"
         }
     }
     annotationProcessor("org.sinytra:sponge-mixin:${fabric_mixin_version}")

@@ -2,6 +2,7 @@ package com.github.hoshinofw.buildstonetoolkit.foundation.common.data;
 
 import net.minecraft.core.Direction;
 import net.minecraft.util.StringRepresentable;
+import net.minecraft.world.level.block.Rotation;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -43,7 +44,41 @@ public enum TargetFace implements StringRepresentable {
         return Direction.values()[index];
     }
 
+    public @NotNull TargetFace rotate(Rotation rotation) {
+        Direction direction = toDirection();
+        if (direction == null) return this;
+        return fromDirection(rotation.rotate(direction));
+    }
+
     public static TargetFace fromIndex(int index) {
         return TargetFace.values()[index];
+    }
+
+    public boolean isHorizontal() {
+        switch (this) {
+            case DOWN, UP, ALL -> {
+                return false;
+            }
+            default -> {
+                return true;
+            }
+        }
+    }
+
+    public TargetFace rotate(Rotation3D rotation) {
+        return rotation.apply(this);
+    }
+
+    public TargetFace opposite() {
+        if (this == ALL) return ALL;
+        return switch (this) {
+            case DOWN -> UP;
+            case UP -> DOWN;
+            case NORTH -> SOUTH;
+            case SOUTH -> NORTH;
+            case WEST -> EAST;
+            case EAST -> WEST;
+            default -> throw new IllegalStateException("Unexpected value: " + this);
+        };
     }
 }

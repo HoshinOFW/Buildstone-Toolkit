@@ -21,41 +21,15 @@ import net.minecraft.world.level.block.state.BlockState;
 
 public class BuildstoneCommonEvents {
 
-    private static int LAST_TICK = 0;
-    private static final int LCB_COOLDOWN = 4;
-
     public static void register() {
         LifecycleEvent.SETUP.register(BuildstoneToolkit::postInit);
         LifecycleEvent.SERVER_LEVEL_LOAD.register(BuildstoneToolkit::onServerLoad);
+        LifecycleEvent.SERVER_LEVEL_UNLOAD.register(BuildstoneToolkit::onServerUnload);
         PlayerEvent.PLAYER_JOIN.register(BuildstoneCommonEvents::onServerJoin);
-        InteractionEvent.LEFT_CLICK_BLOCK.register(BuildstoneCommonEvents::onLeftClickBlock);
     }
 
     private static void onServerJoin(ServerPlayer serverPlayer) {
         ConfigSyncPacket.HANDLER.sendToPlayer(serverPlayer);
-    }
-
-    //TODO MAKE A packet
-    private static EventResult onLeftClickBlock(Player player, InteractionHand interactionHand, BlockPos blockPos, Direction direction) {
-
-        Level level = player.level();
-        ItemStack item = player.getItemInHand(interactionHand);
-        if (item.is(BuildstoneItems.MOD_WAND.get())) {
-            BlockState state = level.getBlockState(blockPos);
-            if (state.getBlock() instanceof RedstoneProxyBlock rpb) {
-                if (rpb.hasProxyBlockEntity(level, blockPos)) {
-                    long proxyId = rpb.getId(level, blockPos);
-                    RedstoneProxyBlock.cycleMode(level, blockPos, state);
-                    if (level.isClientSide()) {
-                        player.playSound(SoundEvents.STONE_BUTTON_CLICK_ON, 1f, 0.2f);
-                        RPTransitionParticle.spawn(player, blockPos, proxyId);
-                    }
-                    return EventResult.interruptTrue();
-                }
-            }
-        }
-
-        return EventResult.pass();
     }
 
 }

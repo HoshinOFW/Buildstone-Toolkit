@@ -8,6 +8,7 @@ repositories {
     maven { url = "https://jitpack.io" }
     maven { url = "https://maven.ftb.dev/releases" } // FTB Mods
     maven { url = "https://raw.githubusercontent.com/Fuzss/modresources/main/maven" }
+    maven { url "https://maven.architectury.dev/" }
 
     maven {
         url = "https://jm.gserv.me/repository/maven-public" // JourneyMap

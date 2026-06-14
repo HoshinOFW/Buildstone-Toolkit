@@ -35,8 +35,8 @@ public class ProxyRegistry<T extends ProxyBlockEntity<?, ?>> {
 
     public void clear() {
         this.PosToIdMap.clear();
+        this.IdToPosMap.clear();
         this.idRegistry.clear();
-        this.targetIndex.clear();
     }
 
     public int size() {
@@ -60,13 +60,14 @@ public class ProxyRegistry<T extends ProxyBlockEntity<?, ?>> {
             //BuildstoneToolkit.LOGGER.info("Cancelled adding proxy at {} due to non-initialized id", pos);
             return;
         }
-        if (targetIdRegistry != null) targetIdRegistry.internPos(pos);
+        boolean off = pos == TargetIdRegistry.NULL_POS;
+        if (!off && targetIdRegistry != null) targetIdRegistry.internPos(pos);
         IdToPosMap.put(id, pos);
         LongOpenHashSet set = PosToIdMap.get(pos);
         if (set == null) {
             set = new LongOpenHashSet();
             PosToIdMap.put(pos, set);
-            targetIndex.add(pos);
+            if (!off) targetIndex.add(pos);
         }
         set.add(id);
     }
@@ -247,7 +248,7 @@ public class ProxyRegistry<T extends ProxyBlockEntity<?, ?>> {
     public BlockPos getBlockTargetedBy(long id){
         ProxyBlockEntity pbe = idRegistry.getEntry(id);
         if (pbe == null) return null;
-        return pbe.getLinkedAbsPos();
+        return pbe.getTargetPos();
     }
 
     @Nullable

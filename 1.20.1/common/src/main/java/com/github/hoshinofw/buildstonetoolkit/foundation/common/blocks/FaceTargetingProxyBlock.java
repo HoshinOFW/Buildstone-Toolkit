@@ -18,4 +18,7 @@ public interface FaceTargetingProxyBlock {
 
     BlockState setTargetFace(BlockState state, TargetFace targetFace);
 
+    /** Use if mid-chunk load. */
+    void setTargetFaceQuietly(Level level, BlockPos pos, BlockState state, TargetFace targetFace);
+
 }

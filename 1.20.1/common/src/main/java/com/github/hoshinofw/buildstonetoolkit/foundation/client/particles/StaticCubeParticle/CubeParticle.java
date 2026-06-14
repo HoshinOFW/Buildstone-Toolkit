@@ -16,8 +16,10 @@ import net.minecraft.util.Mth;
 import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+import org.joml.Vector3d;
 
 import java.util.function.BooleanSupplier;
+import java.util.function.DoubleSupplier;
 
 //TODO Add face filtering option
 //TODO Add different textures for different faces option.
@@ -76,6 +78,15 @@ public class CubeParticle extends TextureSheetParticle {
     private BooleanSupplier shouldPersist = () -> false;
     private Vec3Supplier posSupplier = null;
     private RenderTransformSupplier renderTransformContextSupplier = null;
+    private Vec3Supplier sizeSupplier = null;
+    private DoubleSupplier scaleSupplier = null;
+    private Vec3Supplier renderOffsetSupplier = null;
+
+    final double[] cornerOffsets = new double[72];
+    final Vector3d rotScratch = new Vector3d();
+    boolean cornersDirty = true;
+    private CornerSource cornerSource;
+    private boolean built = false;
 
     private boolean fading = false;
     private int fadeTicks = 0;
@@ -119,16 +130,19 @@ public class CubeParticle extends TextureSheetParticle {
 
     public CubeParticle setScale(Vec3 size) {
         this.size = size;
+        this.cornersDirty = true;
         return this;
     }
 
     public CubeParticle setSize(float scale) {
         this.scale = scale;
+        this.cornersDirty = true;
         return this;
     }
 
     public CubeParticle setRenderOffset(Vec3 offset) {
         this.renderOffset = offset;
+        this.cornersDirty = true;
         return this;
     }
 
@@ -175,6 +189,16 @@ public class CubeParticle extends TextureSheetParticle {
         return this;
     }
 
+    public CubeParticle build() {
+        cornerSource = (sizeSupplier != null || scaleSupplier != null || renderOffsetSupplier != null)
+                ? CornerSource.Dynamic.INSTANCE
+                : CornerSource.Static.INSTANCE;
+        recomputeCorners();
+        cornersDirty = false;
+        built = true;
+        return this;
+    }
+
     private void updateUVValues() {
         this.minU = sprite.getU0();
         this.maxU = sprite.getU1();
@@ -182,13 +206,42 @@ public class CubeParticle extends TextureSheetParticle {
         this.maxV = sprite.getV1();
     }
 
+    void recomputeCorners() {
+        Vec3 effSize = size;
+        if (sizeSupplier != null) {
+            Vec3 v = sizeSupplier.asVec3();
+            if (v != null) effSize = v;
+        }
+        double effScale = scaleSupplier != null ? scaleSupplier.getAsDouble() : scale;
+        Vec3 effOffset = renderOffset;
+        if (renderOffsetSupplier != null) {
+            Vec3 v = renderOffsetSupplier.asVec3();
+            if (v != null) effOffset = v;
+        }
+
+        double hx = effSize.x * effScale * 0.5 + 0.001;
+        double hy = effSize.y * effScale * 0.5 + 0.001;
+        double hz = effSize.z * effScale * 0.5 + 0.001;
+
+        for (int idx = 0; idx < 24; idx++) {
+            Vec3 corner = CUBE[idx];
+            int base = idx * 3;
+            cornerOffsets[base]     = -corner.x * hx + effOffset.x;
+            cornerOffsets[base + 1] = -corner.y * hy + effOffset.y;
+            cornerOffsets[base + 2] = -corner.z * hz + effOffset.z;
+        }
+    }
+
     @Override
     public void render(@NotNull VertexConsumer consumer, @NotNull Camera camera, float partialTicks) {
+        assert built;
         renderer.render(consumer, camera, partialTicks, this, renderTransformContextSupplier);
     }
 
     @Override
     public void tick() {
+        assert built;
+
         if (posSupplier != null) {
             Vec3 vector = posSupplier.asVec3();
             if (vector != null) {
@@ -197,6 +250,12 @@ public class CubeParticle extends TextureSheetParticle {
                 this.z = vector.z();
             }
         }
+
+        if (renderTransformContextSupplier != null) {
+            renderTransformContextSupplier.tick();
+        }
+
+        cornerSource.prepareCorners(this);
 
         if (!fading) {
             //Not good practice...
@@ -212,7 +271,7 @@ public class CubeParticle extends TextureSheetParticle {
 
             if (fadeTicks >= fadeDuration) {
                 this.remove();
-                //Not good practice... sorry.
+                //TODO replace with an on-death lambda
                 ModWand.setClientMode(ModWand.Mode.OFF);
             }
         }
@@ -239,7 +298,8 @@ public class CubeParticle extends TextureSheetParticle {
                     .setRGBATint(1F, 1F, 1F, 0.8F)
                     .setSize(1F)
                     .setTextureSprite(this.sprite)
-                    .setTextureIndex(BlockParticleTexture.SELECTION_BLOCK);
+                    .setTextureIndex(BlockParticleTexture.SELECTION_BLOCK)
+                    .build();
         }
     }
 

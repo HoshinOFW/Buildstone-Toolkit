@@ -1,5 +1,4 @@
 dependencies { d ->
-
     modRuntimeOnly("mezz.jei:jei-${multiversion.mcVersion()}-${multiversion.moduleType()}:${project.jei_version}")
 
     if (multiversion.isCommon()) {
@@ -10,28 +9,59 @@ dependencies { d ->
     }
 
     if (multiversion.isForge() && multiversion.isMcVersion("1.20.1")) {
-        modImplementation("maven.modrinth:mixinbooster:${project.mixin_booster_version}")
+        modImplementation("maven.modrinth:mixinbooster:${project.mixinbooster_version}")
     }
 
     if (!multiversion.isCommon()) {
         modRuntimeOnly("maven.modrinth:spark:${project.spark_version}-${multiversion.moduleType()}")
+        if (multiversion.isFabric() && multiversion.isMcVersion("1.21.1")) {
+            modRuntimeOnly("me.lucko:fabric-permissions-api:${project.fabric_permissions_api_version}")
+        }
     }
-
     //Bundle ponder + create only in versions where they are available.
-    //TODO Pick the right create versions, not just the latest in the maven.
     if (multiversion.mcVersion() in ["1.20.1", "1.21.1"]) {
         //Create needs JEI classes.
         modCompileOnly("mezz.jei:jei-${multiversion.mcVersion()}-${multiversion.moduleType()}-api:${project.jei_version}")
+        String commonPonderVersion = multiversion.isMcVersion("1.20.1") ? "forge" : "neoforge"
 
-        modImplementation("net.createmod.ponder:Ponder-${multiversion.moduleTypeCapitalized()}-${multiversion.mcVersion()}:${project.ponder_version}") {
-            exclude group: "io.github.fabricators_of_create.Porting-Lib"
-            transitive = false
+
+        //Ponder
+        if (multiversion.isMcVersion("1.21.1")) {
+            if (multiversion.isCommon()) {
+                modImplementation("net.createmod.ponder:ponder-neoforge:${project.ponder_version}+mc${multiversion.mcVersion()}") {
+                    exclude group: "io.github.fabricators_of_create.Porting-Lib"
+                    transitive = false
+                }
+            } else {
+                modImplementation("net.createmod.ponder:ponder-${multiversion.moduleType()}:${project.ponder_version}+mc${multiversion.mcVersion()}") {
+                    exclude group: "io.github.fabricators_of_create.Porting-Lib"
+                    transitive = false
+                }
+            }
+
+            if (!multiversion.isCommon()) {
+                include("net.createmod.ponder:ponder-${multiversion.moduleType()}:${project.ponder_version}+mc${multiversion.mcVersion()}")
+            }
+        } else {
+            if (multiversion.isCommon()) {
+                modImplementation("net.createmod.ponder:Ponder-Forge-${multiversion.mcVersion()}:${project.ponder_version}") {
+                    exclude group: "io.github.fabricators_of_create.Porting-Lib"
+                    transitive = false
+                }
+            } else {
+                modImplementation("net.createmod.ponder:Ponder-${multiversion.moduleTypeCapitalized()}-${multiversion.mcVersion()}:${project.ponder_version}") {
+                    exclude group: "io.github.fabricators_of_create.Porting-Lib"
+                    transitive = false
+                }
+            }
+
+            if (!multiversion.isCommon()) {
+                include("net.createmod.ponder:Ponder-${multiversion.moduleTypeCapitalized()}-${multiversion.mcVersion()}:${project.ponder_version}")
+            }
         }
 
-        if (!multiversion.isCommon()) {
-            include("net.createmod.ponder:Ponder-${multiversion.moduleTypeCapitalized()}-${multiversion.mcVersion()}:${project.ponder_version}")
-        }
 
+        //Create
         if (multiversion.isNeoForge() || multiversion.isForge() || multiversion.isCommon()) {
             //Giving common access to forge/neoforge classes is not a good idea overall, but 1.21.1 fabric has not been released yet
 
@@ -58,21 +88,20 @@ dependencies { d ->
 
         modImplementation("dev.ryanhcode.sable:sable-${multiversion.moduleType()}-${multiversion.mcVersion()}:${project.sable_version}")
 
-
         if (!multiversion.isFabric()) {
-            modImplementation("dev.simulated_team.simulated:simulated-${multiversion.moduleType()}-${multiversion.mcVersion()}:${project.create_simulated_version}")
-            modImplementation("dev.eriksonn.aeronautics:aeronautics-${multiversion.moduleType()}-${multiversion.mcVersion()}:${project.create_aeronautics_version}")
-            modImplementation("dev.ryanhcode.offroad:offroad-${multiversion.moduleType()}-${multiversion.mcVersion()}:${project.create_offroad_version}")
+            modImplementation("dev.simulated_team.simulated:simulated-${multiversion.moduleType()}-${multiversion.mcVersion()}:${project.simulated_version}")
+            modImplementation("dev.eriksonn.aeronautics:aeronautics-${multiversion.moduleType()}-${multiversion.mcVersion()}:${project.aeronautics_version}")
+            modImplementation("dev.ryanhcode.offroad:offroad-${multiversion.moduleType()}-${multiversion.mcVersion()}:${project.offroad_version}")
         } else {
             String module = multiversion.mcVersion() == '1.20.1' ? 'forge' : 'neoforge'
-            modCompileOnly("dev.simulated_team.simulated:simulated-${module}-${multiversion.mcVersion()}:${project.create_simulated_version}")
-            modCompileOnly("dev.eriksonn.aeronautics:aeronautics-${module}-${multiversion.mcVersion()}:${project.create_aeronautics_version}")
-            modCompileOnly("dev.ryanhcode.offroad:offroad-${module}-${multiversion.mcVersion()}:${project.create_offroad_version}")
+            modCompileOnly("dev.simulated_team.simulated:simulated-${module}-${multiversion.mcVersion()}:${project.simulated_version}")
+            modCompileOnly("dev.eriksonn.aeronautics:aeronautics-${module}-${multiversion.mcVersion()}:${project.aeronautics_version}")
+            modCompileOnly("dev.ryanhcode.offroad:offroad-${module}-${multiversion.mcVersion()}:${project.offroad_version}")
         }
     }
 
     // Mixinextras
-    // TODO bundle it
+    // TODO bundle it if necessary, I don't understand when I should or shouldn't.
     if (multiversion.isForge()) {
         implementation("io.github.llamalad7:mixinextras-forge:${mixin_extras_version}")
         compileOnly(annotationProcessor("io.github.llamalad7:mixinextras-common:${mixin_extras_version}"))

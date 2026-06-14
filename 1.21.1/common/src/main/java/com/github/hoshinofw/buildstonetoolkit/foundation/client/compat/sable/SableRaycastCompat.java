@@ -7,6 +7,7 @@ import dev.ryanhcode.sable.companion.math.JOMLConversion;
 import dev.ryanhcode.sable.companion.math.Pose3dc;
 import dev.ryanhcode.sable.mixinterface.clip_overwrite.LevelPoseProviderExtension;
 import dev.ryanhcode.sable.sublevel.SubLevel;
+import net.minecraft.core.Position;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.HitResult;
@@ -25,13 +26,16 @@ public class SableRaycastCompat {
         Vec3 mainFrom = projectOutward(level, helper, from);
         Vec3 mainTo = projectOutward(level, helper, to);
 
+        Vector3d mainFromJOML = JOMLConversion.toJOML(mainFrom);
+        Vector3d mainToJOML = JOMLConversion.toJOML(mainTo);
+
         body.accept(mainFrom, mainTo);
 
         BoundingBox3d bounds = new BoundingBox3d(mainFrom, mainTo);
         for (SubLevel subLevel : helper.getAllIntersecting(level, bounds)) {
             Pose3dc pose = poseOf(level, subLevel);
-            Vector3dc subFrom = pose.transformPositionInverse(JOMLConversion.toJOML(mainFrom));
-            Vector3dc subTo = pose.transformPositionInverse(JOMLConversion.toJOML(mainTo));
+            Vector3dc subFrom = pose.transformPositionInverse(mainFromJOML);
+            Vector3dc subTo = pose.transformPositionInverse(mainToJOML);
 
             if (helper.getContaining(level, subFrom) != subLevel) continue;
 
@@ -45,6 +49,9 @@ public class SableRaycastCompat {
         Vec3 mainFrom = projectOutward(level, helper, from);
         Vec3 mainTo = projectOutward(level, helper, to);
 
+        Vector3d mainFromJOML = JOMLConversion.toJOML(mainFrom);
+        Vector3d mainToJOML = JOMLConversion.toJOML(mainTo);
+
         BlockHitResult best = tracer.apply(mainFrom, mainTo);
         double bestDistance = best.getType() == HitResult.Type.MISS
                 ? Double.MAX_VALUE
@@ -53,8 +60,8 @@ public class SableRaycastCompat {
         BoundingBox3d bounds = new BoundingBox3d(mainFrom, mainTo);
         for (SubLevel subLevel : helper.getAllIntersecting(level, bounds)) {
             Pose3dc pose = poseOf(level, subLevel);
-            Vector3dc subFromV = pose.transformPositionInverse(JOMLConversion.toJOML(mainFrom));
-            Vector3dc subToV = pose.transformPositionInverse(JOMLConversion.toJOML(mainTo));
+            Vector3dc subFromV = pose.transformPositionInverse(mainFromJOML);
+            Vector3dc subToV = pose.transformPositionInverse(mainToJOML);
 
             if (helper.getContaining(level, subFromV) != subLevel) continue;
 

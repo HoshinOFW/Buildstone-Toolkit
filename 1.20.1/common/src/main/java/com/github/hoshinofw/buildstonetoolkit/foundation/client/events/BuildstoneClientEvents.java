@@ -1,8 +1,11 @@
 package com.github.hoshinofw.buildstonetoolkit.foundation.client.events;
 
+import com.github.hoshinofw.buildstonetoolkit.content.common.blocks.RedstoneProxyBlock;
 import com.github.hoshinofw.buildstonetoolkit.content.common.items.ModWand;
+import com.github.hoshinofw.buildstonetoolkit.foundation.client.core.BuildstoneToolkitClient;
 import com.github.hoshinofw.buildstonetoolkit.foundation.client.particles.ProxyParticle;
 import com.github.hoshinofw.buildstonetoolkit.foundation.client.particles.ProxyTargetParticle;
+import com.github.hoshinofw.buildstonetoolkit.foundation.client.particles.RPTransitionParticle;
 import com.github.hoshinofw.buildstonetoolkit.foundation.client.particles.SelectionParticle;
 import com.github.hoshinofw.buildstonetoolkit.foundation.client.util.ClientUtil;
 import com.github.hoshinofw.buildstonetoolkit.foundation.common.blocks.FaceTargetingProxyBlock;
@@ -13,15 +16,18 @@ import com.github.hoshinofw.buildstonetoolkit.foundation.common.config.BTConfig;
 import com.github.hoshinofw.buildstonetoolkit.foundation.common.data.ProxyInteractionType;
 import com.github.hoshinofw.buildstonetoolkit.foundation.common.data.TargetFace;
 import com.github.hoshinofw.buildstonetoolkit.foundation.common.networking.PlayerProxyInteractionPacket;
+import com.github.hoshinofw.buildstonetoolkit.foundation.common.networking.RedstoneProxyCycleModePacket;
 import com.github.hoshinofw.buildstonetoolkit.foundation.common.networking.SetProxyTargetPacket;
 import com.github.hoshinofw.buildstonetoolkit.foundation.common.registries.BuildstoneItems;
 import com.github.hoshinofw.buildstonetoolkit.foundation.common.util.SoundUtil;
 import com.github.hoshinofw.buildstonetoolkit.foundation.common.util.mixin.SelectionHolder;
 import dev.architectury.event.CompoundEventResult;
 import dev.architectury.event.EventResult;
+import dev.architectury.event.events.client.ClientLifecycleEvent;
 import dev.architectury.event.events.client.ClientRawInputEvent;
 import dev.architectury.event.events.client.ClientTickEvent;
 import dev.architectury.event.events.common.InteractionEvent;
+import dev.architectury.event.events.common.LifecycleEvent;
 import it.unimi.dsi.fastutil.booleans.BooleanObjectPair;
 import it.unimi.dsi.fastutil.longs.LongArrayList;
 import it.unimi.dsi.fastutil.longs.LongCollection;
@@ -31,6 +37,7 @@ import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.network.chat.Component;
+import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
@@ -53,7 +60,11 @@ import static com.github.hoshinofw.buildstonetoolkit.foundation.common.util.Util
 public class BuildstoneClientEvents {
     public static boolean wasHovered = false;
 
+    private static int LCB_LAST_TICK = 0;
+    private static final int LCB_COOLDOWN = 4;
+
     public static void register() {
+        ClientLifecycleEvent.CLIENT_LEVEL_LOAD.register(BuildstoneToolkitClient::onClientLevelLoad);
         ClientTickEvent.CLIENT_POST.register(BuildstoneClientEvents::onClientTick);
         InteractionEvent.RIGHT_CLICK_ITEM.register(BuildstoneClientEvents::onRightClickItem);
         InteractionEvent.LEFT_CLICK_BLOCK.register(BuildstoneClientEvents::onLeftClickBlock);
@@ -97,7 +108,30 @@ public class BuildstoneClientEvents {
         onLeftClick(player);
     }
 
-    private static EventResult onLeftClickBlock(Player player, InteractionHand interactionHand, BlockPos pos, Direction direction) {
+    private static EventResult onLeftClickBlock(Player player, InteractionHand interactionHand, BlockPos blockPos, Direction direction) {
+        Level level = player.level();
+        if (!level.isClientSide()) return onLeftClick(player);
+
+        ItemStack item = player.getItemInHand(interactionHand);
+        if (item.is(BuildstoneItems.MOD_WAND.get())) {
+            BlockState state = level.getBlockState(blockPos);
+            if (state.getBlock() instanceof RedstoneProxyBlock rpb) {
+                if (rpb.hasProxyBlockEntity(level, blockPos)) {
+                    if (player.tickCount - LCB_LAST_TICK <= LCB_COOLDOWN)  return EventResult.interruptTrue();
+                    LCB_LAST_TICK = player.tickCount;
+
+                    long proxyId = rpb.getId(level, blockPos);
+
+                    RedstoneProxyCycleModePacket.HANDLER.sendToServer(new RedstoneProxyCycleModePacket(blockPos.asLong()));
+
+                    player.playSound(SoundEvents.STONE_BUTTON_CLICK_ON, 1f, 0.2f);
+                    RPTransitionParticle.spawn(player, blockPos, proxyId);
+
+                    return EventResult.interruptTrue();
+                }
+            }
+        }
+
         return onLeftClick(player);
     }
 
@@ -225,7 +259,7 @@ public class BuildstoneClientEvents {
                         if (proxyBlock.hasProxyBlockEntity(level, hitPos)) {
                             long proxyId = proxyBlock.getId(level, hitPos);
 
-                            TargetFace face = holder.getSelectedId() == proxyId ? TargetFace.fromDirection(hit.getDirection()) : TargetFace.ALL;
+                            TargetFace face = holder.getSelectedId() == proxyId && holder.getSelectedFace() == TargetFace.ALL ? TargetFace.fromDirection(hit.getDirection()) : TargetFace.ALL;
 
                             TargetFace targetParticleFace = state.getBlock() instanceof FaceTargetingProxyBlock fpb
                                     && fpb.hasTargetFace(state) ?
@@ -241,12 +275,16 @@ public class BuildstoneClientEvents {
                     }
                 } else {
                     //When looking at arbitrary block
+                    TargetFace face = TargetFace.fromDirection(hit.getDirection());
                     if (player.isShiftKeyDown()) {
                         if (hitPos.equals(holder.getSelectedPos())) {
-                            TargetFace face = TargetFace.fromDirection(hit.getDirection());
-
-                            holder.setSelectedPos(hitPos, face);
-                            SelectionParticle.spawn(player, hitPos, face);
+                            if (face != holder.getSelectedFace()) {
+                                holder.setSelectedPos(hitPos, face);
+                                SelectionParticle.spawn(player, hitPos, face);
+                            } else {
+                                holder.setSelectedPos(hitPos);
+                                SelectionParticle.spawn(player, hitPos);
+                            }
                         }
                     } else {
                         holder.setSelectedPos(hitPos);

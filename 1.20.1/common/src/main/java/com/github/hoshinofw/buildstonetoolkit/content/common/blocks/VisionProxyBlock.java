@@ -5,7 +5,6 @@ import com.github.hoshinofw.buildstonetoolkit.foundation.common.blocks.Interacti
 import com.github.hoshinofw.buildstonetoolkit.foundation.common.blocks.ProxyBlock;
 import com.github.hoshinofw.buildstonetoolkit.foundation.common.data.ProxyInteractionType;
 import com.github.hoshinofw.buildstonetoolkit.foundation.common.registries.BuildstoneBlocks;
-import com.github.hoshinofw.buildstonetoolkit.foundation.common.util.Util;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -31,6 +30,13 @@ public class VisionProxyBlock extends ProxyBlock<VisionProxyBlock, VisionProxyBl
 
     public static final IntegerProperty POWER_LEVEL = IntegerProperty.create("power_level", 0, 15);
     public static final IntegerProperty TICK = IntegerProperty.create("tick", 0, maxTick);
+
+
+    @Override
+    protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder) {
+        super.createBlockStateDefinition(builder);
+        builder.add(POWER_LEVEL, TICK);
+    }
 
     public VisionProxyBlock(Properties properties) {
         super(properties, VisionProxyBlockEntity.class);
@@ -72,7 +78,7 @@ public class VisionProxyBlock extends ProxyBlock<VisionProxyBlock, VisionProxyBl
     }
 
     public static void startTicking(Level level, BlockPos proxyPos, BlockState proxyState, Vec3 playerPosition) {
-        level.setBlock(proxyPos, setSignal(refreshTicking(proxyState), Util.calculateSignal(playerPosition.distanceTo(proxyPos.getCenter()))), Block.UPDATE_ALL);
+        level.setBlock(proxyPos, setSignal(refreshTicking(proxyState), InteractiveProxyBlock.calculateSignal(playerPosition.distanceTo(proxyPos.getCenter()))), Block.UPDATE_ALL);
         level.scheduleTick(proxyPos, getBlock(), 1);
     }
 
@@ -98,6 +104,7 @@ public class VisionProxyBlock extends ProxyBlock<VisionProxyBlock, VisionProxyBl
 
     @Override
     public void handleInteraction(ServerLevel level, BlockPos proxyPos, BlockState proxyState, Vec3 playerPosition, ProxyInteractionType[] interactionTypes) {
+        if (!isActive(proxyState)) return;
         for (ProxyInteractionType interactionType : interactionTypes) {
             switch (interactionType) {
                 case LookedAtLookingAtProxy -> startTicking(level, proxyPos, proxyState, playerPosition);
@@ -106,11 +113,6 @@ public class VisionProxyBlock extends ProxyBlock<VisionProxyBlock, VisionProxyBl
                 }
             }
         }
-    }
-
-    @Override
-    protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder) {
-        builder.add(POWER_LEVEL, TICK);
     }
 
     public static VisionProxyBlock getBlock() {

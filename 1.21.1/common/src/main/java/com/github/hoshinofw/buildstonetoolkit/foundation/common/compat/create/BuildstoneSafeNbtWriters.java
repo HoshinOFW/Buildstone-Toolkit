@@ -10,15 +10,10 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 
+import java.util.function.Supplier;
+
 public class BuildstoneSafeNbtWriters {
 
-    @OverwriteVersion
-    public static void register() {
-        for (BlockEntityType<? extends BlockEntity> beType : BuildstoneBlockEntities.getProxyTypes()) {
-            SafeNbtWriterRegistry.REGISTRY.register(beType, BuildstoneSafeNbtWriters::safeWrite);
-        }
-    }
- 
     @OverwriteVersion
     @ModifySignature("safeWrite")
     public static void safeWrite(BlockEntity be, CompoundTag nbt, HolderLookup.Provider registries) {
@@ -26,5 +21,4 @@ public class BuildstoneSafeNbtWriters {
             pbe.saveAdditional(nbt, registries);
         }
     }
-
 }

@@ -26,13 +26,13 @@
     "buildstonetoolkit.mixins.json"
   ],
   "depends": {
-    "fabricloader": ">=${fabric_loader_version}",
+    "fabricloader": "${fabric_loader_version_range}",
     "minecraft": "${minecraft_version}",
     "java": ">=21",
-    "architectury": ">=${architectury_api_version}",
+    "architectury": "${architectury_api_version_range_fabric}",
     "fabric-api": "*"
   },
   "suggests": {
-    "another-mod": "*"
+    "sable": "${sable_version_range_fabric}"
   }
 }

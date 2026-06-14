@@ -1,5 +1,5 @@
 modLoader = "javafml"
-loaderVersion = "[4,)"
+loaderVersion = "${neoforge_loader_version_range}"
 #issueTrackerURL = ""
 license = "${mod_license}"
 
@@ -14,7 +14,7 @@ logoFile = "icon.png"
 [[dependencies.${mod_id}]]
 modId = "neoforge"
 type = "required"
-versionRange = "[21.1,)"
+versionRange = "${neoforge_version_range}"
 ordering = "NONE"
 side = "BOTH"
 
@@ -28,14 +28,42 @@ side = "BOTH"
 [[dependencies.${mod_id}]]
 modId = "architectury"
 type = "required"
-versionRange = "[${architectury_api_version},)"
+versionRange = "${architectury_api_version_range}"
 ordering = "AFTER"
 side = "BOTH"
 
 [[dependencies.${mod_id}]]
 modId = "create"
 type = "optional"
-versionRange = "[${create_version},)"
+versionRange = "${create_version_range}"
+ordering = "AFTER"
+side = "BOTH"
+
+[[dependencies.${mod_id}]]
+modId = "sable"
+type = "optional"
+versionRange = "${sable_version_range}"
+ordering = "AFTER"
+side = "BOTH"
+
+[[dependencies.${mod_id}]]
+modId = "simulated"
+type = "optional"
+versionRange = "${simulated_version_range}"
+ordering = "AFTER"
+side = "BOTH"
+
+[[dependencies.${mod_id}]]
+modId = "aeronautics"
+type = "optional"
+versionRange = "${aeronautics_version_range}"
+ordering = "AFTER"
+side = "BOTH"
+
+[[dependencies.${mod_id}]]
+modId = "offroad"
+type = "optional"
+versionRange = "${offroad_version_range}"
 ordering = "AFTER"
 side = "BOTH"
 

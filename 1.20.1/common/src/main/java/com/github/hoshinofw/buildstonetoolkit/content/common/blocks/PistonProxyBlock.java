@@ -4,6 +4,7 @@ import com.github.hoshinofw.buildstonetoolkit.content.common.blocks.entity.Pisto
 import com.github.hoshinofw.buildstonetoolkit.foundation.common.blocks.ProxyBlock;
 import com.github.hoshinofw.buildstonetoolkit.foundation.common.registries.BuildstoneBlocks;
 import com.github.hoshinofw.buildstonetoolkit.foundation.common.util.NBTUtil;
+import com.github.hoshinofw.buildstonetoolkit.foundation.common.util.Util;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -25,9 +26,7 @@ import org.jetbrains.annotations.Nullable;
 import java.util.List;
 
 public class PistonProxyBlock extends ProxyBlock<PistonProxyBlock, PistonProxyBlockEntity> {
-
     public static final IntegerProperty POWER_LEVEL = IntegerProperty.create("power_level", 0, 2);
-
 
     public PistonProxyBlock(Properties properties) {
         super(properties, PistonProxyBlockEntity.class);
@@ -41,6 +40,7 @@ public class PistonProxyBlock extends ProxyBlock<PistonProxyBlock, PistonProxyBl
 
     @Override
     protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder) {
+        super.createBlockStateDefinition(builder);
         builder.add(POWER_LEVEL);
     }
 
@@ -86,13 +86,13 @@ public class PistonProxyBlock extends ProxyBlock<PistonProxyBlock, PistonProxyBl
     }
 
     public boolean shouldPreserveTargetAbsPos(Level level, PistonMovingBlockEntity mbe, BlockPos originalPos, BlockPos finalPos, Direction moveDirection) {
-        if (isStronglyPowered(mbe.getMovedState())) {return true;}
+        if (isStronglyPowered(mbe.getMovedState()) || !isActive(mbe.getMovedState())) {return true;}
         return parseRedstoneToPowerLevel(level.getBestNeighborSignal(finalPos)) == 1;
     }
 
 
     public boolean shouldTransferMovement(BlockPos pos, BlockState state, Direction blockLineRecursionDirection) {
-        return getPowerLevel(state) == 0;
+        return getPowerLevel(state) == 0 && isActive(state);
     }
 
     @Override
@@ -101,7 +101,7 @@ public class PistonProxyBlock extends ProxyBlock<PistonProxyBlock, PistonProxyBl
     }
 
     public void saveShiftedTargetAbsPosToNBT(Level level, BlockPos pos, BlockState state, @NotNull CompoundTag nbt, Direction moveDirection) {
-        NBTUtil.saveAbsPosToNBT(nbt, BlockPos.of(NBTUtil.getAbsoluteTargetPosFromNBT(nbt)).relative(moveDirection));
+        NBTUtil.saveAbsPosToNBT(nbt, Util.fastRelative(NBTUtil.getAbsoluteTargetPosFromNBT(nbt), moveDirection));
     }
 
     @Override

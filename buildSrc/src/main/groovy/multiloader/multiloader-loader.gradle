@@ -15,7 +15,7 @@ dependencies {
     compileOnly(project(":${multiversion.mcVersion()}:common")) {
 
         capabilities {
-            requireCapability "$group:$mod_id"
+            requireCapability "$maven_group:$mod_id"
         }
     }
     commonJava project(path: ":${multiversion.mcVersion()}:common", configuration: 'commonJava')

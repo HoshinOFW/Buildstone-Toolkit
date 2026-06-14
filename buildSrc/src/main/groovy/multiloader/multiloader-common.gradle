@@ -4,6 +4,8 @@ plugins {
 }
 
 base {
+    group = maven_group
+    version = mod_version
     archivesName = "${mod_id}-${project.name}-${minecraft_version}"
 }
 
@@ -11,6 +13,10 @@ java {
     toolchain.languageVersion = JavaLanguageVersion.of(java_version)
     withSourcesJar()
     withJavadocJar()
+}
+
+tasks.withType(Javadoc).configureEach {
+    options.addStringOption('Xdoclint:none', '-quiet')
 }
 
 repositories {
@@ -77,5 +83,12 @@ jar {
                 'Implementation-Vendor' : mod_author,
                 'Built-On-Minecraft'    : minecraft_version
         ])
+    }
+}
+
+publishing {
+
+    repositories {
+        mavenLocal()
     }
 }

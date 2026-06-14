@@ -22,13 +22,13 @@ public abstract class ProxyBlockEntity<B extends ProxyBlock<B, BE>, BE extends P
     }
 
     @ShadowVersion
-    public void setLinkedAbsPos(@NotNull BlockPos value);
+    public void setTargetPos(@NotNull BlockPos value);
 
     @ShadowVersion
     public void relocateTargetPos(@NotNull BlockPos newAbsPos);
 
     @ShadowVersion
-    public BlockPos getLinkedAbsPos();
+    public BlockPos getTargetPos();
 
     @ShadowVersion
     @ModifySignature("saveAdditional")
@@ -49,6 +49,9 @@ public abstract class ProxyBlockEntity<B extends ProxyBlock<B, BE>, BE extends P
     @NotNull
     @ShadowVersion
     public static ProxyRegistry<ProxyBlockEntity<?, ?>> getRegistry(Level level);
+
+    @ShadowVersion
+    public void setTargetId(long targetId);
 
 
 }

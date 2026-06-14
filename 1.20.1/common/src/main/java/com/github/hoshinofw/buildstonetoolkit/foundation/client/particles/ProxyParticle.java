@@ -22,11 +22,11 @@ import java.util.function.BooleanSupplier;
 
 public class ProxyParticle {
 
-    public static @NotNull TriFunction<Player, Long, TargetFace, BooleanSupplier> activeProxyParticlePersistSupplier = ProxyParticle::createProxyParticleShouldPersist;
-    public static @NotNull BiFunction<Player, Long, Vec3Supplier> activeProxyParticlePosSupplier = ProxyParticle::createProxyParticlePosSupplier;
-    public static @NotNull BiFunction<Player, Long, RenderTransformSupplier> activeProxyParticleRenderTransformSupplier = ProxyParticle::createProxyParticleRenderTransformSupplier;
+    public static @NotNull TriFunction<Player, Long, TargetFace, BooleanSupplier> activeProxyParticlePersistSupplier = ProxyParticle::createPersistSupplier;
+    public static @NotNull BiFunction<Player, Long, Vec3Supplier> activeProxyParticlePosSupplier = ProxyParticle::createPosSupplier;
+    public static @NotNull BiFunction<Player, Long, RenderTransformSupplier> activeProxyParticleRenderTransformSupplier = ProxyParticle::createRTS;
 
-    public static BooleanSupplier createProxyParticleShouldPersist(@NotNull Player player, long proxyId, TargetFace face) {
+    public static BooleanSupplier createPersistSupplier(@NotNull Player player, long proxyId, TargetFace face) {
         SelectionHolder holder = (SelectionHolder) player;
         return () -> ((player.getItemBySlot(EquipmentSlot.MAINHAND).is(BuildstoneItems.MOD_WAND.get())
                 || player.getItemBySlot(EquipmentSlot.OFFHAND).is(BuildstoneItems.MOD_WAND.get()))
@@ -34,7 +34,7 @@ public class ProxyParticle {
                 && face == holder.getSelectedFace());
     }
 
-    public static Vec3Supplier createProxyParticlePosSupplier(@NotNull Player player, long proxyId) {
+    public static Vec3Supplier createPosSupplier(@NotNull Player player, long proxyId) {
         return () -> {
             ProxyBlockEntity<?, ?> pbe = ProxyBlockEntity.getIdRegistry(player.level()).getEntry(proxyId);
             if (pbe == null) return null;
@@ -42,7 +42,7 @@ public class ProxyParticle {
         };
     }
 
-    public static RenderTransformSupplier createProxyParticleRenderTransformSupplier(@NotNull Player player, long proxyId) {
+    public static RenderTransformSupplier createRTS(@NotNull Player player, long proxyId) {
         return (float partialTicks) -> null;
     }
 
@@ -60,22 +60,23 @@ public class ProxyParticle {
                     .setRenderOffset(RenderUtil.FaceTargetRender.getOffsetForFace(face))
                     .setPersistSupplier(activeProxyParticlePersistSupplier.apply(player, proxyId, face))
                     .setPosSupplier(activeProxyParticlePosSupplier.apply(player, proxyId))
-                    .setRenderTransformContextSupplier(activeProxyParticleRenderTransformSupplier.apply(player, proxyId));
+                    .setRenderTransformContextSupplier(activeProxyParticleRenderTransformSupplier.apply(player, proxyId))
+                    .build();
 
             //BuildstoneToolkit.LOGGER.info("Summoned Proxy Target Particle: {} at: {}", particle, targetPos);
             Minecraft.getInstance().particleEngine.add(particle);
         }
     }
 
-    public static void setActiveProxyParticlePersistSupplier(@NotNull TriFunction<Player, Long, TargetFace, BooleanSupplier> activeProxyParticlePersistSupplier) {
+    public static void setActivePersistSupplier(@NotNull TriFunction<Player, Long, TargetFace, BooleanSupplier> activeProxyParticlePersistSupplier) {
         ProxyParticle.activeProxyParticlePersistSupplier = activeProxyParticlePersistSupplier;
     }
 
-    public static void setActiveProxyParticlePosSupplier(@NotNull BiFunction<Player, Long, Vec3Supplier> activeProxyParticlePosSupplier) {
+    public static void setActivePosSupplier(@NotNull BiFunction<Player, Long, Vec3Supplier> activeProxyParticlePosSupplier) {
         ProxyParticle.activeProxyParticlePosSupplier = activeProxyParticlePosSupplier;
     }
 
-    public static void setActiveProxyParticleRenderTransformSupplier(@NotNull BiFunction<Player, Long, RenderTransformSupplier> activeProxyParticleRenderTransformSupplier) {
+    public static void setActiveRTS(@NotNull BiFunction<Player, Long, RenderTransformSupplier> activeProxyParticleRenderTransformSupplier) {
         ProxyParticle.activeProxyParticleRenderTransformSupplier = activeProxyParticleRenderTransformSupplier;
     }
 }

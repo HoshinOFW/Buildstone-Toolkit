@@ -1,12 +1,12 @@
 plugins {
-    id 'buildstonetoolkit-repositories'
+    id 'repositories'
 
     id 'multiloader-loader'
     id 'net.neoforged.moddev'
 
     id "multiloader-configuration-alias"
 
-    id "buildstonetoolkit-dependencies"
+    id "dependencies"
 }
 
 evaluationDependsOn(":${multiversion.mcVersion()}:common")
@@ -37,7 +37,7 @@ neoForge {
             systemProperty("mixin.debug.export", "true")
             systemProperty("mixin.debug.verbose", "true")
 
-            programArgument("-mixin.config=create.mixins.json")
+            programArgument("-mixin.config=${mod_id}.mixins.json")
             programArgument("-mixin.config=ponder.mixins.json")
         }
 

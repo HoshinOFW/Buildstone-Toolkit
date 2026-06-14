@@ -13,7 +13,7 @@ import org.jetbrains.annotations.NotNull;
 
 public class BTPonderPlugin implements PonderPlugin {
 
-    public static final ResourceLocation BUILDSTONE_TOOLKIT = new ResourceLocation(BuildstoneToolkit.MOD_ID, "ponder_tag_buildstone_toolkit");
+    public static final ResourceLocation BUILDSTONE_TOOLKIT = BuildstoneToolkit.RLFromPath("ponder_tag_buildstone_toolkit");
 
     @Override
     public @NotNull String getModId() {

@@ -7,7 +7,6 @@ import net.minecraft.core.SectionPos;
 
 import java.util.function.LongConsumer;
 
-//TODO Cursor which holds a small cache which allows other parts of the codebase to efficiently walk without being forced to pass lambdas to this class.
 public final class ProxyTargetIndex {
 
     private final int sectionBits;
@@ -45,11 +44,7 @@ public final class ProxyTargetIndex {
         sectionBitsets.remove(sectionKey);
     }
 
-    /**
-     * Tests whether {@code pos}'s bit is set within an already-resolved section bitset.
-     * Shared by every contains/walk path so the bit-index math lives in one place. Caller
-     * guarantees {@code bits != null}.
-     */
+
     private boolean hasBit(long[] bits, long pos) {
         int bitIndex = bitIndex(pos);
         return (bits[bitIndex >> 6] & (1L << (bitIndex & 63))) != 0;
@@ -63,11 +58,6 @@ public final class ProxyTargetIndex {
         return bits != null && hasBit(bits, blockPos);
     }
 
-    // Fixed-arity contains(...) overloads (2..8). They avoid the long[] that the varargs
-    // contains(long...) allocates at every call site, while keeping the same section-cached walk:
-    // the bitset is only re-fetched when a position falls in a different section than the previous
-    // one, so the common case (all positions in one section) costs a single map lookup. Each
-    // short-circuits on the first hit.
     public boolean contains(long a, long b) {
         long sk = sectionKey(a);
         long[] bits = sectionBitsets.get(sk);
@@ -269,20 +259,10 @@ public final class ProxyTargetIndex {
     }
 
     public void forEachInIfPresent(Iterable<BlockPos> blocks, LongConsumer consumer) {
-        long lastSectionKey = Long.MIN_VALUE;
-        long[] lastBitset = null;
-        boolean lastWasMiss = false;
+        Cursor cursor = cursor();
         for (BlockPos block : blocks) {
             long pos = block.asLong();
-            long sectionKey = sectionKey(pos);
-            if (sectionKey != lastSectionKey) {
-                lastBitset = sectionBitsets.get(sectionKey);
-                lastSectionKey = sectionKey;
-                lastWasMiss = (lastBitset == null);
-            }
-            if (lastWasMiss) continue;
-            assert lastBitset != null;
-            if (hasBit(lastBitset, pos)) consumer.accept(pos);
+            if (cursor.isPresent(pos)) consumer.accept(pos);
         }
     }
 
@@ -290,19 +270,9 @@ public final class ProxyTargetIndex {
      * Efficiently walks only the blockPos in {@code blocks} that are found in the index, invoking {@code consumer}.
      */
     public void forEachInIfPresent(long[] blocks, LongConsumer consumer) {
-        long lastSectionKey = Long.MIN_VALUE;
-        long[] lastBitset = null;
-        boolean lastWasMiss = false;
+        Cursor cursor = cursor();
         for (long pos : blocks) {
-            long sectionKey = sectionKey(pos);
-            if (sectionKey != lastSectionKey) {
-                lastBitset = sectionBitsets.get(sectionKey);
-                lastSectionKey = sectionKey;
-                lastWasMiss = (lastBitset == null);
-            }
-            if (lastWasMiss) continue;
-            assert lastBitset != null;
-            if (hasBit(lastBitset, pos)) consumer.accept(pos);
+            if (cursor.isPresent(pos)) consumer.accept(pos);
         }
     }
 
@@ -310,21 +280,82 @@ public final class ProxyTargetIndex {
      * Efficiently walks only the blockPos in {@code blocks} that are found in the index, until {@code consumer} returns false.
      */
     public boolean forEachInIfPresentUntil(long[] blocks, LongPredicate consumer) {
-        long lastSectionKey = Long.MIN_VALUE;
-        long[] lastBitset = null;
-        boolean lastWasMiss = false;
+        Cursor cursor = cursor();
         for (long pos : blocks) {
-            long sectionKey = sectionKey(pos);
+            if (cursor.isPresent(pos) && !consumer.test(pos)) return false;
+        }
+        return true;
+    }
+
+    public Cursor cursor() {
+        return new Cursor(this);
+    }
+
+    public Walk walk(long[] blocks) {
+        return new Walk(this, blocks);
+    }
+
+    public static final class Cursor {
+
+        private final ProxyTargetIndex index;
+
+        private long lastSectionKey = Long.MIN_VALUE;
+        private long[] lastBitset = null;
+        private boolean lastWasMiss = false;
+
+        private Cursor(ProxyTargetIndex index) {
+            this.index = index;
+        }
+
+        public boolean isPresent(long blockPos) {
+            long sectionKey = index.sectionKey(blockPos);
             if (sectionKey != lastSectionKey) {
-                lastBitset = sectionBitsets.get(sectionKey);
+                lastBitset = index.sectionBitsets.get(sectionKey);
                 lastSectionKey = sectionKey;
                 lastWasMiss = (lastBitset == null);
             }
-            if (lastWasMiss) continue;
-            assert lastBitset != null;
-            if (hasBit(lastBitset, pos) && !consumer.test(pos)) return false;
+            return !lastWasMiss && index.hasBit(lastBitset, blockPos);
         }
-        return true;
+
+        public void reset() {
+            lastSectionKey = Long.MIN_VALUE;
+            lastBitset = null;
+            lastWasMiss = false;
+        }
+    }
+
+    public static final class Walk {
+
+        private final Cursor cursor;
+        private final long[] blocks;
+        private int i = 0;
+        private long current;
+
+        private Walk(ProxyTargetIndex index, long[] blocks) {
+            this.cursor = new Cursor(index);
+            this.blocks = blocks;
+        }
+
+        public boolean next() {
+            while (i < blocks.length) {
+                long pos = blocks[i++];
+                if (cursor.isPresent(pos)) {
+                    current = pos;
+                    return true;
+                }
+            }
+            return false;
+        }
+
+        public long pos() {
+            return current;
+        }
+
+        public void reset() {
+            i = 0;
+            current = 0;
+            cursor.reset();
+        }
     }
 
     private long sectionKey(long blockPos) {

@@ -1,14 +1,6 @@
-# Current features:
-- Piston Proxy
-- Redstone Proxy
-- Observer Proxy
-- Vision Proxy
-- Interaction Proxy
-- Tuner to configure mod features
-- Allay configurable searchOrigin, maxDistance, and general player tracking
-
 ## BUGS:
     Redstone proxies don't visually update next to interactive proxies. Seems update ordering is weird in general.
+
 
 ### Debt:
 - Split access transformers instead of overriding. Same with mixin configs.
@@ -25,7 +17,17 @@
     Separate access transformers and mixin configs so that I don't have to update every one and inheritance via multiversion works.
 
 -------------------
+    Bulk ProxyTargetParticle spawning, where looking at one of them highlights the proxies targeting them.
+      Requires a more centralized client tick raycast, new packets, new shouldPersist suppliers, but shouldn't be too bad
+      The idea is to have this centralized API that lets you do: "spawn the targets for all proxies in this AABB" and "spawn all targets in this AABB"
+      The tuner should be allowed to do both.
+      Sable compat to see all targets in a sublevel
     
+
+    Smarter persist + respawn mechanics for the 3 tuner particles. The face changing is a big one. Sublevel assembly is another
+
+    More visuals for when proxies are targeted. They can be optional
+
     Piston proxy modification extension. END FIXER. 
       Its a separate button-like block (turns on w redstone also) that enables one of the parallel controls of the piston proxy
       Neko sent concept art.

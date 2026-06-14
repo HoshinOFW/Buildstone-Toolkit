@@ -9,6 +9,7 @@
     "PlayerMixin",
     "compat.sable.ProxyBlockMixin",
     "compat.sable.SubLevelAssemblyHelperMixin",
+    "compat.create.ContraptionMixin",
     "compat.schematic.StructureTemplateMixin",
     "pistonproxy.BlockEntityAccessor",
     "pistonproxy.PistonBaseBlockMixin",

@@ -8,8 +8,6 @@ import net.minecraft.network.FriendlyByteBuf;
 import org.jetbrains.annotations.NotNull;
 
 public class CubeParticleOptions implements ParticleOptions {
-    // Read and write information, typically for use in commands
-    // Since there is no information in this type, this will be an empty string
 
     public static final CubeParticleOptions INSTANCE = new CubeParticleOptions();
 

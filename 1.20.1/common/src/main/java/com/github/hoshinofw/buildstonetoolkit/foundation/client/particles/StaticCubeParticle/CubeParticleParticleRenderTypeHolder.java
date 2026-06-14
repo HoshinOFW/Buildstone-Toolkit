@@ -10,11 +10,12 @@ import net.minecraft.client.particle.ParticleRenderType;
 import net.minecraft.client.renderer.GameRenderer;
 import net.minecraft.client.renderer.texture.TextureAtlas;
 import net.minecraft.client.renderer.texture.TextureManager;
+import org.jetbrains.annotations.NotNull;
 
 public class CubeParticleParticleRenderTypeHolder {
     public static final ParticleRenderType NO_DEPTH = new ParticleRenderType() {
         @Override
-        public void begin(BufferBuilder bufferBuilder, TextureManager textureManager) {
+        public void begin(BufferBuilder bufferBuilder, @NotNull TextureManager textureManager) {
             RenderSystem.setShaderTexture(0, TextureAtlas.LOCATION_PARTICLES);
 
             RenderSystem.disableDepthTest();

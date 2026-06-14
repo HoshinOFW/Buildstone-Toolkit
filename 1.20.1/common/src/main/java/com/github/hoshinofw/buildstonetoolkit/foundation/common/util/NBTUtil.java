@@ -2,6 +2,7 @@ package com.github.hoshinofw.buildstonetoolkit.foundation.common.util;
 
 import com.github.hoshinofw.buildstonetoolkit.foundation.common.blocks.entity.ProxyBlockEntity;
 import com.github.hoshinofw.buildstonetoolkit.foundation.common.core.BuildstoneToolkit;
+import com.github.hoshinofw.buildstonetoolkit.foundation.common.data.Rotation3D;
 import com.github.hoshinofw.buildstonetoolkit.foundation.common.storage.registries.IdObject;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
@@ -16,9 +17,10 @@ public class NBTUtil {
     public static final String NBTTargetIdKey = "buildstonetoolkit$target_id";
     public static final String NBTAbsTargetPosKey = "buildstonetoolkit$target";
     public static final String NBTRelTargetPosKey = "buildstonetoolkit$rel_target";
+    public static final String NBTRotWatermarkKey = "buildstonetoolkit$rot_watermark";
 
     public static void saveAbsoluteTargetNBTFromProxy(CompoundTag nbt, ProxyBlockEntity<?, ?> proxy) {
-        saveAbsPosToNBT(nbt, proxy.getLinkedAbsLongPos());
+        saveAbsPosToNBT(nbt, proxy.getTargetLongPos());
     }
 
     public static long getAbsoluteTargetPosFromNBT(CompoundTag nbt) {
@@ -43,7 +45,7 @@ public class NBTUtil {
     }
 
     public static void saveRelativeTargetNBTFromProxy(CompoundTag nbt, ProxyBlockEntity<?, ?> proxy) {
-        saveRelPosToNBT(nbt, proxy.getLinkedRelLongPos());
+        saveRelPosToNBT(nbt, proxy.getRelTargetLongPos());
     }
 
     public static long getRelativeTargetNBTFromPRoxy(CompoundTag nbt) {
@@ -87,6 +89,16 @@ public class NBTUtil {
         }
     }
 
+    public static void saveRotWatermark(CompoundTag nbt, byte watermark) {
+        nbt.putByte(NBTRotWatermarkKey, watermark);
+    }
+
+    public static byte getRotWatermark(CompoundTag nbt) {
+        return nbt.contains(NBTRotWatermarkKey, Tag.TAG_BYTE)
+                ? nbt.getByte(NBTRotWatermarkKey)
+                : Rotation3D.IDENTITY_BYTE;
+    }
+
     public static void saveTargetId(CompoundTag nbt, long targetId) {
         nbt.putLong(NBTTargetIdKey, targetId);
     }
@@ -116,11 +128,16 @@ public class NBTUtil {
     public static CompoundTag saveWithoutId(BlockEntity be, Level level) {
         CompoundTag nbt = be.saveWithoutMetadata();
         nbt.remove(NBTIdKey);
-        return be.saveWithoutMetadata();
+        return nbt;
     }
 
     public static CompoundTag saveWithId(BlockEntity be, Level level) {
         return be.saveWithoutMetadata();
+    }
+
+    public static void relativizeTarget(CompoundTag nbt, long relLong) {
+        nbt.remove(NBTUtil.NBTAbsTargetPosKey);
+        NBTUtil.saveRelPosToNBT(nbt, relLong);
     }
 
 }

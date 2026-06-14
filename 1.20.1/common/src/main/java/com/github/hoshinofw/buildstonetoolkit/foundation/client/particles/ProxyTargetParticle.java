@@ -4,7 +4,6 @@ import com.github.hoshinofw.buildstonetoolkit.foundation.client.particles.Static
 import com.github.hoshinofw.buildstonetoolkit.foundation.client.util.RenderUtil;
 import com.github.hoshinofw.buildstonetoolkit.foundation.common.blocks.FaceTargetingProxyBlock;
 import com.github.hoshinofw.buildstonetoolkit.foundation.common.blocks.entity.ProxyBlockEntity;
-import com.github.hoshinofw.buildstonetoolkit.foundation.common.core.BuildstoneToolkit;
 import com.github.hoshinofw.buildstonetoolkit.foundation.common.data.TargetFace;
 import com.github.hoshinofw.buildstonetoolkit.foundation.common.registries.BuildstoneItems;
 import com.github.hoshinofw.buildstonetoolkit.foundation.common.storage.registries.IdRegistry;
@@ -40,7 +39,6 @@ public class ProxyTargetParticle {
             return () -> {
                 ProxyBlockEntity<?, ?> pbeLocal = registry.getEntry(proxyId);
                 if (pbeLocal == null) {
-                    BuildstoneToolkit.LOGGER.info("I am here");
                     return true;
                 }
 
@@ -60,7 +58,7 @@ public class ProxyTargetParticle {
         return () -> {
             ProxyBlockEntity<?, ?> pbe = ProxyBlockEntity.getIdRegistry(player.level()).getEntry(proxyId);
             if (pbe == null) return null;
-            return pbe.getLinkedAbsPos().getCenter();
+            return pbe.getTargetPos().getCenter();
         };
     }
 
@@ -72,7 +70,7 @@ public class ProxyTargetParticle {
         ProxyBlockEntity<?, ?> pbe = ProxyBlockEntity.getIdRegistry(player.level()).getEntry(proxyId);
         if (pbe == null) {return;}
         if (player.level() instanceof ClientLevel clientLevel) {
-            BlockPos targetPos = pbe.getLinkedAbsPos();
+            BlockPos targetPos = pbe.getTargetPos();
             Particle particle = CubeParticle.create(clientLevel, targetPos)
                     .setRGBATint(1, 1, 1, 0.85F)
                     .setScale(RenderUtil.FaceTargetRender.getScaleForFace(face))
@@ -80,17 +78,18 @@ public class ProxyTargetParticle {
                     .setTextureIndex(BlockParticleTexture.PROXY_TARGET_BLOCK)
                     .setPersistSupplier(ProxyTargetParticle.activeProxyTargetParticlePersistSupplier.apply(player, proxyId, face))
                     .setPosSupplier(activeProxyTargetParticlePosSupplier.apply(player, proxyId))
-                    .setRenderTransformContextSupplier(activeProxyTargetParticleRenderTransformSupplier.apply(player, proxyId));
+                    .setRenderTransformContextSupplier(activeProxyTargetParticleRenderTransformSupplier.apply(player, proxyId))
+                    .build();
             //BuildstoneToolkit.LOGGER.info("Summoned Proxy Target Particle: {} at: {}", particle, targetPos);
             Minecraft.getInstance().particleEngine.add(particle);
         }
     }
 
-    public static void setActiveProxyTargetParticlePosSupplier(BiFunction<Player, Long, Vec3Supplier> activeProxyTargetParticlePosSupplier) {
+    public static void setActivePosSupplier(BiFunction<Player, Long, Vec3Supplier> activeProxyTargetParticlePosSupplier) {
         ProxyTargetParticle.activeProxyTargetParticlePosSupplier = activeProxyTargetParticlePosSupplier;
     }
 
-    public static void setActiveProxyTargetParticleRenderTransformSupplier(BiFunction<Player, Long, RenderTransformSupplier> activeProxyTargetParticleRenderTransformSupplier) {
+    public static void setActiveRTS(BiFunction<Player, Long, RenderTransformSupplier> activeProxyTargetParticleRenderTransformSupplier) {
         ProxyTargetParticle.activeProxyTargetParticleRenderTransformSupplier = activeProxyTargetParticleRenderTransformSupplier;
     }
 }

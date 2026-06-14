@@ -5,4 +5,6 @@ public interface RenderTransformSupplier {
 
     RenderTransformContext get(float partialTicks);
 
+    default void tick() {}
+
 }

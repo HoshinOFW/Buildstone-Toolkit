@@ -10,8 +10,6 @@ import org.jetbrains.annotations.NotNull;
 import org.joml.Quaterniondc;
 import org.joml.Vector3d;
 
-import static com.github.hoshinofw.buildstonetoolkit.foundation.client.particles.StaticCubeParticle.CubeParticle.CUBE;
-
 
 public interface CubeParticleRenderProvider {
 
@@ -38,31 +36,33 @@ public interface CubeParticleRenderProvider {
              z = (particle.getZ() - projectedView.z());
         }
 
-        Vector3d scratch = rotation != null ? new Vector3d() : null;
+        Vector3d scratch = particle.rotScratch;
+        double[] corners = particle.cornerOffsets;
 
         int light = LightTexture.FULL_BRIGHT;
 
-        Vec3 half = particle.size.scale(particle.scale * 0.5).add(0.001, 0.001, 0.001);
-
         for (int i = 0; i < 6; i++) {
             for (int j = 0; j < 4; j++) {
-                Vec3 c = CUBE[i * 4 + j].scale(-1).multiply(half).add(particle.renderOffset);
+                int base = (i * 4 + j) * 3;
+                double cx = corners[base];
+                double cy = corners[base + 1];
+                double cz = corners[base + 2];
                 double vx;
                 double vy;
                 double vz;
                 if (rotation != null) {
-                    scratch.set(c.x, c.y, c.z);
+                    scratch.set(cx, cy, cz);
                     rotation.transform(scratch);
                     vx = scratch.x + x;
                     vy = scratch.y + y;
                     vz = scratch.z + z;
                 } else {
-                    vx = c.x + x;
-                    vy = c.y + y;
-                    vz = c.z + z;
+                    vx = cx + x;
+                    vy = cy + y;
+                    vz = cz + z;
                 }
 
-                float  u; float v;
+                float u; float v;
                 switch (j) {
                     case 0 -> { u = particle.maxU; v = particle.maxV; }
                     case 1 -> { u = particle.maxU; v = particle.minV; }

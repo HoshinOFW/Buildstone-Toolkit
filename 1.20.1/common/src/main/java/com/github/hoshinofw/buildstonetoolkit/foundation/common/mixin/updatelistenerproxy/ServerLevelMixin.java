@@ -1,6 +1,7 @@
 package com.github.hoshinofw.buildstonetoolkit.foundation.common.mixin.updatelistenerproxy;
 
 import com.github.hoshinofw.buildstonetoolkit.foundation.common.blocks.entity.ProxyBlockEntity;
+import com.github.hoshinofw.buildstonetoolkit.foundation.common.storage.registries.ProxyTargetIndex;
 import com.github.hoshinofw.buildstonetoolkit.foundation.common.util.UpdateUtil;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -21,16 +22,27 @@ public abstract class ServerLevelMixin {
     public void updateNeighborsAt(BlockPos blockPos, Block block, CallbackInfo ci) {
         @NotNull Level level = (Level)(Object)this;
         long[] positions = UpdateUtil.packedNeighbors(blockPos, true);
-        ProxyBlockEntity.getRegistry(level).targetIndex.forEachInIfPresent(positions,
-                (long targetPos) -> UpdateUtil.targetUpdated(targetPos, level));
+
+        ProxyTargetIndex.Cursor cursor = ProxyBlockEntity.getRegistry(level).targetIndex.cursor();
+
+        for (long pos : positions) {
+            if (!cursor.isPresent(pos)) continue;
+            UpdateUtil.targetUpdated(pos, level);
+        }
     }
 
     @Inject(method = "updateNeighborsAtExceptFromFacing", at = @At("HEAD"))
     public void updateNeighborsAtExceptFromFacing(BlockPos blockPos, Block block, Direction direction, CallbackInfo ci) {
         @NotNull Level level = (Level)(Object)this;
+
         long[] positions = UpdateUtil.packedNeighborsExceptFromFacing(blockPos, true, direction);
-        ProxyBlockEntity.getRegistry(level).targetIndex.forEachInIfPresent(positions,
-                (long targetPos) -> UpdateUtil.targetUpdated(targetPos, level));
+
+        ProxyTargetIndex.Cursor cursor = ProxyBlockEntity.getRegistry(level).targetIndex.cursor();
+
+        for (long pos : positions) {
+            if (!cursor.isPresent(pos)) continue;
+            UpdateUtil.targetUpdated(pos, level);
+        }
     }
 
     @Inject(method = "neighborChanged(Lnet/minecraft/core/BlockPos;Lnet/minecraft/world/level/block/Block;Lnet/minecraft/core/BlockPos;)V", at = @At("HEAD"))

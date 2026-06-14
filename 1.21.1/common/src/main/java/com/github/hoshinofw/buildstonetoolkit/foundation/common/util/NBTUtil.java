@@ -17,7 +17,7 @@ public class NBTUtil {
     public static CompoundTag saveWithoutId(BlockEntity be, Level level) {
         CompoundTag nbt = be.saveWithoutMetadata(level.registryAccess());
         nbt.remove(NBTIdKey);
-        return be.saveWithoutMetadata(level.registryAccess());
+        return nbt;
     }
 
     @OverwriteVersion

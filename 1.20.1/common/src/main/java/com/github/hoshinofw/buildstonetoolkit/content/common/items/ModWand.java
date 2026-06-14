@@ -14,7 +14,7 @@ import java.util.List;
 
 public class ModWand extends Item {
 
-    public static final ResourceLocation MOD_WAND_PROXY_MODE = new ResourceLocation(BuildstoneToolkit.MOD_ID, "proxy_mode");
+    public static final ResourceLocation MOD_WAND_PROXY_MODE = BuildstoneToolkit.RLFromPath("proxy_mode");
 
     public ModWand(Properties properties) {
         super(properties);

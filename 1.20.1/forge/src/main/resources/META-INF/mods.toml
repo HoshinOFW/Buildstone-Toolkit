@@ -1,5 +1,5 @@
 modLoader = "javafml"
-loaderVersion = "[47,)"
+loaderVersion = "${forge_loader_version_range}"
 license = "${mod_license}"
 
 [[mods]]
@@ -13,7 +13,7 @@ logoFile = "icon.png"
 [[dependencies.${mod_id}]]
 modId = "forge"
 mandatory = true
-versionRange = "[47,)"
+versionRange = "${forge_version_range}"
 ordering = "NONE"
 side = "BOTH"
 
@@ -27,20 +27,20 @@ side = "BOTH"
 [[dependencies.${mod_id}]]
 modId = "architectury"
 mandatory = true
-versionRange = "[${architectury_api_version},)"
+versionRange = "${architectury_api_version_range}"
 ordering = "AFTER"
 side = "BOTH"
 
 [[dependencies.${mod_id}]]
 modId = "create"
 mandatory = false
-versionRange = "[${create_version},)"
+versionRange = "${create_version_range}"
 ordering = "AFTER"
 side = "BOTH"
 
 [[dependencies.${mod_id}]]
 modId = "mixinbooster"
 mandatory = true
-versionRange = "[${mixin_booster_version},)"
+versionRange = "${mixinbooster_version_range}"
 ordering = "AFTER"
 side = "BOTH"

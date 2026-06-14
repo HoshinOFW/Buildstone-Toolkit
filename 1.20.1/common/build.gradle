@@ -1,6 +1,6 @@
 plugins {
-    id 'buildstonetoolkit-repositories'
+    id 'repositories'
     id "multiloader-common-module-setup"
     id "multiloader-configuration-alias"
-    id "buildstonetoolkit-dependencies"
+    id "dependencies"
 }

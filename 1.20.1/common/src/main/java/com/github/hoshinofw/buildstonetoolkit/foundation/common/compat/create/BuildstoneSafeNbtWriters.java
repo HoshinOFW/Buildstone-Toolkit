@@ -7,11 +7,13 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 
+import java.util.function.Supplier;
+
 public class BuildstoneSafeNbtWriters {
 
     public static void register() {
-        for (BlockEntityType<? extends BlockEntity> beType : BuildstoneBlockEntities.getProxyTypes()) {
-            SafeNbtWriterRegistry.REGISTRY.register(beType, BuildstoneSafeNbtWriters::safeWrite);
+        for (Supplier<? extends BlockEntityType<? extends ProxyBlockEntity<?, ?>>> beType : BuildstoneBlockEntities.getProxyTypes()) {
+            SafeNbtWriterRegistry.REGISTRY.register(beType.get(), BuildstoneSafeNbtWriters::safeWrite);
         }
     }
 

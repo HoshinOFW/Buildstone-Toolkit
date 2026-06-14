@@ -4,6 +4,7 @@ import com.github.hoshinofw.buildstonetoolkit.content.common.blocks.RedstoneProx
 import com.github.hoshinofw.buildstonetoolkit.foundation.common.blocks.entity.ProxyBlockEntity;
 import com.github.hoshinofw.buildstonetoolkit.foundation.common.blocks.entity.UpdateListenerProxyBlockEntity;
 import com.github.hoshinofw.buildstonetoolkit.foundation.common.storage.registries.ProxyRegistry;
+import com.github.hoshinofw.buildstonetoolkit.foundation.common.storage.registries.ProxyTargetIndex;
 import it.unimi.dsi.fastutil.longs.LongIterator;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -82,21 +83,26 @@ public class UpdateUtil {
     }
 
     public static int getBestTransmittedSignalFromBlocks(long[] blocks, long queryingPos, int gate, ProxyRegistry<ProxyBlockEntity<?, ?>> registry) {
-        int[] best = {0};
+        int best = 0;
 
-        registry.targetIndex.forEachInIfPresentUntil(blocks, (long queriedPos) -> {
+        ProxyTargetIndex.Cursor cursor =  registry.targetIndex.cursor();
+
+        for (long queriedPos : blocks) {
+            if (!cursor.isPresent(queriedPos)) continue;
             boolean querying = queriedPos == queryingPos;
 
             for (LongIterator it = registry.getIdOfProxiesTargeting(queriedPos).iterator(); it.hasNext(); ) {
                 ProxyBlockEntity<?, ?> pbe = registry.idRegistry.getEntry(it.nextLong());
-                if (pbe == null) continue;
-                best[0] = foldSignal(pbe, null, querying, gate, best[0]);
-                if (best[0] >= gate) return false;
-            }
-            return true;
-        });
 
-        return best[0];
+                if (pbe == null) continue;
+
+                best = foldSignal(pbe, null, querying, gate, best);
+
+                if (best >= gate) return gate;
+            }
+        }
+
+        return best;
     }
 
     //Alla this assumes registry is not mutated during read. In the future this may break.

@@ -4,9 +4,11 @@
   "plugin": "com.github.hoshinofw.buildstonetoolkit.foundation.common.mixin.BTMixinPlugin",
   "compatibilityLevel": "JAVA_17",
   "minVersion": "0.8",
+  "refmap": "buildstonetoolkit.refmap.json",
   "mixins": [
     "LevelMixin",
     "PlayerMixin",
+    "compat.create.ContraptionMixin",
     "compat.schematic.StructureTemplateMixin",
     "pistonproxy.BlockEntityAccessor",
     "pistonproxy.PistonBaseBlockMixin",

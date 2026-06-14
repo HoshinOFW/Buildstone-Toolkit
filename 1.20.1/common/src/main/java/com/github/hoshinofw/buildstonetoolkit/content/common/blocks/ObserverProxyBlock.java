@@ -48,12 +48,13 @@ public class ObserverProxyBlock extends UpdateListenerProxyBlock<ObserverProxyBl
 
     @Override
     protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder) {
+        super.createBlockStateDefinition(builder);
         builder.add(POWERED, FACING);
     }
 
     @Override
     public void targetUpdated(UpdateListenerProxyBlockEntity<?, ?> be, @NotNull Level level) {
-        if (!be.getBlockState().getValue(POWERED)) {
+        if (!be.getBlockState().getValue(POWERED) && isActive(be.getBlockState())) {
             this.startSignal(level, be.getBlockPos());
         }
     }

@@ -5,7 +5,6 @@ import com.github.hoshinofw.buildstonetoolkit.foundation.common.blocks.Interacti
 import com.github.hoshinofw.buildstonetoolkit.foundation.common.blocks.ProxyBlock;
 import com.github.hoshinofw.buildstonetoolkit.foundation.common.data.ProxyInteractionType;
 import com.github.hoshinofw.buildstonetoolkit.foundation.common.registries.BuildstoneBlocks;
-import com.github.hoshinofw.buildstonetoolkit.foundation.common.util.Util;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -63,11 +62,6 @@ public class InteractionProxyBlock extends ProxyBlock<InteractionProxyBlock, Int
         return 0;
     }
 
-    public static int getTick(Level level, BlockPos proxyPos) {
-        return getTick(level.getBlockState(proxyPos));
-    }
-
-
     public static BlockState refreshTicking(BlockState state) {
         if (state.getBlock() instanceof InteractionProxyBlock) {
             return state.setValue(TICK, 2);
@@ -77,7 +71,7 @@ public class InteractionProxyBlock extends ProxyBlock<InteractionProxyBlock, Int
 
 
     public static void startTicking(Level level, BlockPos proxyPos, BlockState proxyState, Vec3 playerPosition) {;
-        level.setBlock(proxyPos, setSignal(refreshTicking(proxyState), Util.calculateSignal(playerPosition.distanceTo(proxyPos.getCenter()))), Block.UPDATE_ALL);
+        level.setBlock(proxyPos, setSignal(refreshTicking(proxyState), InteractiveProxyBlock.calculateSignal(playerPosition.distanceTo(proxyPos.getCenter()))), Block.UPDATE_ALL);
         level.scheduleTick(proxyPos, getBlock(), 1);
     }
 
@@ -103,6 +97,7 @@ public class InteractionProxyBlock extends ProxyBlock<InteractionProxyBlock, Int
 
     @Override
     public void handleInteraction(ServerLevel level, BlockPos proxyPos, BlockState proxyState, Vec3 playerPosition, ProxyInteractionType[] interactionTypes) {
+        if (!isActive(proxyState)) return;
         for (ProxyInteractionType interactionType : interactionTypes) {
             switch (interactionType) {
                 case RightClickedRightClickProxy -> startTicking(level, proxyPos, proxyState, playerPosition);
@@ -114,6 +109,7 @@ public class InteractionProxyBlock extends ProxyBlock<InteractionProxyBlock, Int
 
     @Override
     protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder) {
+        super.createBlockStateDefinition(builder);
         builder.add(POWER_LEVEL, TICK);
     }
 

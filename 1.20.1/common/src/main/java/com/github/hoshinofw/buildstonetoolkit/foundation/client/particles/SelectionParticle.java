@@ -21,21 +21,21 @@ import java.util.function.BooleanSupplier;
 
 public class SelectionParticle {
 
-    public static BiFunction<Player, BlockPos, Vec3Supplier> activeSelectionParticlePosSupplier = SelectionParticle::createSelectionParticlePosSupplier;
-    public static BiFunction<Player, BlockPos, RenderTransformSupplier> activeSelectionParticleRenderTransformSupplier = SelectionParticle::createSelectionParticleRenderTransformSupplier;
+    public static BiFunction<Player, BlockPos, Vec3Supplier> activeSelectionParticlePosSupplier = SelectionParticle::createPosSupplier;
+    public static BiFunction<Player, BlockPos, RenderTransformSupplier> activeSelectionParticleRenderTransformSupplier = SelectionParticle::createRTS;
 
-    public static BooleanSupplier createSelectionParticleShouldPersist(@NotNull Player player, @NotNull BlockPos targetPos) {
+    public static BooleanSupplier createShouldPersist(@NotNull Player player, @NotNull BlockPos targetPos) {
         SelectionHolder holder = (SelectionHolder) player;
         return () -> (player.getItemBySlot(EquipmentSlot.MAINHAND).is(BuildstoneItems.MOD_WAND.get())
                 || player.getItemBySlot(EquipmentSlot.OFFHAND).is(BuildstoneItems.MOD_WAND.get()))
                 && holder.getSelectedPos() == targetPos;
     }
 
-    public static Vec3Supplier createSelectionParticlePosSupplier(@NotNull Player player, @NotNull BlockPos pos) {
+    public static Vec3Supplier createPosSupplier(@NotNull Player player, @NotNull BlockPos pos) {
         return pos::getCenter;
     }
 
-    public static RenderTransformSupplier createSelectionParticleRenderTransformSupplier(@NotNull Player player, @NotNull BlockPos pos) {
+    public static RenderTransformSupplier createRTS(@NotNull Player player, @NotNull BlockPos pos) {
         return (float partialTicks) -> null;
     }
 
@@ -45,9 +45,10 @@ public class SelectionParticle {
                     .setRGBATint(1, 1, 1, 0.85F)
                     .setSize(1F)
                     .setTextureIndex(BlockParticleTexture.SELECTION_BLOCK)
-                    .setPersistSupplier(createSelectionParticleShouldPersist(player, pos))
+                    .setPersistSupplier(createShouldPersist(player, pos))
                     .setPosSupplier(activeSelectionParticlePosSupplier.apply(player, pos))
-                    .setRenderTransformContextSupplier(activeSelectionParticleRenderTransformSupplier.apply(player, pos));
+                    .setRenderTransformContextSupplier(activeSelectionParticleRenderTransformSupplier.apply(player, pos))
+                    .build();
             //BuildstoneToolkit.LOGGER.info("Summoned Target Particle: {} at: {}", particle, pos);
             Minecraft.getInstance().particleEngine.add(particle);
         }
@@ -60,19 +61,20 @@ public class SelectionParticle {
                     .setScale(RenderUtil.FaceTargetRender.getScaleForFace(face))
                     .setRenderOffset(RenderUtil.FaceTargetRender.getOffsetForFace(face))
                     .setTextureIndex(BlockParticleTexture.SELECTION_BLOCK)
-                    .setPersistSupplier(createSelectionParticleShouldPersist(player, pos))
+                    .setPersistSupplier(createShouldPersist(player, pos))
                     .setPosSupplier(activeSelectionParticlePosSupplier.apply(player, pos))
-                    .setRenderTransformContextSupplier(activeSelectionParticleRenderTransformSupplier.apply(player, pos));
+                    .setRenderTransformContextSupplier(activeSelectionParticleRenderTransformSupplier.apply(player, pos))
+                    .build();
             //BuildstoneToolkit.LOGGER.info("Summoned Target Particle: {} at: {}", particle, pos);
             Minecraft.getInstance().particleEngine.add(particle);
         }
     }
 
-    public static void setActiveSelectionParticlePosSupplier(BiFunction<Player, BlockPos, Vec3Supplier> activeSelectionParticlePosSupplier) {
+    public static void setActivePosSupplier(BiFunction<Player, BlockPos, Vec3Supplier> activeSelectionParticlePosSupplier) {
         SelectionParticle.activeSelectionParticlePosSupplier = activeSelectionParticlePosSupplier;
     }
 
-    public static void setActiveSelectionParticleRenderTransformSupplier(BiFunction<Player, BlockPos, RenderTransformSupplier> activeSelectionParticleRenderTransformSupplier) {
+    public static void setActiveRTS(BiFunction<Player, BlockPos, RenderTransformSupplier> activeSelectionParticleRenderTransformSupplier) {
         SelectionParticle.activeSelectionParticleRenderTransformSupplier = activeSelectionParticleRenderTransformSupplier;
     }
 }

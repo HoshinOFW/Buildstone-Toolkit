@@ -36,11 +36,8 @@
       <module name="buildstonetoolkit" target="21" />
       <module name="buildstonetoolkit.1.20.1.main" target="21" />
       <module name="buildstonetoolkit.1.20.1.test" target="21" />
-      <module name="buildstonetoolkit.1.21.1.fabric" target="21" />
-      <module name="buildstonetoolkit.1.21.1.fabric.main" target="21" />
-      <module name="buildstonetoolkit.1.21.1.fabric.test" target="21" />
-      <module name="buildstonetoolkit.1.21.1.fabric.trueSrc" target="21" />
       <module name="buildstonetoolkit.1.21.1.main" target="21" />
+      <module name="buildstonetoolkit.1.21.1.neoforge.trueSrc" target="21" />
       <module name="buildstonetoolkit.1.21.1.test" target="21" />
       <module name="buildstonetoolkit.common" target="21" />
       <module name="buildstonetoolkit.common.main" target="21" />
