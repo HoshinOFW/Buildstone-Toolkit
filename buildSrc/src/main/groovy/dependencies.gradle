@@ -1,5 +1,20 @@
 dependencies { d ->
+    //Mod runtime
     modRuntimeOnly("mezz.jei:jei-${multiversion.mcVersion()}-${multiversion.moduleType()}:${project.jei_version}")
+
+    if (!multiversion.isCommon()) {
+        modRuntimeOnly("maven.modrinth:spark:${project.spark_version}-${multiversion.moduleType()}")
+        if (multiversion.isFabric() && multiversion.isMcVersion("1.21.1")) {
+            modRuntimeOnly("me.lucko:fabric-permissions-api:${project.fabric_permissions_api_version}")
+        }
+    }
+
+    if (multiversion.isForge() || multiversion.isNeoForge()) {
+        modCompileOnly("org.violetmoon.zeta:Zeta:${project.zeta_version}")
+        modRuntimeOnly("org.violetmoon.zeta:Zeta:${project.zeta_version}")
+    } else {
+        modCompileOnly("org.violetmoon.zeta:Zeta:${project.zeta_version}")
+    }
 
     if (multiversion.isCommon()) {
         String commonArchVersion = multiversion.isMcVersion("1.20.1") ? "forge" : "neoforge"
@@ -12,12 +27,7 @@ dependencies { d ->
         modImplementation("maven.modrinth:mixinbooster:${project.mixinbooster_version}")
     }
 
-    if (!multiversion.isCommon()) {
-        modRuntimeOnly("maven.modrinth:spark:${project.spark_version}-${multiversion.moduleType()}")
-        if (multiversion.isFabric() && multiversion.isMcVersion("1.21.1")) {
-            modRuntimeOnly("me.lucko:fabric-permissions-api:${project.fabric_permissions_api_version}")
-        }
-    }
+
     //Bundle ponder + create only in versions where they are available.
     if (multiversion.mcVersion() in ["1.20.1", "1.21.1"]) {
         //Create needs JEI classes.

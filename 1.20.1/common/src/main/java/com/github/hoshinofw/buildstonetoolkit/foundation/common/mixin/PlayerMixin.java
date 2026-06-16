@@ -1,7 +1,7 @@
 package com.github.hoshinofw.buildstonetoolkit.foundation.common.mixin;
 
 import com.github.hoshinofw.buildstonetoolkit.foundation.common.data.TargetFace;
-import com.github.hoshinofw.buildstonetoolkit.foundation.common.util.mixin.SelectionHolder;
+import com.github.hoshinofw.buildstonetoolkit.foundation.common.util.mixin.holders.SelectionHolder;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.entity.player.Player;
 import org.jetbrains.annotations.NotNull;

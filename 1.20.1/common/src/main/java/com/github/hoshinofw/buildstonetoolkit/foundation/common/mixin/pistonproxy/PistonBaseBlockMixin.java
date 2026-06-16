@@ -55,6 +55,7 @@ public class PistonBaseBlockMixin {
             BlockEntity originalBE = level.getBlockEntity(originalPos);
             if (originalBE != null) {
                 CompoundTag nbt = NBTUtil.saveWithId(originalBE, level);
+                nbt.remove(NBTUtil.NBTTargetIdKey);
                 ((PistonMovingBlockEntityMixinInterface) pistonMBE).buildstonetoolkit$setProxyTag(nbt);
             }
         }

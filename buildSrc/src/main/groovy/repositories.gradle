@@ -1,4 +1,5 @@
 repositories {
+    //TODO Organize this and do includeGroup for all...
     maven { url = "https://maven.createmod.net" }
     maven { url = "https://maven.ithundxr.dev/snapshots" }
     maven { url = "https://mvn.devos.one/releases" }

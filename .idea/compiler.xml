@@ -42,6 +42,8 @@
       <module name="buildstonetoolkit.common" target="21" />
       <module name="buildstonetoolkit.common.main" target="21" />
       <module name="buildstonetoolkit.common.test" target="21" />
+      <module name="buildstonetoolkit.main" target="21" />
+      <module name="buildstonetoolkit.test" target="21" />
     </bytecodeTargetLevel>
   </component>
   <component name="JavacSettings">

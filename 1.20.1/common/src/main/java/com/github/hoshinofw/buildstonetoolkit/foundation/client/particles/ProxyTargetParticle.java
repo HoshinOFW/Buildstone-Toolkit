@@ -8,7 +8,7 @@ import com.github.hoshinofw.buildstonetoolkit.foundation.common.data.TargetFace;
 import com.github.hoshinofw.buildstonetoolkit.foundation.common.registries.BuildstoneItems;
 import com.github.hoshinofw.buildstonetoolkit.foundation.common.storage.registries.IdRegistry;
 import com.github.hoshinofw.buildstonetoolkit.foundation.common.util.Vec3Supplier;
-import com.github.hoshinofw.buildstonetoolkit.foundation.common.util.mixin.SelectionHolder;
+import com.github.hoshinofw.buildstonetoolkit.foundation.common.util.mixin.holders.SelectionHolder;
 import com.github.hoshinofw.buildstonetoolkit.foundation.common.util.render.BlockParticleTexture;
 import com.github.hoshinofw.buildstonetoolkit.foundation.common.util.render.RenderTransformSupplier;
 import net.minecraft.client.Minecraft;

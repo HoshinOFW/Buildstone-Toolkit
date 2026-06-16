@@ -1,4 +1,4 @@
-package com.github.hoshinofw.buildstonetoolkit.foundation.common.util.mixin;
+package com.github.hoshinofw.buildstonetoolkit.foundation.common.util.mixin.holders;
 
 import com.github.hoshinofw.buildstonetoolkit.foundation.common.data.TargetFace;
 import net.minecraft.core.BlockPos;

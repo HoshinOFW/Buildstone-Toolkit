@@ -15,9 +15,11 @@
     "pistonproxy.PistonBaseBlockMixin",
     "pistonproxy.PistonMovingBlockEntityMixin",
     "pistonproxy.PistonStructureResolverMixin",
+    "pistonproxy.ZetaPistonStructureResolverMixin",
     "updatelistenerproxy.LevelMixin",
     "updatelistenerproxy.ServerLevelMixin",
     "updatelistenerproxy.SignalGetterMixin"
+
   ],
   "injectors": {
     "defaultRequire": 1
