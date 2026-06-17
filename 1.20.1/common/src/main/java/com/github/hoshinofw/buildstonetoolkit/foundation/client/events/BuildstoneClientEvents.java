@@ -140,10 +140,6 @@ public class BuildstoneClientEvents {
             holder.clearSelection();
             return EventResult.interruptTrue();
         }
-        if (player.getItemInHand(InteractionHand.OFF_HAND).getItem() instanceof ModWand) {
-            SelectionHolder holder = (SelectionHolder) player;
-            holder.clearSelection();
-        }
         return EventResult.pass();
     }
 

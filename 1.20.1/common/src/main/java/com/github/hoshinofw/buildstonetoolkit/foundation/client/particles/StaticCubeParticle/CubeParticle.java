@@ -63,7 +63,7 @@ public class CubeParticle extends TextureSheetParticle {
     }
 
     protected CubeParticle(ClientLevel clientLevel, Vec3 pos, SpriteSet spriteSet) {
-        super(clientLevel, pos.x(), pos.y(), pos.y());
+        super(clientLevel, pos.x(), pos.y(), pos.z());
         this.sprites = spriteSet;
         this.setTextureSprite(spriteSet);
         this.updateUVValues();
@@ -257,6 +257,7 @@ public class CubeParticle extends TextureSheetParticle {
 
         cornerSource.prepareCorners(this);
 
+        //TODO wand mode handling needs to go somewhere else.
         if (!fading) {
             //Not good practice...
             ModWand.setClientMode(ModWand.Mode.ON);
@@ -265,14 +266,19 @@ public class CubeParticle extends TextureSheetParticle {
                 fadeTicks = 0;
             }
         } else {
-            fadeTicks++;
-            float fadeProgress = fadeTicks / (float) fadeDuration;
-            this.alpha = Mth.clamp(1.0f - fadeProgress, 0.0f, 1.0f) * this.a;
+            if (shouldPersist.getAsBoolean()) {
+                fading = false;
+                fadeTicks = 0;
+            } else {
+                fadeTicks++;
+                float fadeProgress = fadeTicks / (float) fadeDuration;
+                this.alpha = Mth.clamp(1.0f - fadeProgress, 0.0f, 1.0f) * this.a;
 
-            if (fadeTicks >= fadeDuration) {
-                this.remove();
-                //TODO replace with an on-death lambda
-                ModWand.setClientMode(ModWand.Mode.OFF);
+                if (fadeTicks >= fadeDuration) {
+                    this.remove();
+                    //TODO replace with an on-death lambda
+                    ModWand.setClientMode(ModWand.Mode.OFF);
+                }
             }
         }
     }

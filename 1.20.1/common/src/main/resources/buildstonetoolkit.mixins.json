@@ -9,6 +9,7 @@
     "LevelMixin",
     "PlayerMixin",
     "compat.create.ContraptionMixin",
+    "compat.quark.PistonsMoveTileEntitiesModuleMixin",
     "compat.schematic.StructureTemplateMixin",
     "pistonproxy.BlockEntityAccessor",
     "pistonproxy.PistonBaseBlockMixin",

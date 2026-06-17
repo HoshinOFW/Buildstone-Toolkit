@@ -10,6 +10,7 @@
     "compat.sable.ProxyBlockMixin",
     "compat.sable.SubLevelAssemblyHelperMixin",
     "compat.create.ContraptionMixin",
+    "compat.quark.PistonsMoveTileEntitiesModuleMixin",
     "compat.schematic.StructureTemplateMixin",
     "pistonproxy.BlockEntityAccessor",
     "pistonproxy.PistonBaseBlockMixin",

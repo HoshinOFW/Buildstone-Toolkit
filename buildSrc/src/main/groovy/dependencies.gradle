@@ -12,8 +12,13 @@ dependencies { d ->
     if (multiversion.isForge() || multiversion.isNeoForge()) {
         modCompileOnly("org.violetmoon.zeta:Zeta:${project.zeta_version}")
         modRuntimeOnly("org.violetmoon.zeta:Zeta:${project.zeta_version}")
+
+        modCompileOnly("org.violetmoon.quark:Quark:${project.quark_version}")
+        modRuntimeOnly("org.violetmoon.quark:Quark:${project.quark_version}")
+
     } else {
         modCompileOnly("org.violetmoon.zeta:Zeta:${project.zeta_version}")
+        modCompileOnly("org.violetmoon.quark:Quark:${project.quark_version}")
     }
 
     if (multiversion.isCommon()) {

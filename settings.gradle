@@ -17,11 +17,11 @@ rootProject.name = 'buildstonetoolkit'
 
 multiversionModules {
     common = ['common']
-    //fabric = ['fabric']
+    fabric = ['fabric']
     forge = ['forge']
     neoforge = ['neoforge']
 
     patchModules = ['forge',
-                    //'fabric',
+                    'fabric',
                     'neoforge', 'common']
 }

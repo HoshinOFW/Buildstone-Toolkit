@@ -86,7 +86,11 @@ public class PistonProxyBlock extends ProxyBlock<PistonProxyBlock, PistonProxyBl
     }
 
     public boolean shouldPreserveTargetAbsPos(Level level, PistonMovingBlockEntity mbe, BlockPos originalPos, BlockPos finalPos, Direction moveDirection) {
-        if (isStronglyPowered(mbe.getMovedState()) || !isActive(mbe.getMovedState())) {return true;}
+        return shouldPreserveTargetAbsPos(level, mbe.getMovedState(), finalPos);
+    }
+
+    public boolean shouldPreserveTargetAbsPos(Level level, BlockState movedState, BlockPos finalPos) {
+        if (isStronglyPowered(movedState) || !isActive(movedState)) {return true;}
         return parseRedstoneToPowerLevel(level.getBestNeighborSignal(finalPos)) == 1;
     }
 

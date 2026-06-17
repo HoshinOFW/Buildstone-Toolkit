@@ -15,12 +15,15 @@ public class PistonUtil {
 
     public static void doProxyUpdatingLogic(@NotNull Level level, PistonMovingBlockEntity mbe, Direction moveDirection, BlockPos originalPos, BlockPos finalPos) {
         if (mbe.getMovedState().getBlock() instanceof PistonProxyBlock pistonProxyBlock) {
+            CompoundTag savedTag = Util.getProxyTag(mbe);
+            
+            if (savedTag == null) return;
+
             level.setBlock(finalPos, mbe.getMovedState(), Block.UPDATE_ALL);
 
             BlockEntity blockEntity = level.getBlockEntity(finalPos);
-            CompoundTag savedTag = Util.getProxyTag(mbe);
 
-            if (blockEntity != null && savedTag != null) {
+            if (blockEntity != null) {
                 if (!pistonProxyBlock.shouldPreserveTargetAbsPos(level, mbe, originalPos, finalPos, moveDirection)) {
                     pistonProxyBlock.saveShiftedTargetAbsPosToNBT(level, finalPos, mbe.getMovedState(), savedTag, moveDirection);
                 }
