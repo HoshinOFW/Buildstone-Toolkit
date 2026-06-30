@@ -15,7 +15,12 @@ public final class BuildstoneToolkit {
     public static final String MOD_ID = "buildstonetoolkit";
     public static final Logger LOGGER = LoggerFactory.getLogger(MOD_ID);
 
+    private static boolean IS_DEDICATED_SERVER = false;
     public static boolean IS_SABLE_LOADED = false;
+
+    public static boolean isDedicatedServer() {
+        return IS_DEDICATED_SERVER;
+    }
 
     public static ResourceLocation RLFromPath(String path) {
         return new ResourceLocation(MOD_ID, path);
@@ -23,6 +28,7 @@ public final class BuildstoneToolkit {
 
     public static void init() {
         LOGGER.info("Debug enabled: {}", LOGGER.isDebugEnabled());
+
         BuildstoneBlocks.register();
         BuildstoneItems.register();
         BuildstoneBlockEntities.register();
@@ -68,5 +74,9 @@ public final class BuildstoneToolkit {
 
     public static void onServerUnload(ServerLevel serverLevel) {
         ((ProxyRegistryHolder)serverLevel).getProxyRegistry().clear();
+    }
+
+    public static void setIsDedicatedServer(boolean b) {
+        IS_DEDICATED_SERVER = b;
     }
 }

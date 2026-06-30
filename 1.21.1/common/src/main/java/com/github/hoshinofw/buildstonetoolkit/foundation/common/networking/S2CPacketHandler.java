@@ -45,7 +45,7 @@ public abstract class S2CPacketHandler<P> {
     }
 
     @OverwriteVersion
-    public void register() {
+    public void registerReceiver() {
         NetworkManager.registerReceiver(
                 NetworkManager.Side.S2C,
                 TYPE,

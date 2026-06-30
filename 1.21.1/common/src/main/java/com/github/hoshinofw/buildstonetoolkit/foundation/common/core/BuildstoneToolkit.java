@@ -1,6 +1,5 @@
 package com.github.hoshinofw.buildstonetoolkit.foundation.common.core;
 
-
 import com.github.hoshinofw.buildstonetoolkit.foundation.common.compat.sable.SableCompatInit;
 import com.github.hoshinofw.buildstonetoolkit.foundation.common.compat.simulated.SimulatedCompatInit;
 import com.github.hoshinofw.multiversion.ModifyClass;

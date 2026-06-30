@@ -44,13 +44,13 @@ dependencies { d ->
         if (multiversion.isMcVersion("1.21.1")) {
             if (multiversion.isCommon()) {
                 modImplementation("net.createmod.ponder:ponder-neoforge:${project.ponder_version}+mc${multiversion.mcVersion()}") {
-                    exclude group: "io.github.fabricators_of_create.Porting-Lib"
-                    transitive = false
+                    //exclude group: "io.github.fabricators_of_create.Porting-Lib"
+                    //transitive = false
                 }
             } else {
                 modImplementation("net.createmod.ponder:ponder-${multiversion.moduleType()}:${project.ponder_version}+mc${multiversion.mcVersion()}") {
-                    exclude group: "io.github.fabricators_of_create.Porting-Lib"
-                    transitive = false
+                    //exclude group: "io.github.fabricators_of_create.Porting-Lib"
+                    //transitive = false
                 }
             }
 
@@ -60,13 +60,13 @@ dependencies { d ->
         } else {
             if (multiversion.isCommon()) {
                 modImplementation("net.createmod.ponder:Ponder-Forge-${multiversion.mcVersion()}:${project.ponder_version}") {
-                    exclude group: "io.github.fabricators_of_create.Porting-Lib"
-                    transitive = false
+                    //exclude group: "io.github.fabricators_of_create.Porting-Lib"
+                    //transitive = false
                 }
             } else {
                 modImplementation("net.createmod.ponder:Ponder-${multiversion.moduleTypeCapitalized()}-${multiversion.mcVersion()}:${project.ponder_version}") {
-                    exclude group: "io.github.fabricators_of_create.Porting-Lib"
-                    transitive = false
+                    //exclude group: "io.github.fabricators_of_create.Porting-Lib"
+                    //transitive = false
                 }
             }
 
@@ -88,9 +88,12 @@ dependencies { d ->
             modRuntimeOnly("dev.engine-room.flywheel:flywheel-$flywheelModule-${multiversion.mcVersion()}:${project.flywheel_version}")
             modImplementation("com.tterrag.registrate:Registrate:${project.registrate_version}")
         }
-
+        //TODO my create runtime is messed up...
         if ((create_fabric == 'true') && multiversion.isFabric() && multiversion.isMcVersion("1.20.1")) {
-            modImplementation("com.simibubi.create:create-fabric-${multiversion.mcVersion()}:$project.create_version")
+            modCompileOnly("com.simibubi.create:create-fabric-${multiversion.mcVersion()}:$project.create_version")
+            //modRuntimeOnly("com.simibubi.create:create-fabric-${multiversion.mcVersion()}:$project.create_version")
+
+            //modImplementation("com.simibubi.create:create-fabric-${multiversion.mcVersion()}:$project.create_version")
         }
         if ((create_fabric == 'true') && multiversion.isFabric() && multiversion.isMcVersion("1.21.1")) {
             modCompileOnly("com.simibubi.create:create-${multiversion.mcVersion()}:$project.create_version:slim")
@@ -101,17 +104,20 @@ dependencies { d ->
     // Implement sable + aero + offroad when available
     if (multiversion.isMcVersion("1.21.1")) {
 
-        modImplementation("dev.ryanhcode.sable:sable-${multiversion.moduleType()}-${multiversion.mcVersion()}:${project.sable_version}")
-
+        //TODO Check if this fixes 1.21.1 fabric
+        if (!multiversion.isFabric()) {
+            modImplementation("dev.ryanhcode.sable:sable-${multiversion.moduleType()}-${multiversion.mcVersion()}:${project.sable_version}")
+        } else {
+            modCompileOnly("dev.ryanhcode.sable:sable-${multiversion.moduleType()}-${multiversion.mcVersion()}:${project.sable_version}")
+        }
         if (!multiversion.isFabric()) {
             modImplementation("dev.simulated_team.simulated:simulated-${multiversion.moduleType()}-${multiversion.mcVersion()}:${project.simulated_version}")
             modImplementation("dev.eriksonn.aeronautics:aeronautics-${multiversion.moduleType()}-${multiversion.mcVersion()}:${project.aeronautics_version}")
             modImplementation("dev.ryanhcode.offroad:offroad-${multiversion.moduleType()}-${multiversion.mcVersion()}:${project.offroad_version}")
         } else {
-            String module = multiversion.mcVersion() == '1.20.1' ? 'forge' : 'neoforge'
-            modCompileOnly("dev.simulated_team.simulated:simulated-${module}-${multiversion.mcVersion()}:${project.simulated_version}")
-            modCompileOnly("dev.eriksonn.aeronautics:aeronautics-${module}-${multiversion.mcVersion()}:${project.aeronautics_version}")
-            modCompileOnly("dev.ryanhcode.offroad:offroad-${module}-${multiversion.mcVersion()}:${project.offroad_version}")
+            modCompileOnly("dev.simulated_team.simulated:simulated-neoforge-${multiversion.mcVersion()}:${project.simulated_version}") {transitive = false}
+            modCompileOnly("dev.eriksonn.aeronautics:aeronautics-neoforge-${multiversion.mcVersion()}:${project.aeronautics_version}") {transitive = false}
+            modCompileOnly("dev.ryanhcode.offroad:offroad-neoforge-${multiversion.mcVersion()}:${project.offroad_version}") {transitive = false}
         }
     }
 

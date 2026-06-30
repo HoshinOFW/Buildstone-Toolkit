@@ -1,5 +1,6 @@
 package com.github.hoshinofw.buildstonetoolkit.foundation.common.networking;
 
+import com.github.hoshinofw.buildstonetoolkit.foundation.common.core.BuildstoneToolkit;
 import dev.architectury.networking.NetworkManager;
 import io.netty.buffer.Unpooled;
 import net.minecraft.network.FriendlyByteBuf;
@@ -20,7 +21,7 @@ public abstract class S2CPacketHandler<P> {
         NetworkManager.sendToPlayer(player, getID(), write(new FriendlyByteBuf(Unpooled.buffer()), payload));
     }
 
-    public void register() {
+    public void registerReceiver() {
         NetworkManager.registerReceiver(
                 NetworkManager.Side.S2C,
                 getID(),

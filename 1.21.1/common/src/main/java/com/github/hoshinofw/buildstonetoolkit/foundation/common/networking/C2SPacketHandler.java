@@ -46,7 +46,7 @@ public abstract class C2SPacketHandler<P>{
     }
 
     @OverwriteVersion
-    public void register() {
+    public void registerReceiver() {
         NetworkManager.registerReceiver(
                 NetworkManager.Side.C2S,
                 TYPE,

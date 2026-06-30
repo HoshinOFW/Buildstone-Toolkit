@@ -1,6 +1,7 @@
 package com.github.hoshinofw.buildstonetoolkit.forge.core;
 
 import com.github.hoshinofw.buildstonetoolkit.foundation.common.core.BuildstoneToolkit;
+import dev.architectury.platform.Platform;
 import dev.architectury.platform.forge.EventBuses;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.eventbus.api.IEventBus;
@@ -16,6 +17,7 @@ public final class BuildstoneToolkitForge {
         MOD_BUS = FMLJavaModLoadingContext.get().getModEventBus();
         EventBuses.registerModEventBus(BuildstoneToolkit.MOD_ID, MOD_BUS);
 
+        BuildstoneToolkit.setIsDedicatedServer(Platform.getEnv().isDedicatedServer());
         BuildstoneToolkit.init();
         DistExecutor.safeRunWhenOn(Dist.CLIENT, () -> BuildstoneToolkitForgeClient::init);
 

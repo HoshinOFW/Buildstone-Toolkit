@@ -7,6 +7,8 @@
 - Test everything in multiplayer
  
 # TODO FOR RELEASES:
+
+    1.21.1 fabric 2.0.2 release. ATM dedicated server crashes.
     PLANNED FOR THIS RELEASE:
 
     Enable debug for logging
@@ -14,7 +16,7 @@
     mods.toml or equivalents have the mod dependency version ranges actually set by a separate gradle property that is more flexible than whatever BT is compiled against
 
     Separate access transformers and mixin configs so that I don't have to update every one and inheritance via multiversion works.
-
+  
 -------------------
     Ponders
 

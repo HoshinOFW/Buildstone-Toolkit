@@ -19,7 +19,7 @@ public abstract class C2SPacketHandler<P> {
         NetworkManager.sendToServer(getID(), write(new FriendlyByteBuf(Unpooled.buffer()), payload));
     }
 
-    public void register() {
+    public void registerReceiver() {
         NetworkManager.registerReceiver(
                 NetworkManager.Side.C2S,
                 getID(),
