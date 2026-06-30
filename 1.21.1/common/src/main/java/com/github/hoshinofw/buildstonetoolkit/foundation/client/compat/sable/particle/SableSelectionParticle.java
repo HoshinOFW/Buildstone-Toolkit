@@ -32,15 +32,15 @@ public class SableSelectionParticle {
             this.pos = pos;
             this.vec3 = pos.getCenter();
             this.base = base;
-            resolve();
+            refresh();
         }
 
         @Override
         public void tick() {
-            resolve();
+            refresh();
         }
 
-        private void resolve() {
+        private void refresh() {
             this.access = SableCompanion.INSTANCE.getContainingClient(pos);
         }
 

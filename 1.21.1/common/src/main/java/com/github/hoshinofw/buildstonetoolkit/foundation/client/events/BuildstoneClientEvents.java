@@ -1,6 +1,5 @@
 package com.github.hoshinofw.buildstonetoolkit.foundation.client.events;
 
-import com.github.hoshinofw.buildstonetoolkit.foundation.common.core.BuildstoneToolkit;
 import com.github.hoshinofw.multiversion.ModifyClass;
 import com.github.hoshinofw.multiversion.OverwriteVersion;
 import com.github.hoshinofw.multiversion.ShadowVersion;

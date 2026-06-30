@@ -59,8 +59,4 @@ public class SableParticleCompat {
         RenderTransformSupplier baseSupplier = ProxyTargetParticle.createProxyTargetParticleRenderTransformSupplier(player, proxyId);
         return new SableProxyTargetParticle.RenderTransform(player, proxyId, baseSupplier);
     }
-
-
-
-
 }

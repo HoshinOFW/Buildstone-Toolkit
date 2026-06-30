@@ -36,15 +36,15 @@ public class SableProxyParticle {
             this.player = player;
             this.proxyId = proxyId;
             this.base = base;
-            resolve();
+            refresh();
         }
 
         @Override
         public void tick() {
-            resolve();
+            refresh();
         }
 
-        private void resolve() {
+        private void refresh() {
             ProxyBlockEntity<?, ?> pbe = ProxyBlockEntity.getIdRegistry(player.level()).getEntry(proxyId);
             if (pbe == null) {
                 valid = false;

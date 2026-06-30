@@ -19,6 +19,8 @@ import com.github.hoshinofw.buildstonetoolkit.foundation.common.networking.Playe
 import com.github.hoshinofw.buildstonetoolkit.foundation.common.networking.RedstoneProxyCycleModePacket;
 import com.github.hoshinofw.buildstonetoolkit.foundation.common.networking.SetProxyTargetPacket;
 import com.github.hoshinofw.buildstonetoolkit.foundation.common.registries.BuildstoneItems;
+import com.github.hoshinofw.buildstonetoolkit.foundation.common.storage.registries.ProxyRegistry;
+import com.github.hoshinofw.buildstonetoolkit.foundation.common.storage.registries.ProxyTargetIndex;
 import com.github.hoshinofw.buildstonetoolkit.foundation.common.util.SoundUtil;
 import com.github.hoshinofw.buildstonetoolkit.foundation.common.util.mixin.holders.SelectionHolder;
 import dev.architectury.event.CompoundEventResult;
@@ -61,6 +63,9 @@ public class BuildstoneClientEvents {
 
     private static int LCB_LAST_TICK = 0;
     private static final int LCB_COOLDOWN = 4;
+
+    private static final ProxyInteractionType[] USE_INTERACTION_TYPES = {ProxyInteractionType.LookedAtLookingAtProxy, ProxyInteractionType.RightClickedRightClickProxy};
+    private static final ProxyInteractionType[] ONLY_LOOK_INTERACTION_TYPES = {ProxyInteractionType.LookedAtLookingAtProxy};
 
     public static void register() {
         ClientLifecycleEvent.CLIENT_LEVEL_LOAD.register(BuildstoneToolkitClient::onClientLevelLoad);
@@ -173,18 +178,21 @@ public class BuildstoneClientEvents {
 
         LongArrayList ipbs = new LongArrayList();
 
-        ProxyBlockEntity.getRegistry(level).targetIndex.forEachInIfPresent(blocks, (targetedBlock) -> {
-            LongCollection pbeCollection = ProxyBlockEntity.getRegistry(level).getProxyLongPosTargeting(BlockPos.of(targetedBlock), InteractiveProxyBlockEntity.class);
+        ProxyRegistry<ProxyBlockEntity<?, ?>> registry = ProxyBlockEntity.getRegistry(level);
+        ProxyTargetIndex.Cursor cursor = registry.targetIndex.cursor();
 
-            ipbs.addAll(pbeCollection);
-        });
+        for (long block : blocks) {
+            if (cursor.isPresent(block)) {
+                LongCollection pbeCollection = ProxyBlockEntity.getRegistry(level).getProxyLongPosTargeting(block, InteractiveProxyBlockEntity.class);
+
+                ipbs.addAll(pbeCollection);
+            }
+        }
 
         if (client.options.keyUse.isDown()) {
-            PlayerProxyInteractionPacket.HANDLER.sendToServer(new PlayerProxyInteractionPacket(ipbs.toLongArray(), player.position(),
-                    new ProxyInteractionType[]{ProxyInteractionType.RightClickedRightClickProxy, ProxyInteractionType.LookedAtLookingAtProxy}));
+            PlayerProxyInteractionPacket.HANDLER.sendToServer(new PlayerProxyInteractionPacket(ipbs.toLongArray(), player.position(), USE_INTERACTION_TYPES));
         } else {
-            PlayerProxyInteractionPacket.HANDLER.sendToServer(new PlayerProxyInteractionPacket(ipbs.toLongArray(), player.position(),
-                    new ProxyInteractionType[]{ProxyInteractionType.LookedAtLookingAtProxy}));
+            PlayerProxyInteractionPacket.HANDLER.sendToServer(new PlayerProxyInteractionPacket(ipbs.toLongArray(), player.position(), ONLY_LOOK_INTERACTION_TYPES));
         }
     }
 
@@ -295,8 +303,8 @@ public class BuildstoneClientEvents {
     private static void sendSetProxyTargetPacket(SelectionHolder holder, Player player,  Level level, BlockPos hitPos) {
         BlockPos targetPos;
         long proxyId = holder.getSelectedId();
-        //Resolve a target pos.
 
+        //Resolve a target pos.
         if (holder.hasSelectedProxyId()) {
             ProxyBlockEntity<?, ?> pbe = ProxyBlockEntity.getIdRegistry(level).getEntry(proxyId);
             if (pbe != null) {
