@@ -17,7 +17,8 @@ boolean allNonFabricModule = !requestedTasks.isEmpty() &&
         loweredTasks.every { it.contains(':forge:') || it.contains(':neoforge:') }
 boolean aggregateBuild = !requestedTasks.isEmpty() && !allNonFabricModule
 
-create_fabric = create_fabric || (!ideSync && (namesFabric || aggregateBuild))
+
+//create_fabric = create_fabric || (!ideSync && (namesFabric || aggregateBuild))
 
 logger.info("create_fabric = {} (requestedTasks={}, ideSync={})", create_fabric, requestedTasks, ideSync)
 

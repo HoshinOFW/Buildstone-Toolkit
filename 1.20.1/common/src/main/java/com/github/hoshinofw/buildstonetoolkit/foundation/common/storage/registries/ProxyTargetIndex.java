@@ -9,6 +9,8 @@ import java.util.function.LongConsumer;
 
 public final class ProxyTargetIndex {
 
+    //TODO Hold a private cursor here too and use it to cache the methods here too.
+
     private final int sectionBits;
     private final int sectionMask;
     private final int sectionWords;
@@ -58,70 +60,6 @@ public final class ProxyTargetIndex {
         return bits != null && hasBit(bits, blockPos);
     }
 
-    public boolean contains(long a, long b) {
-        long sk = sectionKey(a);
-        long[] bits = sectionBitsets.get(sk);
-        if (bits != null && hasBit(bits, a)) return true;
-
-        long s = sectionKey(b);
-        if (s != sk) bits = sectionBitsets.get(s);
-        return bits != null && hasBit(bits, b);
-    }
-
-    public boolean contains(long a, long b, long c) {
-        long sk = sectionKey(a);
-        long[] bits = sectionBitsets.get(sk);
-        if (bits != null && hasBit(bits, a)) return true;
-
-        long s = sectionKey(b);
-        if (s != sk) { bits = sectionBitsets.get(s); sk = s; }
-        if (bits != null && hasBit(bits, b)) return true;
-
-        s = sectionKey(c);
-        if (s != sk) bits = sectionBitsets.get(s);
-        return bits != null && hasBit(bits, c);
-    }
-
-    public boolean contains(long a, long b, long c, long d) {
-        long sk = sectionKey(a);
-        long[] bits = sectionBitsets.get(sk);
-        if (bits != null && hasBit(bits, a)) return true;
-
-        long s = sectionKey(b);
-        if (s != sk) { bits = sectionBitsets.get(s); sk = s; }
-        if (bits != null && hasBit(bits, b)) return true;
-
-        s = sectionKey(c);
-        if (s != sk) { bits = sectionBitsets.get(s); sk = s; }
-        if (bits != null && hasBit(bits, c)) return true;
-
-        s = sectionKey(d);
-        if (s != sk) bits = sectionBitsets.get(s);
-        return bits != null && hasBit(bits, d);
-    }
-
-    public boolean contains(long a, long b, long c, long d, long e) {
-        long sk = sectionKey(a);
-        long[] bits = sectionBitsets.get(sk);
-        if (bits != null && hasBit(bits, a)) return true;
-
-        long s = sectionKey(b);
-        if (s != sk) { bits = sectionBitsets.get(s); sk = s; }
-        if (bits != null && hasBit(bits, b)) return true;
-
-        s = sectionKey(c);
-        if (s != sk) { bits = sectionBitsets.get(s); sk = s; }
-        if (bits != null && hasBit(bits, c)) return true;
-
-        s = sectionKey(d);
-        if (s != sk) { bits = sectionBitsets.get(s); sk = s; }
-        if (bits != null && hasBit(bits, d)) return true;
-
-        s = sectionKey(e);
-        if (s != sk) bits = sectionBitsets.get(s);
-        return bits != null && hasBit(bits, e);
-    }
-
     public boolean contains(long a, long b, long c, long d, long e, long f) {
         long sk = sectionKey(a);
         long[] bits = sectionBitsets.get(sk);
@@ -146,70 +84,6 @@ public final class ProxyTargetIndex {
         s = sectionKey(f);
         if (s != sk) bits = sectionBitsets.get(s);
         return bits != null && hasBit(bits, f);
-    }
-
-    public boolean contains(long a, long b, long c, long d, long e, long f, long g) {
-        long sk = sectionKey(a);
-        long[] bits = sectionBitsets.get(sk);
-        if (bits != null && hasBit(bits, a)) return true;
-
-        long s = sectionKey(b);
-        if (s != sk) { bits = sectionBitsets.get(s); sk = s; }
-        if (bits != null && hasBit(bits, b)) return true;
-
-        s = sectionKey(c);
-        if (s != sk) { bits = sectionBitsets.get(s); sk = s; }
-        if (bits != null && hasBit(bits, c)) return true;
-
-        s = sectionKey(d);
-        if (s != sk) { bits = sectionBitsets.get(s); sk = s; }
-        if (bits != null && hasBit(bits, d)) return true;
-
-        s = sectionKey(e);
-        if (s != sk) { bits = sectionBitsets.get(s); sk = s; }
-        if (bits != null && hasBit(bits, e)) return true;
-
-        s = sectionKey(f);
-        if (s != sk) { bits = sectionBitsets.get(s); sk = s; }
-        if (bits != null && hasBit(bits, f)) return true;
-
-        s = sectionKey(g);
-        if (s != sk) bits = sectionBitsets.get(s);
-        return bits != null && hasBit(bits, g);
-    }
-
-    public boolean contains(long a, long b, long c, long d, long e, long f, long g, long h) {
-        long sk = sectionKey(a);
-        long[] bits = sectionBitsets.get(sk);
-        if (bits != null && hasBit(bits, a)) return true;
-
-        long s = sectionKey(b);
-        if (s != sk) { bits = sectionBitsets.get(s); sk = s; }
-        if (bits != null && hasBit(bits, b)) return true;
-
-        s = sectionKey(c);
-        if (s != sk) { bits = sectionBitsets.get(s); sk = s; }
-        if (bits != null && hasBit(bits, c)) return true;
-
-        s = sectionKey(d);
-        if (s != sk) { bits = sectionBitsets.get(s); sk = s; }
-        if (bits != null && hasBit(bits, d)) return true;
-
-        s = sectionKey(e);
-        if (s != sk) { bits = sectionBitsets.get(s); sk = s; }
-        if (bits != null && hasBit(bits, e)) return true;
-
-        s = sectionKey(f);
-        if (s != sk) { bits = sectionBitsets.get(s); sk = s; }
-        if (bits != null && hasBit(bits, f)) return true;
-
-        s = sectionKey(g);
-        if (s != sk) { bits = sectionBitsets.get(s); sk = s; }
-        if (bits != null && hasBit(bits, g)) return true;
-
-        s = sectionKey(h);
-        if (s != sk) bits = sectionBitsets.get(s);
-        return bits != null && hasBit(bits, h);
     }
 
     /**
@@ -254,45 +128,9 @@ public final class ProxyTargetIndex {
         return sectionBitsets.containsKey(sectionKey(blockPos));
     }
 
-    public void clear() {
-        sectionBitsets.clear();
-    }
-
-    public void forEachInIfPresent(Iterable<BlockPos> blocks, LongConsumer consumer) {
-        Cursor cursor = cursor();
-        for (BlockPos block : blocks) {
-            long pos = block.asLong();
-            if (cursor.isPresent(pos)) consumer.accept(pos);
-        }
-    }
-
-    /**
-     * Efficiently walks only the blockPos in {@code blocks} that are found in the index, invoking {@code consumer}.
-     */
-    public void forEachInIfPresent(long[] blocks, LongConsumer consumer) {
-        Cursor cursor = cursor();
-        for (long pos : blocks) {
-            if (cursor.isPresent(pos)) consumer.accept(pos);
-        }
-    }
-
-    /**
-     * Efficiently walks only the blockPos in {@code blocks} that are found in the index, until {@code consumer} returns false.
-     */
-    public boolean forEachInIfPresentUntil(long[] blocks, LongPredicate consumer) {
-        Cursor cursor = cursor();
-        for (long pos : blocks) {
-            if (cursor.isPresent(pos) && !consumer.test(pos)) return false;
-        }
-        return true;
-    }
-
+    //TODO make callers own a single copy of Cursor instead of reallocating.
     public Cursor cursor() {
         return new Cursor(this);
-    }
-
-    public Walk walk(long[] blocks) {
-        return new Walk(this, blocks);
     }
 
     public static final class Cursor {
@@ -321,40 +159,6 @@ public final class ProxyTargetIndex {
             lastSectionKey = Long.MIN_VALUE;
             lastBitset = null;
             lastWasMiss = false;
-        }
-    }
-
-    public static final class Walk {
-
-        private final Cursor cursor;
-        private final long[] blocks;
-        private int i = 0;
-        private long current;
-
-        private Walk(ProxyTargetIndex index, long[] blocks) {
-            this.cursor = new Cursor(index);
-            this.blocks = blocks;
-        }
-
-        public boolean next() {
-            while (i < blocks.length) {
-                long pos = blocks[i++];
-                if (cursor.isPresent(pos)) {
-                    current = pos;
-                    return true;
-                }
-            }
-            return false;
-        }
-
-        public long pos() {
-            return current;
-        }
-
-        public void reset() {
-            i = 0;
-            current = 0;
-            cursor.reset();
         }
     }
 

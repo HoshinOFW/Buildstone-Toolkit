@@ -33,7 +33,6 @@ public class RPTransitionParticle {
                     .setTextureIndex(BlockParticleTexture.REDSTONE_PROXY_TRANSITION)
                     .setRenderTransformContextSupplier(createRPTransformRTS(player, proxyPos, proxyId,4, 3))
                     .build();
-            //BuildstoneToolkit.LOGGER.info("Summoned Redstone Transition Particle: {} at: {}", particle, proxyPos);
             Minecraft.getInstance().particleEngine.add(particle);
         }
     }

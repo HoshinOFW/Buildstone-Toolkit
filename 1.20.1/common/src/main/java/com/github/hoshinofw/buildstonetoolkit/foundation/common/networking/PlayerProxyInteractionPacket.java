@@ -12,7 +12,6 @@ import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.Vec3;
 
-
 public record PlayerProxyInteractionPacket(long[] proxyPos, Vec3 playerPosition, ProxyInteractionType[] interactionTypes){
     public static final ResourceLocation ID = BuildstoneToolkit.RLFromPath("proxy_interaction_packet");
 

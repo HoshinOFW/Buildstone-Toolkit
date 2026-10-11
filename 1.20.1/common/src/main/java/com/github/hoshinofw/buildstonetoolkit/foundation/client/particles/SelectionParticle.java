@@ -49,7 +49,6 @@ public class SelectionParticle {
                     .setPosSupplier(activeSelectionParticlePosSupplier.apply(player, pos))
                     .setRenderTransformContextSupplier(activeSelectionParticleRenderTransformSupplier.apply(player, pos))
                     .build();
-            //BuildstoneToolkit.LOGGER.info("Summoned Target Particle: {} at: {}", particle, pos);
             Minecraft.getInstance().particleEngine.add(particle);
         }
     }
@@ -65,7 +64,6 @@ public class SelectionParticle {
                     .setPosSupplier(activeSelectionParticlePosSupplier.apply(player, pos))
                     .setRenderTransformContextSupplier(activeSelectionParticleRenderTransformSupplier.apply(player, pos))
                     .build();
-            //BuildstoneToolkit.LOGGER.info("Summoned Target Particle: {} at: {}", particle, pos);
             Minecraft.getInstance().particleEngine.add(particle);
         }
     }

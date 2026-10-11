@@ -80,7 +80,6 @@ public class ProxyTargetParticle {
                     .setPosSupplier(activeProxyTargetParticlePosSupplier.apply(player, proxyId))
                     .setRenderTransformContextSupplier(activeProxyTargetParticleRenderTransformSupplier.apply(player, proxyId))
                     .build();
-            //BuildstoneToolkit.LOGGER.info("Summoned Proxy Target Particle: {} at: {}", particle, targetPos);
             Minecraft.getInstance().particleEngine.add(particle);
         }
     }

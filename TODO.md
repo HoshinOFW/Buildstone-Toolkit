@@ -1,5 +1,6 @@
 ## BUGS:
     Redstone proxies don't visually update next to interactive proxies. Seems update ordering is weird in general.
+    Update propagation out of directly using face doesnt work. Weird because it does level.neighborChanged at comparator pos.
 
 ### Debt:
 - Split access transformers instead of overriding. Same with mixin configs.
@@ -16,7 +17,9 @@
     mods.toml or equivalents have the mod dependency version ranges actually set by a separate gradle property that is more flexible than whatever BT is compiled against
 
     Separate access transformers and mixin configs so that I don't have to update every one and inheritance via multiversion works.
-  
+    
+    Sable Schematic API support.
+
 -------------------
     Ponders
 

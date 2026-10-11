@@ -28,40 +28,19 @@ public class ProxyParticle {
 
     public static BooleanSupplier createPersistSupplier(@NotNull Player player, long proxyId, TargetFace face) {
         SelectionHolder holder = (SelectionHolder) player;
-        boolean[] prev = {true};
         return () -> {
             boolean wand = player.getItemBySlot(EquipmentSlot.MAINHAND).is(BuildstoneItems.MOD_WAND.get())
                     || player.getItemBySlot(EquipmentSlot.OFFHAND).is(BuildstoneItems.MOD_WAND.get());
             boolean idMatch = holder.getSelectedId() == proxyId;
             boolean faceMatch = face == holder.getSelectedFace();
-            boolean result = wand && idMatch && faceMatch;
-            if (result != prev[0]) {
-                com.github.hoshinofw.buildstonetoolkit.foundation.common.core.BuildstoneToolkit.LOGGER.info(
-                        "[DBG ProxyParticle persist] {} -> {} | wand={} idMatch={} (sel={} captured={}) faceMatch={} (sel={} captured={})",
-                        prev[0], result, wand, idMatch, holder.getSelectedId(), proxyId, faceMatch, holder.getSelectedFace(), face);
-                prev[0] = result;
-            }
-            return result;
+            return wand && idMatch && faceMatch;
         };
     }
 
     public static Vec3Supplier createPosSupplier(@NotNull Player player, long proxyId) {
-        boolean[] wasNull = {false};
         return () -> {
             ProxyBlockEntity<?, ?> pbe = ProxyBlockEntity.getIdRegistry(player.level()).getEntry(proxyId);
-            if (pbe == null) {
-                if (!wasNull[0]) {
-                    com.github.hoshinofw.buildstonetoolkit.foundation.common.core.BuildstoneToolkit.LOGGER.info(
-                            "[DBG ProxyParticle pos] getEntry({}) == null (frozen)", proxyId);
-                    wasNull[0] = true;
-                }
-                return null;
-            }
-            if (wasNull[0]) {
-                com.github.hoshinofw.buildstonetoolkit.foundation.common.core.BuildstoneToolkit.LOGGER.info(
-                        "[DBG ProxyParticle pos] getEntry({}) recovered at {}", proxyId, pbe.getBlockPos());
-                wasNull[0] = false;
-            }
+            if (pbe == null) return null;
             return pbe.getBlockPos().getCenter();
         };
     }
@@ -73,7 +52,6 @@ public class ProxyParticle {
     public static void spawn(@NotNull Player player, long proxyId, TargetFace face) {
         ProxyBlockEntity<?, ?> pbe = ProxyBlockEntity.getIdRegistry(player.level()).getEntry(proxyId);
         if (pbe == null) {
-            //BuildstoneToolkit.LOGGER.info("spawnIdProxyParticle failed because id: {} not found in idRegistry", proxyId);
             return;
         }
         if (player.level() instanceof ClientLevel clientLevel) {
@@ -87,7 +65,6 @@ public class ProxyParticle {
                     .setRenderTransformContextSupplier(activeProxyParticleRenderTransformSupplier.apply(player, proxyId))
                     .build();
 
-            //BuildstoneToolkit.LOGGER.info("Summoned Proxy Target Particle: {} at: {}", particle, targetPos);
             Minecraft.getInstance().particleEngine.add(particle);
         }
     }
